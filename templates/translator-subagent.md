@@ -9,7 +9,9 @@ images — read the Arabic exactly as printed).
 
 1. **Author's prose** → TRANSLATE. Literal, faithful to the author's tone; lightly de-ambiguate only for
    clarity; add nothing, omit nothing. Gloss a transliterated term on first use:
-   *Tazkiyah (purification of the soul)*. Keep chapter titles as descriptive headings (`## …`).
+   *Tazkiyah (purification of the soul)*. Heading levels are fixed book-wide so chunks translated in
+   parallel nest consistently: chapter title = `## …`, segment/section title = `### …`,
+   "Benefits"/"Lessons and Benefits" = `#### …`. Never use bold text as a substitute for a heading.
 
 2. **Quran verse(s)** → DO NOT TRANSLATE. Retrieve:
    `python -m retrieval.quran_lookup --match "<the Arabic you read>"`
