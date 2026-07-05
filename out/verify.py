@@ -46,3 +46,10 @@ def verify(md):
             problems.append("malformed hadith conf: %s" % h.get("conf"))
     return {"n_quran": len(m["quran"]), "n_hadith": len(m["hadith"]),
             "problems": problems, "flagged": flagged}
+
+
+if __name__ == "__main__":
+    import json
+    import sys
+    text = open(sys.argv[1], encoding="utf-8").read() if len(sys.argv) > 1 else sys.stdin.read()
+    print(json.dumps(verify(text), ensure_ascii=False, indent=2))
