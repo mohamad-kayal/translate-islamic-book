@@ -148,28 +148,56 @@ whose glossary version changed, or that failed/were flagged — everything else 
 
 ## 7. Bundled Datasets
 
-Stored under `skill/data/`. Sources are **candidates to be verified for availability + licensing
-during implementation** (do not assume; confirm against live sources):
+Stored under `data/`. **Sources verified live 2026-07-05** — the `fawazahmed0` **quran-api** and
+**hadith-api** on jsDelivr, both under the **Unlicense** (public-domain dedication), pinned to major
+version `@1`. A setup script downloads the needed full editions locally once.
 
-- **Quran Arabic** — Uthmani text by surah:ayah (Tanzil). Public domain.
-- **Saheeh International** (primary) and **The Clear Quran** (secondary) — English by surah:ayah, via quran.com / QuranEnc datasets.
-- **Hadith** — Arabic + English + canonical numbering for the major collections (Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa'i, Ibn Majah, Ahmad, Malik, plus Hakim/Bayhaqi where available), via the sunnah.com dumps or an equivalent open hadith dataset.
+- **Quran** (per-ayah schema `{chapter, verse, text}`; full file `{"quran":[…]}`): `ara-quranuthmanihaf`
+  (Uthmani Hafs — the reference Arabic), **`eng-ummmuhammad` = Saheeh International** (verified against the
+  user's An-Nisa 59 rendering), **`eng-mustafakhattaba` = The Clear Quran** (Allah edition, matching the
+  user's book). Verse **matching folds orthography** (Uthmani ↔ Imlā'ī) by removing alefs from the match
+  key, so a book in either spelling resolves against this one edition (verified necessary on real data —
+  the target books differ: Al-Minhaj is Imlā'ī, Anwar al-Anbiya is Uthmani).
+- **Hadith** (schema `{metadata, hadiths:[{hadithnumber, arabicnumber, text, grades, reference:{book,hadith}}]}`;
+  Arabic & English editions join on `hadithnumber`): `ara-`/`eng-` for **bukhari, muslim, abudawud,
+  tirmidhi, nasai, ibnmajah** (the Six Books), **malik** (Muwatta), and **nawawi / qudsi / dehlawi**
+  (the "Forty" collections).
+- **Coverage gap (verified):** **Musnad Ahmad, al-Hakim (Mustadrak), al-Bayhaqi, ad-Darimi, at-Tabarani
+  are NOT in this dataset.** Narrations from these — and any matn that fails to match with sufficient
+  confidence — take the **fallback path** (web lookup / careful LLM) and are flagged in `review.md`.
+  *Al-Minhaj* draws its majority from the Sahihayn, so bundled coverage is high; the tail is handled by
+  review, never invented.
+- **Numbering caveat (verified):** collection numbering is source-dependent. Bukhari numbers align with
+  the user's citations (Bukhari 79 = the rain/guidance hadith ✓), but this dataset's continuous **Muslim**
+  numbering diverges from the Abdul-Baqi / sunnah.com numbers the user cites (its `2408` ≠ the user's
+  "Muslim 2408"). Hence matching is by **Arabic matn, not number** (§8), and the printed citation follows
+  the **author's own takhrij in the source**, with the dataset number used only to verify and flag
+  divergences.
 
-All datasets are local → offline, fast, reproducible. Attributions ("Saheeh International", "Narrated
-by …") are surfaced in the output, as in the user's existing book.
+All datasets are local → offline, fast, reproducible at translation time. Attributions ("Saheeh
+International", "Narrated by …") are surfaced in the output, as in the user's existing book.
+
+> **Saheeh Intl typography note:** this copy renders plain "Allah/Muhammad"; the user's *Al-Minhaj* uses
+> the official diacritical "Allāh/Muḥammad". An optional post-process can restore the diacritical forms —
+> decided during implementation, not blocking.
 
 ## 8. Matching Strategy
 
-**Quran (exact, deterministic):** normalize Arabic (strip tashkeel; normalize alif/hamza/ya/ta-marbuta
-variants) on both the dataset and the source span; index normalized ayah text; locate the contiguous
-**start→end ayah range** covered by the source span (verses often run several ayat). Retrieve canonical
-Arabic + reference + Saheeh Intl (+ Clear Quran). If the source's extracted Arabic is noisy, the
+**Quran (exact, deterministic):** normalize Arabic (strip tashkeel by Unicode category; normalize
+alif/hamza/ya/ta-marbuta variants) and, to bridge **Uthmani vs Imlā'ī orthography**, remove alefs from the
+**match key** (verified necessary on real data). Locate the query as a **substring** of the per-surah
+match-key corpus — this resolves exact ayat, multi-ayah ranges, **and partial/mid-ayah quotations** (the
+source often quotes only part of an ayah) — then map the character span back to the **start→end ayah
+range**. Retrieve reference + Saheeh Intl (+ Clear Quran). If the source's extracted Arabic is noisy, the
 **canonical dataset Arabic is authoritative** for what gets printed.
 
 **Hadith (fuzzy, verified):** normalize and strip the isnad; match the *matn* against the hadith DB
-using token-set / n-gram similarity; return the best collection+number with a **confidence score**.
-Cross-check against any takhrij the source itself prints (e.g., "رواه البخاري"). If confidence < threshold
-or no match → **fallback** (web lookup / careful LLM) **and flag** in `review.md`. Never silently invent.
+using token-set / n-gram similarity; return the best-matching entry with a **confidence score**.
+**Citation policy:** the printed reference follows the **author's own takhrij in the source** (the
+collection + number the author cites); the dataset's number is used only to *verify* and is **flagged in
+`review.md` on divergence** — numbering schemes differ across sources (§7: dataset Bukhari aligns with the
+user's citations, dataset Muslim does not). If confidence < threshold or no match → **fallback** (web
+lookup / careful LLM) **and flag** in `review.md`. Never silently invent.
 
 The Arabic **printed** for a hadith is the author's quoted matn (the author may deliberately quote only a
 portion), verified against the matched dataset entry; the dataset supplies the reference + English. If the
