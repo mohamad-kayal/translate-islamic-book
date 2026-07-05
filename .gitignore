@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Per-book working + output directories (created at runtime beside the source PDF)
+work/
+output/
+
+# Large downloaded datasets (fetched by a setup script; not committed unless small)
+# data/  — revisit once dataset sizes/licensing are confirmed
