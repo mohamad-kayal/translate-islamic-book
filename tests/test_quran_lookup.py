@@ -1,0 +1,43 @@
+from retrieval.quran_index import QuranIndex
+
+# Synthetic 3-ayah surah (tashkeel-free base letters).
+ARABIC = {(1, 1): "بحر نهر", (1, 2): "جبل شمس قمر", (1, 3): "ليل نهار"}
+SAHEEH = {(1, 1): "sea river", (1, 2): "mountain sun moon", (1, 3): "night day"}
+CLEAR = {(1, 1): "the sea", (1, 2): "a mountain", (1, 3): "the night"}
+
+
+def idx():
+    return QuranIndex(ARABIC, SAHEEH, CLEAR)
+
+
+def test_single_ayah_with_tashkeel_query():
+    # query carries harakat and must still match the bare ayah 1
+    assert idx().identify_span("بَحر نَهر") == (1, 1, 1, 1.0)
+
+
+def test_multi_ayah_range():
+    assert idx().identify_span("جبل شمس قمر ليل نهار")[:3] == (1, 2, 3)
+
+
+def test_partial_trailing_ayah():
+    assert idx().identify_span("جبل شمس")[:3] == (1, 2, 2)
+
+
+def test_midayah_quotation_resolves_to_containing_ayah():
+    # 'قمر' is the LAST word of ayah 2 -> a partial/mid-ayah quote still resolves to ayah 2
+    assert idx().identify_span("قمر")[:3] == (1, 2, 2)
+
+
+def test_absent_text_returns_none():
+    assert idx().identify_span("زيتون تين") is None
+
+
+def test_alef_orthography_insensitive():
+    # ayah stored with full alef (كتاب); a query missing that alef (Uthmani-style) still matches
+    i2 = QuranIndex({(1, 1): "كتاب مبين"}, {(1, 1): "x"}, {(1, 1): "y"})
+    assert i2.identify_span("كتب مبين")[:3] == (1, 1, 1)
+
+
+def test_get_verse():
+    assert idx().get_verse(1, 2)["saheeh"] == "mountain sun moon"
+    assert idx().get_verse(9, 9) is None
