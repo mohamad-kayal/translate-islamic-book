@@ -20,7 +20,9 @@ def _page_text(pdf, page):
 
 
 def _page_has_quran_font(pdf, page):
-    return "KFGQPC" in _run(["pdffonts", "-f", str(page), "-l", str(page), pdf])
+    # KFGQPC = King Fahd Complex fonts; QCF_ = Quran-Complex per-page mushaf fonts.
+    fonts = _run(["pdffonts", "-f", str(page), "-l", str(page), pdf])
+    return "KFGQPC" in fonts or "QCF_" in fonts
 
 
 def classify(char_count, threshold=ORNAMENTAL_MAX_CHARS):
