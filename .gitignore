@@ -11,5 +11,5 @@ venv/
 work/
 output/
 
-# Large downloaded datasets (fetched by a setup script; not committed unless small)
-# data/  — revisit once dataset sizes/licensing are confirmed
+# Large downloaded datasets (~60MB, public-domain, re-created by scripts/setup_data.py)
+data/
