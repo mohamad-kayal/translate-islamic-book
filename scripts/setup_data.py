@@ -1,8 +1,8 @@
 """Download pinned public-domain Quran + hadith datasets and surah names into data/."""
 import json
 import os
+import subprocess
 import sys
-import urllib.request
 
 QURAN_EDITIONS = ["ara-quranuthmanihaf", "eng-ummmuhammad", "eng-mustafakhattaba"]
 HADITH_COLLECTIONS = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
@@ -25,8 +25,18 @@ def chapters_url():
 
 
 def _http_fetch(url):
-    with urllib.request.urlopen(url, timeout=60) as r:
-        return r.read()
+    """Fetch bytes over HTTPS via the system `curl`, which uses the OS trust store.
+    (The macOS python.org framework build ships no CA bundle, so urllib fails cert
+    verification; curl verifies properly — important so sacred text can't be MITM'd.)"""
+    try:
+        r = subprocess.run(["curl", "-fsSL", "--max-time", "120", url],
+                           check=True, capture_output=True)
+    except FileNotFoundError:
+        raise RuntimeError("`curl` is required to download datasets but was not found on PATH.")
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError("Failed to download %s: %s"
+                           % (url, e.stderr.decode(errors="replace")[:200]))
+    return r.stdout
 
 
 def download(url, dest, fetch=_http_fetch, skip_existing=True):
