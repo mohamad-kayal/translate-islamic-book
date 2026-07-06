@@ -1,8 +1,13 @@
 """Load Quran editions; locate the ayah span covered by an Arabic quotation."""
 import json
 import os
+import re
+import unicodedata
 
-from .normalize import normalize_arabic
+from .normalize import fix_kfgqpc_spaces, normalize_arabic
+
+# Invisible bidi controls that leak from the dataset into pasted text.
+_BIDI_CONTROLS = re.compile("[‎‏]")
 
 
 def _data_dir():
@@ -10,17 +15,30 @@ def _data_dir():
                           os.path.join(os.path.dirname(__file__), "..", "data"))
 
 
+def _clean_text(text):
+    return fix_kfgqpc_spaces(_BIDI_CONTROLS.sub("", text))
+
+
 def _load_edition(path):
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
-    return {(v["chapter"], v["verse"]): v["text"] for v in data["quran"]}
+    return {(v["chapter"], v["verse"]): _clean_text(v["text"]) for v in data["quran"]}
 
 
 def _match_key(text):
-    """Orthography-robust matching key: normalized text with every alef removed, so
-    Uthmani spellings (dagger/superscript alef) and Imla'i spellings (full alef) of
-    the same word collapse. Used only for locating verses; display text keeps alefs."""
-    return normalize_arabic(text).replace("ا", "")
+    """Orthography-robust matching key. Collapses Uthmani vs Imla'i spellings:
+    a silent waw carrying a bare dagger alef (الصلوٰة) reads as alef (الصلاة), then
+    every alef and hamza is removed so dagger-alef words (هٰذا/هذا) and hamza-carrier
+    variants (ءَامنوا/آمنوا) unify. Used only for LOCATING verses; display text is
+    untouched."""
+    t = unicodedata.normalize("NFC", text or "")
+    # waw + dagger alef with no vowel in between = silent waw pronounced as alef
+    t = t.replace("وٰ", "ا")
+    t = normalize_arabic(t)
+    # Uthmani joins the vocative (يَٰٓأَيُّهَا is one word; Imla'i writes يا أيها as
+    # two) — join the standalone particle so token boundaries agree.
+    t = re.sub(r"(?<!\S)يا (?=\S)", "يا", t)
+    return t.replace("ا", "").replace("ء", "")
 
 
 class QuranIndex:
@@ -69,11 +87,14 @@ class QuranIndex:
         qn = _match_key(arabic_query)
         if not qn:
             return None
+        # Anchor at word boundaries: a quotation never starts or ends mid-word
+        # (otherwise short queries match inside longer words, e.g. طه in مطهرة).
+        pat = re.compile(r"(?<!\S)%s(?!\S)" % re.escape(qn))
         for s in sorted(self._surah_text):
-            pos = self._surah_text[s].find(qn)
-            if pos == -1:
+            m = pat.search(self._surah_text[s])
+            if m is None:
                 continue
-            end = pos + len(qn)
+            pos, end = m.start(), m.end()
             overlaps = [a for (st, en, a) in self._surah_map[s] if st < end and en > pos]
             if overlaps:
                 return (s, overlaps[0], overlaps[-1], 1.0)

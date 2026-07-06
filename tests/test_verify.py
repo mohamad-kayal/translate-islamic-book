@@ -1,10 +1,71 @@
 from out.verify import parse_markers, verify
+from retrieval.hadith_index import HadithIndex
+from retrieval.quran_index import QuranIndex
 
 GOOD = (
     "intro\n"
     "<!--quran s=4 a=59-59 tr=saheeh-->\n(...) [An-Nisa: 59]\n<!--/quran-->\n"
     "<!--hadith coll=bukhari num=79 conf=1.0 src=dataset-->\n[[H]] ... <!--/hadith-->\n"
 )
+
+# Tiny synthetic datasets for body verification.
+QIDX = QuranIndex({(1, 1): "بحر نهر", (1, 2): "جبل شمس قمر"},
+                  {(1, 1): "sea river", (1, 2): "mountain sun moon"},
+                  {(1, 1): "x", (1, 2): "y"})
+HIDX = HadithIndex.from_records([
+    {"collection": "bukhari", "number": 79,
+     "arabic": "مثل ما بعثني الله به من الهدى", "english": "The parable...", "reference": {}},
+])
+
+
+def _q(body, s=1, a="1-1", tr="saheeh"):
+    return "<!--quran s=%d a=%s tr=%s-->\n%s\n<!--/quran-->\n" % (s, a, tr, body)
+
+
+def test_body_check_verbatim_ok():
+    md = _q('(بَحر نَهر) [X: 1]\n"sea river" [X: 1]')
+    assert verify(md, quran_index=QIDX)["problems"] == []
+
+
+def test_body_check_catches_deviation():
+    # one word replaced -> retyped/hallucinated verse must be caught
+    md = _q('(بَحر قمر) [X: 1]\n"sea river" [X: 1]')
+    probs = verify(md, quran_index=QIDX)["problems"]
+    assert any("deviates" in p for p in probs)
+
+
+def test_body_check_accepts_partial_quote():
+    # author quoted only part of ayah 2 -> substring of the dataset text is fine
+    md = _q('(جبل شمس) [X: 2]', a="2-2")
+    assert verify(md, quran_index=QIDX)["problems"] == []
+
+
+def test_body_check_multiverse_with_numbers_and_ref():
+    md = _q('(بحر نهر (١) جبل شمس قمر (٢)) [X: 1-2]\n"sea river mountain sun moon"', a="1-2")
+    assert verify(md, quran_index=QIDX)["problems"] == []
+
+
+def test_hadith_body_check():
+    good = ('<!--hadith coll=bukhari num=79 conf=1.0 src=dataset-->\n'
+            '«مثل ما بعثني الله به من الهدى»\n"The parable..." (Bukhari 79)\n<!--/hadith-->')
+    assert verify(good, hadith_index=HIDX)["problems"] == []
+    bad = good.replace("الهدى", "الضلال")
+    assert any("deviates" in p for p in verify(bad, hadith_index=HIDX)["problems"])
+    wrong_num = good.replace("num=79", "num=80")
+    assert any("not found" in p for p in verify(wrong_num, hadith_index=HIDX)["problems"])
+
+
+def test_quran_fallback_is_flagged_not_problem():
+    md = "<!--quran s=0 a=0-0 tr=fallback-->\n(something) [X]\n<!--/quran-->"
+    r = verify(md, quran_index=QIDX)
+    assert r["problems"] == []
+    assert any("fallback" in f.lower() for f in r["flagged"])
+
+
+def test_unbalanced_markers_reported():
+    md = "<!--quran s=1 a=1-1 tr=saheeh-->\n(بحر نهر)\n"  # no closer
+    r = verify(md)
+    assert any("unbalanced" in p.lower() or "unclosed" in p.lower() for p in r["problems"])
 
 
 def test_parse_counts():

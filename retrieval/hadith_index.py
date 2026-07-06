@@ -51,6 +51,13 @@ class HadithIndex:
                                 "reference": h.get("reference", {})})
         return cls.from_records(records)
 
+    def get(self, collection, number):
+        """Exact (collection, number) lookup — used by out.verify body checks."""
+        for e in self.entries:
+            if e["collection"] == collection and str(e["number"]) == str(number):
+                return e
+        return None
+
     def match(self, arabic_query, min_conf=0.6, max_candidates=200):
         qwords = set(normalize_arabic(arabic_query).split())
         if not qwords:

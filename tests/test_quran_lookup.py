@@ -41,3 +41,15 @@ def test_alef_orthography_insensitive():
 def test_get_verse():
     assert idx().get_verse(1, 2)["saheeh"] == "mountain sun moon"
     assert idx().get_verse(9, 9) is None
+
+
+def test_no_midword_substring_match():
+    # 'بل شم' appears inside 'جبل شمس' but is not a word-boundary quote -> no match
+    assert idx().identify_span("بل شم") is None
+
+
+def test_short_word_does_not_match_inside_longer_word():
+    # a query that is a substring of a longer word must not match it
+    i2 = QuranIndex({(1, 1): "مطهرة نهر", (2, 1): "طه"}, {(1, 1): "x", (2, 1): "y"},
+                    {(1, 1): "x", (2, 1): "y"})
+    assert i2.identify_span("طه")[:3] == (2, 1, 1)
