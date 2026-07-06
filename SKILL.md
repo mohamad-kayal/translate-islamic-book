@@ -56,5 +56,13 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 ## Non-negotiables
 - Verse/hadith text is ALWAYS from the retrieval library or a flagged fallback — never LLM-written,
   and `out.verify` enforces this against the datasets after assembly.
+- **Citations follow the author; wording follows the dataset.** The retrieval supplies the verbatim
+  Arabic/English *wording*. Any *reference* — a hadith's collection/number, or a verse's surah:ayah —
+  follows what the AUTHOR printed whenever it differs from the dataset (e.g. numbering editions
+  differ). Keep the author's reference in the visible text; the marker keeps the dataset location so
+  `out.verify` can confirm the wording.
 - Never split a section across chunks (the chunker enforces this, including same-page sections).
 - Nothing in `review.md` is altered without the user's sign-off.
+- `review.md` is a per-book document: title it with the book, list that book's hadith and their
+  sources, the verify summary, and any items (fallbacks, low-confidence, author/dataset citation
+  differences, awkward dataset English) that need the user's sign-off.

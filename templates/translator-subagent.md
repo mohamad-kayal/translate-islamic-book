@@ -30,6 +30,10 @@ images — read the Arabic exactly as printed).
    double quotes with its ref bracket on the next line.
    If the author quotes only part of an ayah, you may paste only that part — but it must be a
    verbatim substring of the retrieved `arabic` (trim the English to match).
+   **Citation follows the author:** if the author prints a different surah:ayah for a recurring
+   phrase than the lookup suggests, use the AUTHOR's reference in the `[REF]` brackets and set the
+   marker `s`/`a` to the author's cited location (the wording is still the retrieved verbatim text,
+   which is a substring of that ayah too).
    If `matched:false`, adjust how much Arabic you quote and retry. If it still won't match, emit
    `<!--quran s=0 a=0-0 tr=fallback-->` and note it — NEVER write the verse from memory.
 
@@ -38,11 +42,17 @@ images — read the Arabic exactly as printed).
    Emit with a number placeholder — `[[H]]` normally, `[[HA]]` if this chunk is an appendix chapter:
    ```
    [[H]] On the authority of <narrator>, that the Prophet ﷺ said:
-   <!--hadith coll=<collection> num=<number> conf=<confidence> src=dataset-->
+   <!--hadith coll=<dataset-collection> num=<dataset-number> conf=<confidence> src=dataset-->
    «ARABIC»
-   "ENGLISH" (Narrated by <Collection> <number>)
+   "ENGLISH" (Narrated by <CITATION>)
    <!--/hadith-->
    ```
+   The marker `coll`/`num` are the DATASET match from the tool (verification checks the matn against
+   them). **Citation follows the author:** in the visible `(Narrated by …)` line, cite the hadith as
+   the AUTHOR does in the source — if the author's takhrij gives a different collection or number
+   (common: numbering editions differ), print the AUTHOR's there, not the dataset's. Do NOT also add
+   a takhrij footnote for it; the visible citation already carries the author's reference. When the
+   source prints no takhrij, use the dataset's `<Collection> <number>`.
    If `matched:false` (e.g. Musnad Ahmad / al-Hakim / al-Bayhaqi — not in the dataset), get the wording
    from sunnah.com, emit `src=fallback conf=0`, and it will be flagged for the user's review. NEVER
    invent a hadith.
