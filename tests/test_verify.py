@@ -56,14 +56,55 @@ def test_body_check_multiverse_with_numbers_and_ref():
     assert verify(md, quran_index=QIDX)["problems"] == []
 
 
+# Hadith entries carry the isnad, spell out honorifics, and have orthographic /
+# transmission variants — so matn verification is honorific- and alef-insensitive.
+HIDX_REAL = HadithIndex.from_records([
+    {"collection": "muslim", "number": "6228",
+     # full entry: isnad prefix + spelled-out honorific "عز وجل" (book uses ﷻ)
+     "arabic": "حدثنا محمد بن بكار حدثنا حسان قال كتاب الله عز وجل هو حبل الله "
+               "من اتبعه كان على الهدى ومن تركه كان على ضلالة",
+     "english": "x", "reference": {}},
+    {"collection": "abudawud", "number": "4605",
+     # dataset transmission says "لا ندري"; a book may quote "لا أدري"
+     "arabic": "حدثنا احمد قال لا الفين احدكم متكئا على اريكته فيقول لا ندري "
+               "ما وجدنا في كتاب الله اتبعناه",
+     "english": "x", "reference": {}},
+])
+
+
 def test_hadith_body_check():
     good = ('<!--hadith coll=bukhari num=79 conf=1.0 src=dataset-->\n'
             '«مثل ما بعثني الله به من الهدى»\n"The parable..." (Bukhari 79)\n<!--/hadith-->')
     assert verify(good, hadith_index=HIDX)["problems"] == []
-    bad = good.replace("الهدى", "الضلال")
-    assert any("deviates" in p for p in verify(bad, hadith_index=HIDX)["problems"])
     wrong_num = good.replace("num=79", "num=80")
     assert any("not found" in p for p in verify(wrong_num, hadith_index=HIDX)["problems"])
+
+
+def test_hadith_matn_verbatim_despite_isnad_and_honorific():
+    # book pastes matn only, with ﷻ ligature; dataset has isnad + "عز وجل" -> still clean
+    md = ('<!--hadith coll=muslim num=6228 conf=1.0 src=dataset-->\n'
+          '«كِتَابُ اللَّهِ ﷻ هُوَ حَبْلُ اللَّهِ، مَنِ اتَّبَعَهُ كَانَ عَلَى الْهُدَى»\n'
+          '"..." (Muslim 2408)\n<!--/hadith-->')
+    r = verify(md, hadith_index=HIDX_REAL)
+    assert r["problems"] == [] and r["flagged"] == []
+
+
+def test_hadith_transmission_variant_is_flagged_not_a_problem():
+    # book "لا أدري" vs dataset "لا ندري" — one authentic-variant word -> flag for review
+    md = ('<!--hadith coll=abudawud num=4605 conf=1.0 src=dataset-->\n'
+          '«لَا أُلْفِيَنَّ أَحَدَكُمْ مُتَّكِئًا عَلَى أَرِيكَتِهِ فَيَقُولُ لَا أَدْرِي مَا وَجَدْنَا فِي كِتَابِ اللَّهِ اتَّبَعْنَاهُ»\n'
+          '"..." (Abu Dawud 4605)\n<!--/hadith-->')
+    r = verify(md, hadith_index=HIDX_REAL)
+    assert r["problems"] == []
+    assert any("abudawud 4605" in f for f in r["flagged"])
+
+
+def test_hadith_wrong_hadith_is_a_problem():
+    # a totally different matn under this number -> mostly-absent words -> hard problem
+    md = ('<!--hadith coll=muslim num=6228 conf=1.0 src=dataset-->\n'
+          '«إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى»\n'
+          '"..." (Muslim 6228)\n<!--/hadith-->')
+    assert any("deviates" in p for p in verify(md, hadith_index=HIDX_REAL)["problems"])
 
 
 def test_quran_fallback_is_flagged_not_problem():

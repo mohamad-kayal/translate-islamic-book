@@ -17,6 +17,29 @@ _COLLECTIONS = {"bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
                 "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi",
                 "ahmad", "hakim", "bayhaqi", "darimi", "tabarani"}
 MIN_CONF = 0.6
+# Below this fraction of matn words present in the dataset entry, a hadith body is a
+# hard problem (wrong number / fabrication); above it but not an exact match, it is
+# flagged for review (transmission variant or transcription difference).
+_HADITH_PROBLEM_BELOW = 0.6
+# Honorific phrases the dataset spells out but a book prints as a ligature (ﷺ/ﷻ, which
+# normalize already drops). Stripped from BOTH sides so the matn stays contiguous.
+_HONORIFICS = sorted({normalize_arabic(p) for p in [
+    "صلى الله عليه وسلم", "صلى الله عليه وآله وسلم", "عليه الصلاة والسلام",
+    "عليه السلام", "عليهم السلام", "عليها السلام", "عليهما السلام",
+    "عز وجل", "جل جلاله", "جل وعلا", "تبارك وتعالى", "سبحانه وتعالى",
+    "سبحانه", "تعالى", "رضي الله عنه", "رضي الله عنها", "رضي الله عنهم",
+    "رضي الله عنهما"]}, key=len, reverse=True)
+
+
+def _hadith_key(text):
+    """Matn-matching key: honorific phrases removed, then alef/hamza-insensitive (the
+    same folding the Quran matcher uses) so isnad prefixes, ﷺ/ﷻ-vs-spelled honorifics,
+    and orthographic variants (السماوات/السموات) don't defeat a contiguous match."""
+    t = normalize_arabic(text)
+    for h in _HONORIFICS:
+        t = t.replace(h, " ")
+    t = re.sub(r"\s+", " ", t).replace("ا", "").replace("ء", "")
+    return re.sub(r"\s+", " ", t).strip()
 
 
 def _attrs(s):
@@ -79,19 +102,29 @@ def _check_quran_body(attrs, body, quran_index, ref, problems):
         problems.append("quran %s: Arabic body deviates from dataset text" % ref)
 
 
-def _check_hadith_body(attrs, body, hadith_index, ref, problems):
+def _check_hadith_body(attrs, body, hadith_index, ref, problems, flagged):
     entry = hadith_index.get(attrs.get("coll", ""), attrs.get("num", ""))
     if entry is None:
         problems.append("hadith %s: not found in dataset (but src=dataset)" % ref)
         return
-    expected = normalize_arabic(entry["arabic"])
     got = _arabic_of(body)
     if not got:
         problems.append("hadith %s: block has no Arabic body" % ref)
-    elif got == expected or got in expected:   # verbatim, whole or a substring of the cited ayah
         return
+    if _hadith_key(got) in _hadith_key(entry["arabic"]):
+        return   # matn is a verbatim (honorific/orthography-tolerant) span of the entry
+    # Not an exact span: measure how much of the matn is in the entry to tell a
+    # transmission/transcription variant (flag) from a wrong hadith (problem).
+    matn = set(normalize_arabic(got).split())
+    entry_words = set(normalize_arabic(entry["arabic"]).split())
+    containment = len(matn & entry_words) / len(matn) if matn else 0.0
+    if containment >= _HADITH_PROBLEM_BELOW:
+        flagged.append("hadith %s: matn ~%.0f%% matches the dataset but not verbatim "
+                       "(transmission variant or transcription — review)"
+                       % (ref, containment * 100))
     else:
-        problems.append("hadith %s: Arabic body deviates from dataset text" % ref)
+        problems.append("hadith %s: Arabic body deviates from dataset text "
+                        "(only %.0f%% of matn words matched)" % (ref, containment * 100))
 
 
 def verify(md, quran_index=None, hadith_index=None):
@@ -135,7 +168,7 @@ def verify(md, quran_index=None, hadith_index=None):
         except ValueError:
             problems.append("malformed hadith conf: %s" % h.get("conf"))
         if hadith_index is not None and h.get("src") == "dataset":
-            _check_hadith_body(h, body, hadith_index, ref, problems)
+            _check_hadith_body(h, body, hadith_index, ref, problems, flagged)
 
     return {"n_quran": len(quran_blocks), "n_hadith": len(hadith_blocks),
             "problems": problems, "flagged": flagged,
