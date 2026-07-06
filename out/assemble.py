@@ -4,15 +4,73 @@ import glob
 import os
 import re
 
+from retrieval.normalize import normalize_arabic
+
 # Chunk-seam working notes ('*[Ornamental divider]*', '*[Blank page]*',
 # '*[Ornamental page: Basmala]*') are for the orchestrator, not the reader.
 _PAGE_NOTE = re.compile(r"^\*\[[^\]]*\]\*\s*$", re.M)
 _EXTRA_BLANKS = re.compile(r"\n{3,}")
+_QURAN_FULL = re.compile(r"(<!--quran\s+([^>]*?)-->\n)(.*?)(\n<!--/quran-->)", re.S)
+_REF_TAIL = re.compile(r"\s*(\[[^\]]*\])\s*$")
+_RUB_MARK = "۞"   # U+06DE start of rub-el-hizb — a division marker, not verse text
+_TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
 
 
-def assign_hadith_numbers(md):
-    """Replace [[H]] with '**1.**', '**2.**'… (main) and [[HA]] with '**1-A.**'…
-    (appendix). Bold — a bare line-initial 'N.' would parse as an ordered list."""
+def _arabic_num(n):
+    return str(n).translate(_TO_ARABIC)
+
+
+def _renumber(m, quran_index):
+    head, attrs_raw, body, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+    attrs = dict(re.findall(r"(\w+)=(\S+)", attrs_raw))
+    if attrs.get("s", "0") == "0" or attrs.get("tr") == "fallback":
+        return m.group(0)
+    try:
+        s = int(attrs["s"])
+        a0, a1 = (int(x) for x in attrs["a"].split("-"))
+    except (KeyError, ValueError):
+        return m.group(0)
+    lines = body.split("\n")
+    idx = next((i for i, ln in enumerate(lines) if ln.strip()), None)
+    if idx is None:
+        return m.group(0)
+    ar_line = lines[idx]
+    ref_m = _REF_TAIL.search(ar_line)
+    ref = ref_m.group(1) if ref_m else ""
+    arabic = (ar_line[:ref_m.start()] if ref_m else ar_line).replace(_RUB_MARK, "")
+    arabic = re.sub(r"\s+", " ", arabic).strip()
+    verses = [quran_index.get_verse(s, a) for a in range(a0, a1 + 1)]
+    if any(v is None for v in verses):
+        return m.group(0)
+    full = " ".join(v["arabic"] for v in verses)
+    if a1 > a0 and normalize_arabic(arabic) == normalize_arabic(full):
+        # canonical, dataset-sourced, one ayah number after each ayah
+        arabic = " ".join("%s (%s)" % (v["arabic"], _arabic_num(a))
+                          for a, v in zip(range(a0, a1 + 1), verses))
+    # strip rub-el-hizb marks last — they occur in the dataset text itself (e.g. 28:12)
+    arabic = re.sub(r"\s+", " ", arabic.replace(_RUB_MARK, "")).strip()
+    lines[idx] = arabic + ((" " + ref) if ref else "")
+    return head + "\n".join(lines) + tail
+
+
+def number_quran_ayat(md, quran_index):
+    """Insert ayah numbers (Arabic-Indic) after each ayah in every FULL multi-ayah
+    Quran block, sourced from the dataset, and strip rub-el-hizb division marks.
+    Partial quotes and single ayat keep their text (marks stripped, no numbers)."""
+    return _QURAN_FULL.sub(lambda m: _renumber(m, quran_index), md)
+
+
+def assign_hadith_numbers(md, number=True):
+    """With number=True, replace [[H]] with '**1.**', '**2.**'… (main) and [[HA]]
+    with '**1-A.**'… (appendix) — for books that present hadith as a numbered
+    collection. With number=False, strip the markers cleanly (both line-initial
+    '[[H]] On the authority…' and mid-sentence '…the hadith [[H]]:') — for books
+    that cite hadith inline as evidence, which is the common case."""
+    if not number:
+        md = re.sub(r"\[\[HA?\]\][ \t]*", "", md)   # marker + following inline space
+        md = re.sub(r"[ \t]{2,}", " ", md)
+        md = re.sub(r"[ \t]+([:.,;])", r"\1", md)    # tidy '…hadith :' -> '…hadith:'
+        return md
     main = {"n": 0}
     app = {"n": 0}
 
@@ -38,11 +96,14 @@ def merge(chunk_texts):
     return "\n\n".join(t.strip("\n") for t in chunk_texts)
 
 
-def assemble(chunk_dir, out_path, title=None, author=None):
+def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
+             hadith_numbers=True):
     files = sorted(glob.glob(os.path.join(chunk_dir, "chunk_*.md")))
     body = merge([open(f, encoding="utf-8").read() for f in files])
     body = strip_page_notes(body)
-    book = assign_hadith_numbers(body)
+    if quran_index is not None:
+        body = number_quran_ayat(body, quran_index)
+    book = assign_hadith_numbers(body, number=hadith_numbers)
     if title:
         # pandoc title block: becomes the HTML title page (before the ToC) and
         # the Title-styled opening paragraph in DOCX.
@@ -61,6 +122,16 @@ if __name__ == "__main__":
     p.add_argument("out_path")
     p.add_argument("--title", help="book title (title page + document title)")
     p.add_argument("--author", help="author line under the title")
+    p.add_argument("--no-numbering", action="store_true",
+                   help="skip dataset-sourced ayah numbering")
+    p.add_argument("--no-hadith-numbers", action="store_true",
+                   help="strip hadith markers instead of numbering them "
+                        "(for books that cite hadith inline, not as a numbered collection)")
     args = p.parse_args()
-    assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author)
+    qi = None
+    if not args.no_numbering:
+        from retrieval.quran_index import QuranIndex
+        qi = QuranIndex.load()
+    assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
+             quran_index=qi, hadith_numbers=not args.no_hadith_numbers)
     print("assembled -> %s" % args.out_path)

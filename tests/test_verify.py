@@ -40,6 +40,17 @@ def test_body_check_accepts_partial_quote():
     assert verify(md, quran_index=QIDX)["problems"] == []
 
 
+def test_body_check_accepts_single_word_partial_quote():
+    # author re-quotes ONE word (e.g. عصاي in Taha 18) while commenting -> still verbatim
+    md = _q('(شمس) [X: 2]', a="2-2")
+    assert verify(md, quran_index=QIDX)["problems"] == []
+
+
+def test_body_check_still_catches_word_not_in_verse():
+    md = _q('(زيتون) [X: 2]', a="2-2")   # زيتون is not in ayah 2 (جبل شمس قمر)
+    assert any("deviates" in p for p in verify(md, quran_index=QIDX)["problems"])
+
+
 def test_body_check_multiverse_with_numbers_and_ref():
     md = _q('(بحر نهر (١) جبل شمس قمر (٢)) [X: 1-2]\n"sea river mountain sun moon"', a="1-2")
     assert verify(md, quran_index=QIDX)["problems"] == []

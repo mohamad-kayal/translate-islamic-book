@@ -23,10 +23,11 @@ images — read the Arabic exactly as printed).
    "ENGLISH_SAHEEH" [REF_EN]
    <!--/quran-->
    ```
-   Exactly this shape: the pasted Arabic with NO added parentheses or ﴿﴾ around it, the Arabic ref
-   bracket after it on the same line, then the English in double quotes with its ref bracket. For a
-   multi-ayah span, keep the pasted text as one line and put the ayah number in Arabic-Indic digits
-   in parentheses after each ayah, e.g. `… نَّبِيࣰّا (٤١) إِذۡ …`.
+   Exactly this shape: paste the Arabic EXACTLY as the tool returns it — do NOT add parentheses,
+   ﴿﴾ brackets, ayah numbers, or section marks, and do NOT split a multi-ayah span across lines.
+   Ayah numbers are inserted automatically from the dataset at assembly, so keep the pasted text
+   clean. Put the Arabic ref bracket after the pasted Arabic on the same line, then the English in
+   double quotes with its ref bracket on the next line.
    If the author quotes only part of an ayah, you may paste only that part — but it must be a
    verbatim substring of the retrieved `arabic` (trim the English to match).
    If `matched:false`, adjust how much Arabic you quote and retry. If it still won't match, emit

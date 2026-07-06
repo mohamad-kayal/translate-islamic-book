@@ -17,7 +17,6 @@ _COLLECTIONS = {"bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
                 "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi",
                 "ahmad", "hakim", "bayhaqi", "darimi", "tabarani"}
 MIN_CONF = 0.6
-_MIN_PARTIAL_WORDS = 2   # a "partial quote" of one word is too weak to verify
 
 
 def _attrs(s):
@@ -74,7 +73,7 @@ def _check_quran_body(attrs, body, quran_index, ref, problems):
     got = _arabic_of(body)
     if not got:
         problems.append("quran %s: block has no Arabic body" % ref)
-    elif got == expected or (got in expected and len(got.split()) >= _MIN_PARTIAL_WORDS):
+    elif got == expected or got in expected:   # verbatim, whole or a substring of the cited ayah
         return
     else:
         problems.append("quran %s: Arabic body deviates from dataset text" % ref)
@@ -89,7 +88,7 @@ def _check_hadith_body(attrs, body, hadith_index, ref, problems):
     got = _arabic_of(body)
     if not got:
         problems.append("hadith %s: block has no Arabic body" % ref)
-    elif got == expected or (got in expected and len(got.split()) >= _MIN_PARTIAL_WORDS):
+    elif got == expected or got in expected:   # verbatim, whole or a substring of the cited ayah
         return
     else:
         problems.append("hadith %s: Arabic body deviates from dataset text" % ref)

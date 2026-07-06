@@ -40,7 +40,10 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
      re-dispatch that chunk alone. Save each result as soon as it arrives; never discard completed
      chunks because a sibling failed.
 6. **Assemble.** `python -m out.assemble <book>/work/translated <book>/work/book.md
-   --title "<English book title>" --author "<Author name>"`.
+   --title "<English book title>" --author "<Author name>"`. This strips chunk-seam page
+   notes, inserts ayah numbers into multi-verse Quran blocks from the dataset (and drops
+   stray ۞ division marks), and numbers hadith. Add `--no-hadith-numbers` when the book cites
+   hadith inline as evidence (the common case) rather than as a numbered collection.
 7. **Verify.** `python -m out.verify <book>/work/book.md` — checks marker refs AND that every
    quran/hadith Arabic body is verbatim dataset text. `problems` = fix (usually re-run that chunk);
    `flagged` (fallback-sourced or low-confidence items) = write into `<book>/work/review.md` for the
