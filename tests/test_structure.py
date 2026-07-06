@@ -29,3 +29,24 @@ def test_validate_ok():
     good = [{"title": "A", "start_page": 1, "level": 1},
             {"title": "B", "start_page": 5, "level": 1}]
     assert st.validate_structure(good, total_pages=10) == []
+
+
+def test_skip_sections_bound_previous_section_and_survive():
+    # A trailing skip entry marks 'content ends here' (back matter, notebook pages).
+    secs = [{"title": "A", "start_page": 1},
+            {"title": "B", "start_page": 5},
+            {"title": "notes", "start_page": 9, "skip": True}]
+    out = st.build_page_ranges(secs, total_pages=12)
+    assert [(s["start_page"], s["end_page"]) for s in out] == [(1, 4), (5, 8), (9, 12)]
+    assert out[2].get("skip") is True
+    assert st.validate_structure(secs, total_pages=12) == []
+
+
+def test_same_start_page_sections_are_valid_and_keep_input_order():
+    # a chapter heading and its first subsection often share one printed page
+    secs = [{"title": "Chapter", "start_page": 5},
+            {"title": "Sub", "start_page": 5}]
+    assert st.validate_structure(secs, total_pages=10) == []
+    out = st.build_page_ranges(secs, total_pages=10)
+    assert [s["title"] for s in out] == ["Chapter", "Sub"]
+    assert out[1]["end_page"] == 10

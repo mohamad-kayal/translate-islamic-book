@@ -32,6 +32,19 @@ def _analyze(args):
     return 0
 
 
+def _compress(nums):
+    """[1,2,3,7,8] -> '1-3, 7-8'"""
+    out, i = [], 0
+    nums = sorted(nums)
+    while i < len(nums):
+        j = i
+        while j + 1 < len(nums) and nums[j + 1] == nums[j] + 1:
+            j += 1
+        out.append(str(nums[i]) if i == j else "%d-%d" % (nums[i], nums[j]))
+        i = j + 1
+    return ", ".join(out)
+
+
 def _chunk(args):
     with open(os.path.join(args.work, "structure.json"), encoding="utf-8") as f:
         sections = json.load(f)
@@ -42,10 +55,39 @@ def _chunk(args):
         for p in problems:
             print("  - " + p, file=sys.stderr)
         return 2
+
+    text_pages, page_class = None, {}
+    manifest_path = os.path.join(args.work, "manifest.json")
+    if os.path.exists(manifest_path):
+        with open(manifest_path, encoding="utf-8") as f:
+            manifest = json.load(f)
+        text_pages = {p["page"] for p in manifest["pages"] if p["classification"] == "text"}
+        page_class = {p["page"]: p["classification"] for p in manifest["pages"]}
+
     ranged = structure.build_page_ranges(sections, total)
-    chunks = chunker.smart_chunk(ranged, target_pages=args.target)
+    chunks = chunker.smart_chunk(ranged, target_pages=args.target, text_pages=text_pages)
     _write(os.path.join(args.work, "chunks.json"), chunks)
     print("wrote %d chunks -> %s" % (len(chunks), os.path.join(args.work, "chunks.json")))
+
+    # Coverage report: the orchestrator must be able to confirm every page is
+    # either chunked, deliberately skipped, or knowingly front matter.
+    covered, skipped = set(), set()
+    for c in chunks:
+        covered.update(range(c["start_page"], c["end_page"] + 1))
+    for s in ranged:
+        if s.get("skip"):
+            skipped.update(range(s["start_page"], s["end_page"] + 1))
+    uncovered = [p for p in range(1, total + 1) if p not in covered and p not in skipped]
+    if skipped:
+        print("skipped pages (skip=true in structure.json): %s" % _compress(skipped))
+    if uncovered:
+        print("NOTE — pages in no chunk (front matter?): %s" % _compress(uncovered))
+    # A section 'starting' on an empty/ornamental page is the signature of a
+    # printed-vs-PDF page-number offset in structure.json.
+    for s in ranged:
+        if not s.get("skip") and page_class.get(s["start_page"]) == "ornamental":
+            print("WARNING — section '%s' starts on ornamental/empty page %d; "
+                  "check for a printed-vs-PDF page offset" % (s["title"], s["start_page"]))
     return 0
 
 

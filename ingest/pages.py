@@ -8,7 +8,9 @@ _WS = re.compile(r"\s+")
 
 
 def _char_count(text):
-    return len(_WS.sub("", text or ""))
+    # letters + digits only: underscores (ruled notebook pages), punctuation and
+    # invisible bidi controls are not content and must not defeat classification.
+    return sum(1 for ch in _WS.sub("", text or "") if ch.isalnum())
 
 
 def _run(cmd):

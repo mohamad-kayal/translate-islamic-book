@@ -28,7 +28,7 @@ def test_analyze_real_book(tmp_path):
     manifest = json.load(open(tmp_path / "manifest.json", encoding="utf-8"))
     assert manifest["total_pages"] == 140
     assert len(manifest["pages"]) == 140
-    assert "toc_candidate_pages: [5]" in r.stdout
+    assert "toc_candidate_pages: [5, 6, 7]" in r.stdout   # full ToC span incl. continuations
     assert any(p["classification"] == "ornamental" for p in manifest["pages"])
     assert any(p["quran_font"] for p in manifest["pages"])
 
