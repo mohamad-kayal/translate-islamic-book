@@ -16,3 +16,10 @@ def test_char_count_counts_only_letters_and_digits():
     # ruled notebook pages are rows of underscores -> must classify ornamental
     assert pages._char_count("____" * 200) == 0
     assert pages._char_count("أبج 12 ___ ‏") == 5
+
+
+def test_char_count_ignores_tatweel_ruled_pages():
+    # "al-Mufakkirah" notes pages are rows of kashida/tatweel (ـ), which is alnum in
+    # Unicode but not content -> a header word must be all that counts
+    assert pages._char_count("ـ" * 300) == 0
+    assert pages._char_count("المفكرة " + "ـ" * 120) == 7   # only the 7 header letters

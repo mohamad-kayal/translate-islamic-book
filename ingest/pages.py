@@ -7,10 +7,14 @@ ORNAMENTAL_MAX_CHARS = 30   # fewer visible chars than this => ornamental/divide
 _WS = re.compile(r"\s+")
 
 
+_TATWEEL = "ـ"   # kashida — used to draw ruled "notes" pages; counts as alnum but isn't content
+
+
 def _char_count(text):
-    # letters + digits only: underscores (ruled notebook pages), punctuation and
-    # invisible bidi controls are not content and must not defeat classification.
-    return sum(1 for ch in _WS.sub("", text or "") if ch.isalnum())
+    # letters + digits only: underscores AND tatweel/kashida rules (ruled note pages),
+    # punctuation, and invisible bidi controls are not content and must not defeat
+    # ornamental classification.
+    return sum(1 for ch in _WS.sub("", text or "") if ch.isalnum() and ch != _TATWEEL)
 
 
 def _run(cmd):
