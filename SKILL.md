@@ -13,6 +13,11 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 - Ensure `pandoc` and poppler (`pdftotext`, `pdfinfo`, `pdffonts`) are installed.
 - Fonts for the DOCX (Word must have them installed): `cp assets/fonts/*.ttf ~/Library/Fonts/`
   (Cardo, Amiri, Amiri Quran — all OFL).
+- **Usage gate (recommended):** `cp scripts/statusline_usage.py ~/.claude/` and add to
+  `~/.claude/settings.json`: `"statusLine": {"type": "command", "command": "python3
+  ~/.claude/statusline_usage.py"}`. This tees live usage percentages to
+  `~/.claude/usage-snapshot.json` for the translate-step gate (and shows them in the terminal).
+  Without it the gate degrades gracefully: runs proceed with a stated warning.
 
 ## Per book
 1. **Ingest.** `python -m scripts.ingest_book analyze <book.pdf> --work <book>/work` → note
@@ -34,6 +39,12 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
    `templates/translator-subagent.md`, the chunk's page range + `context_page`, its section titles,
    the glossary, and its `appendix` flag. Save each subagent's Markdown to
    `<book>/work/translated/chunk_NNNN.md`.
+   - **Usage gate**: before the pilot and before EVERY subsequent wave, run
+     `python -m scripts.run_status <book>/work --gate` (`--threshold N` overrides the default
+     90). On `PAUSE`: do not dispatch — write RESUME.md (see "Pausing and resuming a run"), tell
+     the user the reset time, and stop cleanly. A degraded verdict states its reason and
+     proceeds. The percentages printed at each wave show the burn per wave — mention them to the
+     user when tuning `--threshold`.
    - **Pilot gate**: run chunk 1 alone first, verify + read it, and only then fan out the rest
      (up to ~8 concurrently).
    - **Failure policy**: a subagent that dies or returns malformed output costs only its own chunk —
@@ -52,6 +63,27 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
    (title page, table of contents, book typography, embedded fonts).
 9. **Report.** Give the user `output/book.docx`, `output/book.html`, and `review.md`. For PDF: open
    the HTML in a browser and print to PDF (chapters break onto new pages), or export from Word.
+
+## Pausing and resuming a run
+
+A run can stop early — usage-gate PAUSE, a crash, a closed session — and loses at most the
+in-flight wave: completed chunks are already in `<book>/work/translated/`.
+
+**On any early stop, write `<book>/RESUME.md`** from `python -m scripts.run_status <book>/work`
+plus what only you know:
+
+- Book title (Arabic + English) and the work dir.
+- Chunk state: N done / M missing, listing the missing chunk numbers.
+- The exact commands with their run-specific flags (`--target` used at chunk time,
+  `--no-hadith-numbers` at assemble, …) and the glossary path.
+- Which usage window tripped and its reset time (from the gate verdict), when applicable.
+- The one-line instruction for the user: "Resume the <book> run in <work dir>".
+
+**To resume:** run `python -m scripts.run_status <book>/work`; confirm `structure.json` and
+`glossary.json` exist; dispatch subagents for the MISSING chunks only (same template, same wave
+discipline — the usage gate applies to resumed waves too); then continue from step 6 unchanged
+(assemble reads whatever is in `translated/`). No `chunks.json` = nothing to resume; restart
+from step 1 (the ingest steps are cheap).
 
 ## Non-negotiables
 - Verse/hadith text is ALWAYS from the retrieval library or a flagged fallback — never LLM-written,
