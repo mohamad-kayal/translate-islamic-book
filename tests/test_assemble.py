@@ -1,6 +1,6 @@
 import os
 
-from out.assemble import (assemble, assign_hadith_numbers, merge,
+from out.assemble import (append_glossary, assemble, assign_hadith_numbers, merge,
                           number_quran_ayat, strip_page_notes)
 from retrieval.quran_index import QuranIndex
 
@@ -82,3 +82,36 @@ def test_assemble_prepends_title(tmp_path):
     book = assemble(str(tmp_path), str(out), title="Lights of the Prophets")
     assert book.startswith("% Lights of the Prophets\n")
     assert os.path.exists(out)
+
+
+_GLOSS = {
+    "terms": {
+        "التزكية": {"translit": "tazkiyah", "english": "purification of the soul"},
+        "الإصلاح": {"translit": "islah", "english": "reform"},
+    },
+    "names": {"موسى": "Musa"},
+    "structure": {"القسم": "Part"},
+}
+
+
+def test_append_glossary_adds_section_with_terms_sorted():
+    out = append_glossary("# body\n\ntext", _GLOSS)
+    assert "## Glossary" in out
+    # sorted by translit casefold: islah before tazkiyah
+    assert out.index("islah") < out.index("tazkiyah")
+    assert "::: {.glossary}" in out
+
+
+def test_append_glossary_entry_format():
+    out = append_glossary("body", _GLOSS)
+    assert "*tazkiyah* · [التزكية]{lang=ar dir=rtl} · purification of the soul" in out
+
+
+def test_append_glossary_excludes_names_and_structure():
+    out = append_glossary("body", _GLOSS)
+    assert "Musa" not in out and "Part" not in out and "موسى" not in out
+
+
+def test_append_glossary_empty_terms_is_noop():
+    assert append_glossary("body", {"terms": {}, "names": {}, "structure": {}}) == "body"
+    assert append_glossary("body", {}) == "body"

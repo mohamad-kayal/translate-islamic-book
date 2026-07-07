@@ -92,12 +92,24 @@ def strip_page_notes(md):
     return _EXTRA_BLANKS.sub("\n\n", md)
 
 
+def append_glossary(book_md, glossary):
+    """Append a '## Glossary' section built from glossary['terms'] only, sorted by translit."""
+    terms = (glossary or {}).get("terms") or {}
+    if not terms:
+        return book_md
+    rows = sorted(terms.items(), key=lambda kv: kv[1]["translit"].casefold())
+    entries = "\n\n".join(
+        "*%s* · [%s]{lang=ar dir=rtl} · %s" % (v["translit"], ar, v["english"])
+        for ar, v in rows)
+    return "%s\n\n## Glossary\n\n::: {.glossary}\n%s\n:::\n" % (book_md, entries)
+
+
 def merge(chunk_texts):
     return "\n\n".join(t.strip("\n") for t in chunk_texts)
 
 
 def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
-             hadith_numbers=True):
+             hadith_numbers=True, glossary=None):
     files = sorted(glob.glob(os.path.join(chunk_dir, "chunk_*.md")))
     body = merge([open(f, encoding="utf-8").read() for f in files])
     body = strip_page_notes(body)
@@ -111,6 +123,8 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
         if author:
             head += "%% %s\n" % author
         book = "%s\n%s" % (head, book)
+    if glossary:
+        book = append_glossary(book, glossary)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(book)
     return book
@@ -127,11 +141,16 @@ if __name__ == "__main__":
     p.add_argument("--no-hadith-numbers", action="store_true",
                    help="strip hadith markers instead of numbering them "
                         "(for books that cite hadith inline, not as a numbered collection)")
+    p.add_argument("--glossary", help="path to the book's glossary.json (adds a Glossary appendix)")
     args = p.parse_args()
     qi = None
     if not args.no_numbering:
         from retrieval.quran_index import QuranIndex
         qi = QuranIndex.load()
+    gloss = None
+    if args.glossary:
+        from scripts.glossary import load as _load_gloss
+        gloss = _load_gloss(args.glossary)
     assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
-             quran_index=qi, hadith_numbers=not args.no_hadith_numbers)
+             quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss)
     print("assembled -> %s" % args.out_path)
