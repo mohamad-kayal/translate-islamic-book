@@ -1,6 +1,8 @@
 import json
+import subprocess
+import sys
 
-from scripts.glossary import load, diff
+from scripts.glossary import load, diff, merge
 
 
 def _master():
@@ -55,3 +57,59 @@ def test_diff_override_is_not_a_conflict_and_not_new():
 def test_diff_ignores_book_metadata_block():
     book = {"book": {"title_en": "X"}, "terms": {}, "names": {}, "structure": {}}
     assert diff(_master(), book)["conflicts"] == []
+
+
+def test_merge_adds_new_terms_and_returns_new_object():
+    master = _master()
+    book = {"terms": {"الثغور": {"translit": "thughur", "english": "the frontiers"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book)
+    assert "الثغور" in merged["terms"]
+    assert "الثغور" not in master["terms"]          # input untouched
+
+
+def test_merge_applies_override_and_strips_reason():
+    master = _master()
+    book = {"terms": {"التزكية": {"translit": "tazkiyah", "english": "inner purification",
+                                   "override": "book sense"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book)
+    assert merged["terms"]["التزكية"] == {"translit": "tazkiyah", "english": "inner purification"}
+
+
+def test_merge_only_filter_restricts_keys():
+    master = _master()
+    book = {"terms": {"الثغور": {"translit": "thughur", "english": "the frontiers"},
+                      "المحكمات": {"translit": "muhkamat", "english": "firm principles"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book, only={"الثغور"})
+    assert "الثغور" in merged["terms"] and "المحكمات" not in merged["terms"]
+
+
+def test_cli_diff_prints_new_and_conflicts(tmp_path):
+    master_p = tmp_path / "master.json"
+    master_p.write_text(json.dumps(_master(), ensure_ascii=False), encoding="utf-8")
+    book_p = tmp_path / "book.json"
+    book_p.write_text(json.dumps(
+        {"terms": {"الثغور": {"translit": "thughur", "english": "the frontiers"}},
+         "names": {}, "structure": {}}, ensure_ascii=False), encoding="utf-8")
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.glossary", "diff", str(book_p), "--master", str(master_p)],
+        capture_output=True, text=True)
+    assert proc.returncode == 0
+    assert "الثغور" in proc.stdout and "thughur" in proc.stdout
+
+
+def test_cli_merge_writes_master(tmp_path):
+    master_p = tmp_path / "master.json"
+    master_p.write_text(json.dumps(_master(), ensure_ascii=False), encoding="utf-8")
+    book_p = tmp_path / "book.json"
+    book_p.write_text(json.dumps(
+        {"terms": {"الثغور": {"translit": "thughur", "english": "the frontiers"}},
+         "names": {}, "structure": {}}, ensure_ascii=False), encoding="utf-8")
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.glossary", "merge", str(book_p), "--master", str(master_p)],
+        capture_output=True, text=True)
+    assert proc.returncode == 0
+    written = json.loads(master_p.read_text(encoding="utf-8"))
+    assert "الثغور" in written["terms"]
