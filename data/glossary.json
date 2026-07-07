@@ -1,0 +1,40 @@
+{
+  "style": "al- (no sun-letter assimilation); ' for ayn/hamza; no macrons; first use: *translit* (ARABIC, english), short form after",
+  "terms": {
+    "التوحيد": {"translit": "tawhid", "english": "the Oneness of Allah"},
+    "الشرك": {"translit": "shirk", "english": "associating partners with Allah"},
+    "التزكية": {"translit": "tazkiyah", "english": "purification of the soul"},
+    "الدعوة": {"translit": "da'wah", "english": "calling to Allah"},
+    "الإصلاح": {"translit": "islah", "english": "reform"},
+    "المصلح": {"translit": "muslih", "english": "the reformer"},
+    "السنن الإلهية": {"translit": "al-sunan al-ilahiyyah", "english": "the divine norms — God's unchanging ways"},
+    "التمكين": {"translit": "tamkin", "english": "empowerment; being established in the land"},
+    "الوحي": {"translit": "wahy", "english": "revelation"},
+    "الفتن": {"translit": "fitan", "english": "trials and tribulations"},
+    "الاستقامة": {"translit": "istiqamah", "english": "uprightness"},
+    "الغلو": {"translit": "ghuluww", "english": "extremism"},
+    "الرِّبانية": {"translit": "rabbaniyyah", "english": "devotion to the Lord"},
+    "العبودية": {"translit": "ubudiyyah", "english": "servitude to God"},
+    "التجديد": {"translit": "tajdid", "english": "renewal"}
+  },
+  "names": {
+    "النبي": "the Prophet ﷺ",
+    "إبراهيم": "Ibrahim",
+    "موسى": "Musa",
+    "فرعون": "Pharaoh (Fir'awn)",
+    "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
+    "الصحابة": "the Companions",
+    "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
+    "ابن تيمية": "Ibn Taymiyyah",
+    "ابن القيم": "Ibn al-Qayyim",
+    "السعدي": "al-Sa'di",
+    "ابن عاشور": "Ibn 'Ashur"
+  },
+  "structure": {
+    "القسم": "Part",
+    "المبحث": "Chapter",
+    "المطلب": "Section",
+    "الفصل": "Chapter",
+    "الباب": "Chapter"
+  }
+}
