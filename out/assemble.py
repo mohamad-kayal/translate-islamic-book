@@ -32,6 +32,38 @@ def _arabic_num(n):
     return str(n).translate(_TO_ARABIC)
 
 
+def _ar(s):
+    return "[%s]{lang=ar dir=rtl}" % s
+
+
+def front_matter(meta):
+    cover = ('::: {.cover}\n'
+             '%s\n\n# %s\n\n%s\n\n%s\n:::\n\n'
+             % (_ar(meta["title_ar"]), meta["title_en"],
+                _ar(meta["author_ar"]), meta["author_en"]))
+    half = '::: {.half-title}\n%s\n:::\n\n' % meta["title_en"]
+    lines = ["::: {.copyright}", "**%s**  " % meta["title_en"],
+             "%s  " % meta["author_en"]]
+    if meta.get("translator"):
+        lines.append("Translated by %s  " % meta["translator"])
+    if meta.get("edition"):
+        lines.append("%s  " % meta["edition"])
+    if meta.get("year"):
+        lines.append("%s  " % meta["year"])
+    lines += ["",
+              "Qur'anic quotations are the Saheeh International translation; "
+              "hadith are given in their published translations. All sacred "
+              "text is retrieved verbatim from source datasets and "
+              "machine-verified, never machine-written.", ":::", ""]
+    return cover + half + "\n".join(lines) + "\n"
+
+
+def back_matter():
+    return ("\n\n::: {.colophon}\n"
+            "Set in Cardo and Amiri. Composed with the translate-islamic-book "
+            "pipeline.\n:::\n")
+
+
 def _renumber(m, quran_index):
     head, attrs_raw, body, tail = m.group(1), m.group(2), m.group(3), m.group(4)
     attrs = dict(re.findall(r"(\w+)=(\S+)", attrs_raw))
@@ -177,13 +209,15 @@ def merge(chunk_texts):
 
 
 def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
-             hadith_numbers=True, glossary=None, indexes=False):
+             hadith_numbers=True, glossary=None, indexes=False, matter=False, meta=None):
     files = sorted(glob.glob(os.path.join(chunk_dir, "chunk_*.md")))
     body = merge([open(f, encoding="utf-8").read() for f in files])
     body = strip_page_notes(body)
     if quran_index is not None:
         body = number_quran_ayat(body, quran_index)
     book = assign_hadith_numbers(body, number=hadith_numbers)
+    if matter and meta:
+        book = "%s%s" % (front_matter(meta), book)
     if title:
         # pandoc title block: becomes the HTML title page (before the ToC) and
         # the Title-styled opening paragraph in DOCX.
@@ -197,6 +231,8 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
         idx_text = build_indexes(book)
         if idx_text:
             book = "%s\n\n%s" % (book, idx_text)
+    if matter and meta:
+        book = "%s%s" % (book, back_matter())
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(book)
     return book
@@ -216,6 +252,11 @@ if __name__ == "__main__":
     p.add_argument("--glossary", help="path to the book's glossary.json (adds a Glossary appendix)")
     p.add_argument("--indexes", action="store_true",
                    help="build citation indexes (Qur'anic Verses and Hadith)")
+    p.add_argument("--matter", action="store_true",
+                   help="add front/back matter (cover, half-title, copyright, colophon)")
+    p.add_argument("--translator", help="translator name (optional, for front matter)")
+    p.add_argument("--edition", help="edition line (optional, for front matter)")
+    p.add_argument("--year", help="publication year (optional, for front matter)")
     args = p.parse_args()
     qi = None
     if not args.no_numbering:
@@ -225,7 +266,19 @@ if __name__ == "__main__":
     if args.glossary:
         from scripts.glossary import load as _load_gloss
         gloss = _load_gloss(args.glossary)
+    meta = None
+    if args.matter:
+        if not gloss or "book" not in gloss:
+            raise KeyError("--matter requires --glossary with a 'book' block containing "
+                          "title_en, title_ar, author_en, author_ar")
+        meta = dict(gloss.get("book", {}))
+        if args.translator:
+            meta["translator"] = args.translator
+        if args.edition:
+            meta["edition"] = args.edition
+        if args.year:
+            meta["year"] = args.year
     assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
              quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss,
-             indexes=args.indexes)
+             indexes=args.indexes, matter=args.matter, meta=meta)
     print("assembled -> %s" % args.out_path)

@@ -1,7 +1,7 @@
 import os
 
 from out.assemble import (append_glossary, assemble, assign_hadith_numbers, build_indexes,
-                          merge, number_quran_ayat, strip_page_notes)
+                          merge, number_quran_ayat, strip_page_notes, front_matter, back_matter)
 from retrieval.quran_index import QuranIndex
 
 # synthetic surah: ayah 3 carries a rub-el-hizb mark like the real dataset does
@@ -203,3 +203,31 @@ def test_coll0_fallback_hadith_skipped_from_index():
     assert "0 0" not in out
     assert "## Index of Hadith" not in out
     assert out == ""
+
+
+_META = {"title_en": "The Reformer's Compass", "title_ar": "بوصلة المصلح",
+         "author_en": "Ahmad ibn Yusuf al-Sayyid", "author_ar": "أحمد بن يوسف السيد",
+         "translator": "Mo", "edition": "First Edition", "year": "2026"}
+
+
+def test_front_matter_has_cover_and_copyright_with_arabic_title():
+    fm = front_matter(_META)
+    assert "{.cover}" in fm and "{.copyright}" in fm
+    assert "بوصلة المصلح" in fm and "The Reformer's Compass" in fm
+    assert "lang=ar" in fm  # Arabic title carries lang/dir
+
+
+def test_front_matter_translator_and_sacred_note_present():
+    fm = front_matter(_META)
+    assert "Mo" in fm
+    # sacred-text sourcing note (Saheeh International + verified)
+    assert "Saheeh International" in fm and "verified" in fm.lower()
+
+
+def test_front_matter_omits_absent_optional_lines():
+    fm = front_matter({"title_en": "X", "title_ar": "س", "author_en": "A", "author_ar": "ع"})
+    assert "Edition" not in fm and "Translated by" not in fm
+
+
+def test_back_matter_is_colophon():
+    assert "{.colophon}" in back_matter()
