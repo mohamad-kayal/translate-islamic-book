@@ -164,3 +164,42 @@ def test_build_indexes_empty_when_no_markers():
 def test_single_ayah_renders_without_range_dash():
     out = build_indexes(_IDX_MD)
     assert "Surah 2:255" in out and "255–255" not in out
+
+
+def test_index_excludes_glossary_and_index_headings_as_chapters():
+    # a hadith cited under a real chapter, followed by later Glossary / Index headings
+    md = """## Real Chapter
+
+<!--hadith coll=muslim num=42 conf=1.0 src=dataset-->
+«متن»
+"t" (Muslim 42)
+<!--/hadith-->
+
+## Glossary
+
+*term* · def
+
+## Index of Qur'anic Verses
+
+Surah 1:1 — *whatever*
+"""
+    out = build_indexes(md)
+    assert "Muslim 42 — *Real Chapter*" in out
+    # neither the Glossary nor the Index heading may become a chapter label
+    assert "*Glossary*" not in out
+    assert "*Index of Qur'anic Verses*" not in out
+
+
+def test_coll0_fallback_hadith_skipped_from_index():
+    md = """## Chapter
+
+<!--hadith coll=0 num=0 conf=0.0 src=fallback-->
+«متن»
+"t"
+<!--/hadith-->
+"""
+    out = build_indexes(md)
+    # coll=0 is an unlocatable fallback — must not appear, and yields no Hadith section
+    assert "0 0" not in out
+    assert "## Index of Hadith" not in out
+    assert out == ""

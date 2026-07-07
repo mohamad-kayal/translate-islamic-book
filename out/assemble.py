@@ -85,6 +85,8 @@ def build_indexes(book_md):
         verses.append((s, a0, a1, _chapter_at(book_md, m.start())))
     for m in _HADITH_MARK.finditer(book_md):
         coll, num = m.group(1), m.group(2)
+        if coll == "0":
+            continue  # fallback marker, not a locatable citation
         hadith.append((coll, num, _chapter_at(book_md, m.start())))
     if not verses and not hadith:
         return ""
