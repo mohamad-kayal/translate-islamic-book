@@ -53,11 +53,12 @@ def write_snapshot(snap, path):
 
 def main():
     try:
-        data = json.load(sys.stdin)
+        # render() is inside the guard too: valid JSON of an unexpected shape
+        # (e.g. a bare int, or a non-dict "model") must not break the statusline
+        line, snap = render(json.load(sys.stdin))
     except Exception:
         print("claude")
         return
-    line, snap = render(data)
     if snap is not None:
         path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_SNAPSHOT
         try:

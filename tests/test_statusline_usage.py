@@ -53,6 +53,20 @@ def test_cli_garbage_stdin_prints_fallback_and_exits_zero(tmp_path):
     assert not (tmp_path / "snap.json").exists()
 
 
+def test_cli_valid_json_wrong_shape_prints_fallback_and_exits_zero(tmp_path):
+    # valid JSON, unexpected shapes: bare non-dict, non-dict model, non-dict rate_limits
+    for payload in ("42", "null", "[]", '{"model": "not-a-dict"}',
+                    '{"model": {}, "rate_limits": "not-a-dict"}'):
+        snap_path = tmp_path / "snap.json"
+        proc = subprocess.run(
+            [sys.executable, "scripts/statusline_usage.py", str(snap_path)],
+            input=payload, capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, "exit %d for payload %s" % (proc.returncode, payload)
+        assert proc.stdout.strip() == "claude", "stdout %r for payload %s" % (proc.stdout, payload)
+        assert not snap_path.exists(), "snapshot written for payload %s" % payload
+
+
 def test_cli_writes_snapshot(tmp_path):
     snap_path = tmp_path / "snap.json"
     proc = subprocess.run(
