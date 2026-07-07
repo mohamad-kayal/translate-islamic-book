@@ -247,6 +247,23 @@ def test_assemble_matter_writes_cover_and_colophon(tmp_path):
     assert "{.cover}" in written and "{.colophon}" in written
 
 
+def test_matter_drops_pandoc_title_block_so_cover_is_first(tmp_path):
+    # with front matter on, the cover div is the title page and must be page one;
+    # the pandoc '% title' block is suppressed (it would render above the cover)
+    (tmp_path / "chunk_0001.md").write_text("## Chapter One\n\nbody one", encoding="utf-8")
+    out = tmp_path / "book.md"
+    book = assemble(str(tmp_path), str(out), title="X", author="A", matter=True, meta=_META)
+    assert not any(ln.startswith("% ") for ln in book.splitlines())
+    assert book.index("{.cover}") < book.index("Chapter One")
+
+
+def test_title_block_still_emitted_without_matter(tmp_path):
+    (tmp_path / "chunk_0001.md").write_text("body", encoding="utf-8")
+    out = tmp_path / "book.md"
+    book = assemble(str(tmp_path), str(out), title="X", author="A")
+    assert book.startswith("% X\n% A\n")
+
+
 def _run_cli(tmp_path, *extra):
     (tmp_path / "chunk_0001.md").write_text("body", encoding="utf-8")
     out = tmp_path / "book.md"

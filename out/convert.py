@@ -192,16 +192,131 @@ span[lang="ar"]{font-family:"Amiri","Amiri Quran",serif;font-size:1.06em;unicode
 }
 .glossary p em{font-style:italic;color:var(--ink)}
 
+/* ---- Cover: typographic title page, page one, no folio ---- */
+.cover{
+  box-sizing:border-box;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(2rem,6vh,3.5rem);text-align:center;padding:16vh 2rem;position:relative;
+}
+.cover::before,.cover::after{
+  content:"";position:absolute;left:34%;width:32%;border-top:1px solid var(--rubric);
+}
+.cover::before{top:9vh}
+.cover::after{bottom:9vh;content:"\\2766";border:none;color:var(--rubric);
+  width:auto;left:auto;font-size:1.1rem;bottom:7vh}
+.cover [lang="ar"]{font-family:"Amiri","Amiri Quran",serif;display:block;unicode-bidi:isolate}
+.cover>p{margin:0;text-indent:0}
+.cover>p:first-of-type [lang="ar"]{        /* Arabic title — the hero */
+  font-size:clamp(1.7rem,7vw,3.6rem);line-height:1.45;color:var(--rubric);
+  max-width:100%;overflow-wrap:break-word;
+}
+.cover>p:first-of-type{max-width:100%}
+.cover h1{                                 /* English title */
+  font-family:"Cardo",serif;font-weight:400;text-transform:uppercase;
+  letter-spacing:.16em;font-size:clamp(1.05rem,3.2vw,1.45rem);line-height:1.55;
+  color:var(--ink);margin:0;max-width:24ch;text-wrap:balance;
+}
+.cover h1+p [lang="ar"]{font-size:1.5rem;line-height:1.7;color:var(--ink)}  /* author AR */
+.cover h1+p+p{                              /* author EN */
+  font-family:"Cardo",serif;letter-spacing:.14em;text-transform:uppercase;
+  font-size:.82rem;color:var(--ink-quiet);
+}
+
+/* ---- Half-title: the interior opens quietly ---- */
+.half-title{min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center}
+.half-title p{
+  margin:0;text-indent:0;font-variant:small-caps;letter-spacing:.08em;
+  font-size:1.3rem;color:var(--ink-quiet);
+}
+
+/* ---- Copyright / edition page: a quiet block at the foot ---- */
+.copyright{
+  min-height:80vh;display:flex;flex-direction:column;justify-content:flex-end;
+  max-width:30em;margin:0 auto;font-size:.82rem;line-height:1.7;color:var(--ink-quiet);
+}
+.copyright p{margin:0 0 .2rem;text-indent:0;text-align:left}
+.copyright p:last-child{margin-top:1.4rem;line-height:1.65}
+.copyright [lang="ar"]{font-family:"Amiri",serif}
+
+/* ---- Endnotes: the author's notes, gathered as back matter ---- */
+.footnotes{font-size:.92rem;color:var(--ink-quiet);margin-top:3.5rem}
+.footnotes hr{display:none}
+.footnotes::before{
+  content:"Notes";display:block;text-align:center;color:var(--rubric);
+  font-family:"Cardo",serif;font-size:1.5rem;margin:0 0 1.8rem;
+}
+.footnotes ol{padding-left:1.8em}
+.footnotes li{margin:.5rem 0;text-indent:0}
+.footnotes li p{text-indent:0;text-align:left}
+
+/* ---- Colophon: closes the book ---- */
+.colophon{
+  min-height:60vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;font-style:italic;color:var(--ink-quiet);max-width:30em;margin:0 auto;
+}
+.colophon p{margin:0;text-indent:0}
+
+/* ---- Chapter opening as an event: a rubric drop-capital on the first line ---- */
+h2+p::first-letter{
+  float:left;font-family:"Cardo",serif;font-weight:400;color:var(--rubric);
+  font-size:3.2em;line-height:.76;padding:.02em .1em 0 0;
+}
+
+/* ---- Citation indexes: compact, ragged, chapter in a quiet italic ---- */
+.index{max-width:32em;margin:0 auto;font-size:.95rem}
+.index p{
+  margin:.28rem 0;text-align:left;padding-left:1.6em;text-indent:-1.6em;line-height:1.42;
+}
+.index p em{font-style:italic;color:var(--ink-quiet)}
+
 /* ---- Print (the book is finished by printing to PDF) ---- */
 @media print{
   body{max-width:none;padding:0;font-size:11.5pt}
   header#title-block-header{margin-top:9cm;page-break-after:always}
   nav#TOC{page-break-after:always}
   h2{page-break-before:always}
+  .cover,.half-title{min-height:0;page-break-after:always}
+  .copyright{min-height:78vh;page-break-after:always}   /* block sits toward the foot */
+  .footnotes{page-break-before:always}
+  .colophon{min-height:0;page-break-before:always}
+  .cover{page:cover;height:100vh;justify-content:center}
   a{color:inherit;text-decoration:none}
 }
-@page{margin:22mm 20mm}
+@page{
+  margin:20mm 18mm;
+  @bottom-center{content:counter(page);font-family:"Cardo",serif;font-size:9pt;color:#6a6259}
+}
+@page cover{@bottom-center{content:none}}   /* no folio on the cover */
+@page:first{@bottom-center{content:none}}
 """
+
+
+_TOC_NAV = re.compile(r'\s*<nav id="TOC"[^>]*>.*?</nav>', re.S)
+_COPYRIGHT_DIV = re.compile(r'(<div class="copyright">.*?</div>)', re.S)
+_COLOPHON_DIV = re.compile(r'\s*<div class="colophon">.*?</div>', re.S)
+
+
+def _relocate_toc(html):
+    """pandoc injects its ToC at the top of the body, above our front-matter divs.
+    Move it to AFTER the front matter (cover → half-title → copyright) so the cover is
+    page one. No-op when the book has no front matter (non-`--matter` builds)."""
+    m = _TOC_NAV.search(html)
+    if not m or 'class="copyright"' not in html:
+        return html
+    toc = m.group(0).strip()
+    html = _TOC_NAV.sub("", html, count=1)
+    return _COPYRIGHT_DIV.sub(lambda mm: mm.group(1) + "\n" + toc, html, count=1)
+
+
+def _colophon_last(html):
+    """pandoc appends its endnotes section at the very end — after our colophon.
+    Move the colophon to be the true last leaf (…endnotes → colophon)."""
+    m = _COLOPHON_DIV.search(html)
+    if not m or "</body>" not in html:
+        return html
+    col = m.group(0).strip()
+    html = _COLOPHON_DIV.sub("", html, count=1)
+    return html.replace("</body>", col + "\n</body>", 1)
 
 
 def _pandoc(args):
@@ -245,6 +360,11 @@ def to_html(md_path, out_path):
                  "--metadata", "dir=ltr", "--metadata", "lang=en",
                  "--metadata", "pagetitle=%s" % title,
                  "--include-in-header", header, "-o", out_path])
+        with open(out_path, encoding="utf-8") as f:
+            html = f.read()
+        html = _colophon_last(_relocate_toc(html))
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(html)
     finally:
         os.remove(rendered)
         if os.path.exists(header):

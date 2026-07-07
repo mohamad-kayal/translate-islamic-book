@@ -97,15 +97,26 @@ def _renumber(m, quran_index):
     return head + "\n".join(lines) + tail
 
 
+_CHAP_PREFIX = re.compile(r"^((?:Chapter|Part|Book|Section|Baab|Bab)\s+[\dIVXLCivxlc]+)\b")
+
+
+def _short_chapter(title):
+    """Index locators stay scannable: a long 'Chapter 26: The Centrality of…' collapses
+    to 'Chapter 26'. Titles without that pattern (already short) are returned whole."""
+    m = _CHAP_PREFIX.match(title)
+    return m.group(1) if m else title
+
+
 def _chapter_at(md, pos):
-    """The nearest '## ' chapter heading at or before pos (else 'Front matter')."""
+    """The nearest '## ' chapter heading at or before pos (else 'Front matter'),
+    shortened to a scannable locator for the index."""
     best = "Front matter"
     for m in _H2.finditer(md):
         if m.start() <= pos:
             best = m.group(1)
         else:
             break
-    return best
+    return _short_chapter(best)
 
 
 def build_indexes(book_md):
@@ -122,21 +133,26 @@ def build_indexes(book_md):
         hadith.append((coll, num, _chapter_at(book_md, m.start())))
     if not verses and not hadith:
         return ""
-    out = []
+
+    def _section(heading, entries):
+        # entries wrapped in a .index fenced div, one paragraph each, so convert
+        # can set them ragged (and columned) instead of as justified body prose.
+        return "## %s\n\n::: {.index}\n%s\n:::\n" % (heading, "\n\n".join(entries))
+
+    sections = []
     if verses:
-        out.append("## Index of Qur'anic Verses\n")
-        seen = set()
+        seen, entries = set(), []
         for s, a0, a1, chap in sorted(verses, key=lambda v: (v[0], v[1], v[2])):
             ref = "Surah %d:%d" % (s, a0) + ("" if a0 == a1 else "–%d" % a1)
             key = (ref, chap)
             if key in seen:
                 continue
             seen.add(key)
-            out.append("%s — *%s*  " % (ref, chap))
-        out.append("")
+            entries.append("%s — *%s*" % (ref, chap))
+        sections.append(_section("Index of Qur'anic Verses", entries))
     if hadith:
-        out.append("## Index of Hadith\n")
-        seen = set()
+        seen, entries = set(), []
+
         def _sortkey(h):
             try:
                 return (h[0], int(h[1]))
@@ -148,9 +164,9 @@ def build_indexes(book_md):
             if key in seen:
                 continue
             seen.add(key)
-            out.append("%s — *%s*  " % (ref, chap))
-        out.append("")
-    return "\n".join(out)
+            entries.append("%s — *%s*" % (ref, chap))
+        sections.append(_section("Index of Hadith", entries))
+    return "\n\n".join(sections)
 
 
 def number_quran_ayat(md, quran_index):
@@ -218,9 +234,11 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
     book = assign_hadith_numbers(body, number=hadith_numbers)
     if matter and meta:
         book = "%s%s" % (front_matter(meta), book)
-    if title:
+    if title and not (matter and meta):
         # pandoc title block: becomes the HTML title page (before the ToC) and
-        # the Title-styled opening paragraph in DOCX.
+        # the Title-styled opening paragraph in DOCX. Skipped when front matter is
+        # on — the cover div is the title page, and it must be page one (the pandoc
+        # block would otherwise render above the cover).
         head = "%% %s\n" % title
         if author:
             head += "%% %s\n" % author
