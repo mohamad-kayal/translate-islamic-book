@@ -33,8 +33,11 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 3. **Chunk.** `python -m scripts.ingest_book chunk <book.pdf> --work <book>/work --target 10`
    → `<book>/work/chunks.json`. Read the warnings it prints: uncovered pages must be intentional
    front matter, and a section starting on an ornamental page means your page numbers are off.
-4. **Prime the glossary.** Read ~3 spread-out chunks; write `<book>/work/glossary.json` — canonical
-   English for recurring names and transliterated terms (with their parenthetical glosses).
+4. **Prime the glossary.** Copy the master to the book: `cp data/glossary.json <book>/work/glossary.json`.
+   Add a `book` block (Arabic + English title/subtitle/author). Read ~3 spread-out chunks and ADD
+   book-specific entries under `terms`/`names`/`structure` (keep the master's transliteration
+   style). If this book deliberately renders a master term differently, add `"override": "<reason>"`
+   to that entry — otherwise the harvest step will flag it as a conflict.
 5. **Translate (parallel subagents).** For each chunk in chunks.json, dispatch a Task subagent with
    `templates/translator-subagent.md`, the chunk's page range + `context_page`, its section titles,
    the glossary, and its `appendix` flag. Save each subagent's Markdown to
@@ -51,18 +54,24 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
      re-dispatch that chunk alone. Save each result as soon as it arrives; never discard completed
      chunks because a sibling failed.
 6. **Assemble.** `python -m out.assemble <book>/work/translated <book>/work/book.md
-   --title "<English book title>" --author "<Author name>"`. This strips chunk-seam page
-   notes, inserts ayah numbers into multi-verse Quran blocks from the dataset (and drops
-   stray ۞ division marks), and numbers hadith. Add `--no-hadith-numbers` when the book cites
-   hadith inline as evidence (the common case) rather than as a numbered collection.
+   --title "<English book title>" --author "<Author name>" --glossary <book>/work/glossary.json`.
+   This strips chunk-seam page notes, inserts ayah numbers into multi-verse Quran blocks from the
+   dataset (and drops stray ۞ division marks), and numbers hadith. `--glossary` appends a back-of-book
+   Glossary appendix (terms only). Add `--no-hadith-numbers` when the book cites hadith inline as
+   evidence (the common case) rather than as a numbered collection.
 7. **Verify.** `python -m out.verify <book>/work/book.md` — checks marker refs AND that every
    quran/hadith Arabic body is verbatim dataset text. `problems` = fix (usually re-run that chunk);
    `flagged` (fallback-sourced or low-confidence items) = write into `<book>/work/review.md` for the
    user's sign-off. Include the verify JSON in review.md.
-8. **Convert.** `python -m out.convert <book>/work/book.md <book>/output` → `book.docx` + `book.html`
+8. **Harvest the glossary.** `python -m scripts.glossary diff <book>/work/glossary.json` lists this
+   book's new terms and any conflicts with the master. Write them into `<book>/work/review.md` under
+   a "Glossary proposals" heading for the user's sign-off. After sign-off, run
+   `python -m scripts.glossary merge <book>/work/glossary.json` (add `--only <keys>` to accept a
+   subset) and commit the updated `data/glossary.json`. Never merge before sign-off.
+9. **Convert.** `python -m out.convert <book>/work/book.md <book>/output` → `book.docx` + `book.html`
    (title page, table of contents, book typography, embedded fonts).
-9. **Report.** Give the user `output/book.docx`, `output/book.html`, and `review.md`. For PDF: open
-   the HTML in a browser and print to PDF (chapters break onto new pages), or export from Word.
+10. **Report.** Give the user `output/book.docx`, `output/book.html`, and `review.md`. For PDF: open
+    the HTML in a browser and print to PDF (chapters break onto new pages), or export from Word.
 
 ## Pausing and resuming a run
 

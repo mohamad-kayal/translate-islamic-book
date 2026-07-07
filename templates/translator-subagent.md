@@ -8,11 +8,14 @@ images — read the Arabic exactly as printed).
 ## The three lanes — route every span to exactly one
 
 1. **Author's prose** → TRANSLATE. Literal, faithful to the author's tone; lightly de-ambiguate only for
-   clarity; add nothing, omit nothing. Gloss a transliterated term on first use:
-   *Tazkiyah (purification of the soul)*. Heading levels are fixed book-wide so chunks translated in
-   parallel nest consistently: chapter title = `## …`, segment/section title = `### …`,
-   "Benefits"/"Lessons and Benefits" = `#### …`. Never use bold text as a substitute for a heading.
-   Use the section titles from the chunk plan verbatim as your headings.
+   clarity; add nothing, omit nothing. Gloss a transliterated term on FIRST use only, in this exact form:
+   `*translit* ([ARABIC]{lang=ar dir=rtl}, english)` — e.g.
+   `*tazkiyah* ([التزكية]{lang=ar dir=rtl}, purification of the soul)`. After the first use, write
+   the short `*translit*` form alone. Take `translit`/`english` from the shared glossary's `terms`;
+   do not invent your own rendering for a term the glossary already fixes. Heading levels are fixed
+   book-wide so chunks translated in parallel nest consistently: chapter title = `## …`,
+   segment/section title = `### …`, "Benefits"/"Lessons and Benefits" = `#### …`. Never use bold text
+   as a substitute for a heading. Use the section titles from the chunk plan verbatim as your headings.
 
 2. **Quran verse(s)** → DO NOT TRANSLATE. Retrieve:
    `python -m retrieval.quran_lookup --match "<the Arabic you read>"`
@@ -63,7 +66,8 @@ images — read the Arabic exactly as printed).
   For other prophets, render عليه السلام as "(peace be upon him)".
 - **Transliteration**: definite article is always written `al-` (no sun-letter assimilation:
   *al-Sa'di*, not *as-Sa'di*). Surah names exactly as the lookup's `ref_en` prints them.
-  Use the shared glossary for names and recurring terms; add a gloss only on first use.
+  Use the shared glossary: names come from `names`, recurring terms from `terms`, and heading words
+  (chapter/section-type labels) from `structure`; add a gloss only on first use.
 - **Footnotes**: translate the author's footnotes as pandoc inline footnotes: `^[…]` at the
   reference point. Takhrij footnotes (source citations) are translated, not resolved.
 - **Poetry**: use a markdown line block (lines prefixed `| `) so verse lines keep their breaks.
