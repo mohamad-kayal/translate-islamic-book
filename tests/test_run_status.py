@@ -1,6 +1,8 @@
 import json
+import subprocess
+import sys
 
-from scripts.run_status import chunk_state
+from scripts.run_status import chunk_state, gate_verdict
 
 
 def _work(tmp_path, n_chunks, done):
@@ -39,3 +41,103 @@ def test_chunk_state_not_chunked(tmp_path):
     work = tmp_path / "work"
     work.mkdir()
     assert chunk_state(str(work)) == {"not_chunked": True}
+
+
+NOW = 1_000_000.0
+
+
+def _snap(tmp_path, body):
+    path = tmp_path / "usage-snapshot.json"
+    path.write_text(body if isinstance(body, str) else json.dumps(body))
+    return str(path)
+
+
+def _fresh(five=50.0, seven=10.0):
+    return {"written_at": NOW - 60,
+            "five_hour": {"used_percentage": five, "resets_at": 1_003_600},
+            "seven_day": {"used_percentage": seven, "resets_at": 1_600_000}}
+
+
+def test_gate_proceed_under_threshold(tmp_path):
+    v = gate_verdict(_snap(tmp_path, _fresh()), 90, now=NOW)
+    assert v.startswith("PROCEED (session (5-hour) 50%, weekly 10%")
+
+
+def test_gate_pause_on_session_window(tmp_path):
+    v = gate_verdict(_snap(tmp_path, _fresh(five=93.0)), 90, now=NOW)
+    assert v.startswith("PAUSE (session (5-hour) window at 93%")
+    assert "resets" in v
+
+
+def test_gate_pause_on_weekly_window(tmp_path):
+    v = gate_verdict(_snap(tmp_path, _fresh(seven=97.0)), 90, now=NOW)
+    assert v.startswith("PAUSE (weekly window at 97%")
+
+
+def test_gate_session_named_before_weekly_when_both_trip(tmp_path):
+    v = gate_verdict(_snap(tmp_path, _fresh(five=95.0, seven=99.0)), 90, now=NOW)
+    assert v.startswith("PAUSE (session (5-hour) window at 95%")
+
+
+def test_gate_threshold_is_inclusive(tmp_path):
+    v = gate_verdict(_snap(tmp_path, _fresh(five=90.0)), 90, now=NOW)
+    assert v.startswith("PAUSE")
+
+
+def test_gate_missing_snapshot_fails_open(tmp_path):
+    v = gate_verdict(str(tmp_path / "nope.json"), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded: no usage snapshot")
+
+
+def test_gate_malformed_snapshot_fails_open(tmp_path):
+    v = gate_verdict(_snap(tmp_path, "{broken"), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded:") and "unreadable" in v
+
+
+def test_gate_bad_written_at_fails_open(tmp_path):
+    v = gate_verdict(_snap(tmp_path, {"written_at": "yesterday"}), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded:")
+
+
+def test_gate_stale_snapshot_fails_open(tmp_path):
+    snap = _fresh()
+    snap["written_at"] = NOW - 3600
+    v = gate_verdict(_snap(tmp_path, snap), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded:") and "minutes old" in v
+
+
+def test_gate_snapshot_without_windows_degrades(tmp_path):
+    v = gate_verdict(_snap(tmp_path, {"written_at": NOW - 5}), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded: snapshot has no usage windows")
+
+
+def test_cli_smoke_state_plus_degraded_gate(tmp_path):
+    work = _work(tmp_path, 3, done=[1])
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.run_status", work,
+         "--gate", "--snapshot", str(tmp_path / "none.json")],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0
+    assert "chunks: 3 total, 1 done, 2 missing" in proc.stdout
+    assert "missing: chunk_0002, chunk_0003" in proc.stdout
+    assert "gate: PROCEED (gate degraded" in proc.stdout
+
+
+def test_cli_not_chunked_exits_zero(tmp_path):
+    work = tmp_path / "work"
+    work.mkdir()
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.run_status", str(work)],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 0
+    assert "not chunked yet" in proc.stdout
+
+
+def test_cli_bad_work_dir_exits_2(tmp_path):
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.run_status", str(tmp_path / "nope")],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 2
