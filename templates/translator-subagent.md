@@ -53,9 +53,10 @@ images — read the Arabic exactly as printed).
    (common: numbering editions differ), print the AUTHOR's there, not the dataset's. Do NOT also add
    a takhrij footnote for it; the visible citation already carries the author's reference. When the
    source prints no takhrij, use the dataset's `<Collection> <number>`.
-   If `matched:false` (e.g. Musnad Ahmad / al-Hakim / al-Bayhaqi — not in the dataset), get the wording
-   from sunnah.com, emit `src=fallback conf=0`, and it will be flagged for the user's review. NEVER
-   invent a hadith.
+   If `matched:false` (e.g. Musnad Ahmad / al-Hakim / al-Bayhaqi / al-Darimi — not in the bundled
+   dataset), get the wording from sunnah.com, and emit `src=fallback conf=0` with the collection the
+   AUTHOR cites named in the marker — `coll=ahmad num=18406`, `coll=darimi num=590`, etc. (do NOT use
+   `coll=0`). It will be flagged for the user's review. NEVER invent a hadith.
 
 ## House conventions (parallel chunks must not drift)
 - **Honorifics**: keep ﷺ exactly where the source has it — never drop it, never spell it out.

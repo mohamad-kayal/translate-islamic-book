@@ -143,3 +143,17 @@ def test_problems_on_bad_surah():
     md = "<!--quran s=200 a=1-1 tr=saheeh-->x<!--/quran-->"
     r = verify(md)
     assert any("surah" in p.lower() for p in r["problems"])
+
+
+def test_fallback_placeholder_collection_is_flagged_not_problem():
+    # a hadith not in the dataset (e.g. al-Darimi, which isn't bundled) is a fallback;
+    # its collection may be a placeholder or an unbundled name — that is review, not error
+    md = "<!--hadith coll=0 num=0 conf=0 src=fallback-->\nx\n<!--/hadith-->"
+    r = verify(md)
+    assert r["problems"] == []
+    assert any("fallback" in f for f in r["flagged"])
+
+
+def test_dataset_hadith_unknown_collection_is_a_problem():
+    md = "<!--hadith coll=bogus num=1 conf=1.0 src=dataset-->\nx\n<!--/hadith-->"
+    assert any("unknown hadith collection" in p for p in verify(md)["problems"])

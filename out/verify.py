@@ -158,9 +158,13 @@ def verify(md, quran_index=None, hadith_index=None):
         h = _attrs(raw)
         coll = h.get("coll", "")
         ref = "%s %s" % (coll, h.get("num", "?"))
-        if coll not in _COLLECTIONS:
+        is_fallback = h.get("src") == "fallback"
+        # A fallback is text not in the bundled datasets (e.g. al-Darimi, Ahmad); its
+        # collection may be unbundled or a placeholder, so it is a review flag, not an
+        # error. Only dataset-sourced hadith must name a known collection.
+        if not is_fallback and coll not in _COLLECTIONS:
             problems.append("unknown hadith collection: %s" % coll)
-        if h.get("src") == "fallback":
+        if is_fallback:
             flagged.append("hadith %s sourced by fallback — review" % ref)
         try:
             if float(h.get("conf", "1")) < MIN_CONF:
