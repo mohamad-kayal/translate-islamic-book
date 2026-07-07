@@ -111,6 +111,35 @@ def test_gate_snapshot_without_windows_degrades(tmp_path):
     assert v.startswith("PROCEED (gate degraded: snapshot has no usage windows")
 
 
+def test_gate_string_percentage_fails_open(tmp_path):
+    snap = _fresh()
+    snap["five_hour"]["used_percentage"] = "80"
+    v = gate_verdict(_snap(tmp_path, snap), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded: unexpected")
+
+
+def test_gate_non_dict_window_fails_open(tmp_path):
+    snap = _fresh()
+    snap["five_hour"] = [80]
+    v = gate_verdict(_snap(tmp_path, snap), 90, now=NOW)
+    assert v.startswith("PROCEED (gate degraded: unexpected")
+
+
+def test_gate_single_window_names_only_it(tmp_path):
+    snap = {"written_at": NOW - 60,
+            "five_hour": {"used_percentage": 40.0, "resets_at": 1_003_600}}
+    v = gate_verdict(_snap(tmp_path, snap), 90, now=NOW)
+    assert v.startswith("PROCEED (session (5-hour) 40%")
+    assert "weekly" not in v
+
+
+def test_gate_pause_null_resets_at_says_unknown(tmp_path):
+    snap = _fresh(five=95.0)
+    snap["five_hour"]["resets_at"] = None
+    v = gate_verdict(_snap(tmp_path, snap), 90, now=NOW)
+    assert v.startswith("PAUSE") and "resets unknown" in v
+
+
 def test_cli_smoke_state_plus_degraded_gate(tmp_path):
     work = _work(tmp_path, 3, done=[1])
     proc = subprocess.run(

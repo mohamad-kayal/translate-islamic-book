@@ -47,27 +47,31 @@ def gate_verdict(snapshot_path, threshold, now=None):
     except FileNotFoundError:
         return ("PROCEED (gate degraded: no usage snapshot at %s — "
                 "is the statusline installed?)" % snapshot_path)
-    except (ValueError, KeyError, TypeError):
+    except (OSError, ValueError, KeyError, TypeError):
         return "PROCEED (gate degraded: unreadable usage snapshot at %s)" % snapshot_path
-    age = now - written
-    if age > STALE_SECONDS:
-        return "PROCEED (gate degraded: usage snapshot is %d minutes old)" % (age // 60)
-    seen = []
-    for key, label in WINDOWS:
-        win = snap.get(key) or {}
-        pct = win.get("used_percentage")
-        if pct is None:
-            continue
-        if pct >= threshold:
-            resets = win.get("resets_at")
-            when = (time.strftime("%a %H:%M", time.localtime(resets))
-                    if resets else "unknown")
-            return ("PAUSE (%s window at %d%% >= threshold %d%% — resets %s)"
-                    % (label, round(pct), threshold, when))
-        seen.append("%s %d%%" % (label, round(pct)))
-    if not seen:
-        return "PROCEED (gate degraded: snapshot has no usage windows)"
-    return "PROCEED (%s — under threshold %d%%)" % (", ".join(seen), threshold)
+    try:
+        age = now - written
+        if age > STALE_SECONDS:
+            return "PROCEED (gate degraded: usage snapshot is %d minutes old)" % (age // 60)
+        seen = []
+        for key, label in WINDOWS:
+            win = snap.get(key) or {}
+            pct = win.get("used_percentage")
+            if pct is None:
+                continue
+            if pct >= threshold:
+                resets = win.get("resets_at")
+                when = (time.strftime("%a %H:%M", time.localtime(resets))
+                        if resets else "unknown")
+                return ("PAUSE (%s window at %d%% >= threshold %d%% — resets %s)"
+                        % (label, round(pct), threshold, when))
+            seen.append("%s %d%%" % (label, round(pct)))
+        if not seen:
+            return "PROCEED (gate degraded: snapshot has no usage windows)"
+        return "PROCEED (%s — under threshold %d%%)" % (", ".join(seen), threshold)
+    except Exception:
+        return ("PROCEED (gate degraded: unexpected usage snapshot content at %s)"
+                % snapshot_path)
 
 
 def main():
