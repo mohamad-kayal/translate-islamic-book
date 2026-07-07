@@ -97,7 +97,8 @@ def _renumber(m, quran_index):
     return head + "\n".join(lines) + tail
 
 
-_CHAP_PREFIX = re.compile(r"^((?:Chapter|Part|Book|Section|Baab|Bab)\s+[\dIVXLCivxlc]+)\b")
+_CHAP_PREFIX = re.compile(
+    r"^((?:Chapter|Part|Book|Section|Baab|Bab)\s+[\dIVXLCivxlc]+(?:\.\d+)*)\b")
 
 
 def _short_chapter(title):

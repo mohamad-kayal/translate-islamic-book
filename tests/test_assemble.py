@@ -3,7 +3,8 @@ import subprocess
 import sys
 
 from out.assemble import (append_glossary, assemble, assign_hadith_numbers, build_indexes,
-                          merge, number_quran_ayat, strip_page_notes, front_matter, back_matter)
+                          merge, number_quran_ayat, strip_page_notes, front_matter, back_matter,
+                          _short_chapter)
 from retrieval.quran_index import QuranIndex
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -148,6 +149,8 @@ def test_build_indexes_has_both_sections_sorted():
     assert "## Index of Hadith" in out
     # surah 1 sorts before surah 2
     assert out.index("Surah 1:1") < out.index("Surah 2:255")
+    # entries are wrapped in the .index fenced div the CSS depends on
+    assert "::: {.index}" in out
 
 
 def test_index_entry_names_its_chapter():
@@ -235,6 +238,12 @@ def test_front_matter_omits_absent_optional_lines():
 
 def test_back_matter_is_colophon():
     assert "{.colophon}" in back_matter()
+
+
+def test_short_chapter_keeps_dotted_subsection_number():
+    # dotted sub-sections ("5.1" vs "5.2") must stay distinguishable in the index
+    assert _short_chapter("Section 5.1: Foo") == "Section 5.1"
+    assert _short_chapter("Chapter 12: Long Title") == "Chapter 12"
 
 
 def test_assemble_matter_writes_cover_and_colophon(tmp_path):

@@ -90,3 +90,112 @@ def test_to_docx_applies_quran_paragraph_styles(tmp_path):
         doc = z.read("word/document.xml").decode("utf-8")
     assert 'w:pStyle w:val="QuranArabic"' in doc
     assert 'w:pStyle w:val="QuranEnglish"' in doc
+
+
+# ---------------------------------------------------------------------------
+# Characterization tests for _relocate_toc / _colophon_last: hand-written HTML
+# fixtures mimicking the *shape* pandoc produces, without invoking pandoc.
+# Both functions are pure str -> str regex surgery over the whole document.
+# ---------------------------------------------------------------------------
+
+_FOOTNOTES_SECTION = (
+    '<section class="footnotes" role="doc-endnotes">\n'
+    '<hr />\n'
+    '<ol>\n'
+    '<li id="fn1"><p>A footnote.<a href="#fnref1" class="footnote-back">↩︎</a></p>'
+    '</li>\n'
+    '</ol>\n'
+    '</section>\n'
+)
+
+# matter HTML: nav#TOC (pandoc's default placement, before our front matter) ->
+# cover -> half-title -> copyright -> body -> footnotes -> colophon -> </body>
+_MATTER_HTML = (
+    '<!DOCTYPE html>\n'
+    '<html><head><title>Test Book</title></head>\n'
+    '<body>\n'
+    '<header id="title-block-header"><h1 class="title">Test Book</h1></header>\n'
+    '<nav id="TOC" role="doc-toc">\n'
+    '<ul>\n'
+    '<li><a href="#chapter-one">Chapter One</a></li>\n'
+    '</ul>\n'
+    '</nav>\n'
+    '<div class="cover">\n'
+    '<p>[بحر نهر]{lang=ar dir=rtl}</p>\n'
+    '<h1>Test Book</h1>\n'
+    '<p>Author Name</p>\n'
+    '</div>\n'
+    '<div class="half-title">\n'
+    '<p>Test Book</p>\n'
+    '</div>\n'
+    '<div class="copyright">\n'
+    '<p><strong>Test Book</strong></p>\n'
+    '<p>Author Name</p>\n'
+    '</div>\n'
+    '<h2 id="chapter-one">Chapter One</h2>\n'
+    '<p>Body text of the chapter goes here, in prose.</p>\n'
+    + _FOOTNOTES_SECTION +
+    '<div class="colophon">\n'
+    '<p>Set in Cardo and Amiri.</p>\n'
+    '</div>\n'
+    '</body>\n'
+    '</html>\n'
+)
+
+# same shape, but pandoc emitted no endnotes (no footnote refs in the book)
+_MATTER_HTML_NO_FOOTNOTES = _MATTER_HTML.replace(_FOOTNOTES_SECTION, "")
+
+# non-matter HTML: plain pandoc output with a ToC but no --matter front/back matter
+_NONMATTER_HTML = (
+    '<!DOCTYPE html>\n'
+    '<html><head><title>Plain</title></head>\n'
+    '<body>\n'
+    '<nav id="TOC" role="doc-toc">\n'
+    '<ul>\n'
+    '<li><a href="#chapter-one">Chapter One</a></li>\n'
+    '</ul>\n'
+    '</nav>\n'
+    '<h2 id="chapter-one">Chapter One</h2>\n'
+    '<p>Plain body text, no front or back matter.</p>\n'
+    '</body>\n'
+    '</html>\n'
+)
+
+
+def _tail_after_last_div_before(html, marker):
+    """Substring between the closing </div> of the last div before `marker` and
+    `marker` itself — used to assert nothing else sits between a relocated
+    element and the tag it should be adjacent to."""
+    before = html[:html.index(marker)]
+    return before[before.rindex("</div>") + len("</div>"):]
+
+
+def test_relocate_toc_moves_nav_after_copyright():
+    result = convert._relocate_toc(_MATTER_HTML)
+    assert result.index('class="copyright"') < result.index('id="TOC"')
+    assert result.count('id="TOC"') == 1
+
+
+def test_relocate_toc_noop_without_matter():
+    # no .copyright div (and no cover/colophon) -> non-matter build, untouched
+    assert convert._relocate_toc(_NONMATTER_HTML) == _NONMATTER_HTML
+
+
+def test_colophon_last_is_true_last_leaf_after_footnotes():
+    result = convert._colophon_last(_MATTER_HTML)
+    tail = _tail_after_last_div_before(result, "</body>")
+    assert tail.strip() == ""                      # nothing but whitespace after .colophon
+    assert result.index('class="footnotes"') < result.index('class="colophon"')
+
+
+def test_colophon_last_noop_without_matter():
+    # no .colophon div -> non-matter build, untouched
+    assert convert._colophon_last(_NONMATTER_HTML) == _NONMATTER_HTML
+
+
+def test_colophon_last_without_footnotes_section():
+    result = convert._colophon_last(_MATTER_HTML_NO_FOOTNOTES)
+    tail = _tail_after_last_div_before(result, "</body>")
+    assert tail.strip() == ""
+    assert 'class="footnotes"' not in result
+    assert 'class="colophon"' in result
