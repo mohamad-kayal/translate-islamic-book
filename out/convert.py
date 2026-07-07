@@ -138,9 +138,13 @@ li::marker{color:var(--rubric)}
 h2,h3,h4{text-wrap:balance;page-break-after:avoid}
 h2{
   font-weight:400;text-align:center;color:var(--rubric);
-  font-size:1.6rem;line-height:1.35;margin:4.5rem 0 2rem;
+  font-size:1.95rem;line-height:1.3;margin:5rem 0 2.4rem;
 }
-h2::before{content:"\\2766";display:block;font-size:1rem;margin-bottom:1.2rem}
+h2::before{content:"\\2766";display:block;font-size:1.05rem;margin-bottom:1.35rem}
+h2::after{                                   /* a short rule seals the chapter title */
+  content:"";display:block;width:2.8rem;height:0;
+  border-top:1.5px solid var(--rubric);margin:1.5rem auto 0;
+}
 h3{
   font-weight:700;text-align:center;color:var(--ink);
   font-size:1.17rem;margin:3.2rem 0 1.4rem;
@@ -151,8 +155,12 @@ h4{
   margin:2.7rem 0 1.2rem;
 }
 
-/* ---- Quran quotation: centered mushaf-style setting, no panel ---- */
-.verse{margin:2.1rem auto;page-break-inside:avoid}
+/* ---- Sacred quotation: set apart by space + a delicate rubric rule, never a box ---- */
+.verse{margin:2.9rem auto;page-break-inside:avoid}
+.verse::before{
+  content:"";display:block;width:2rem;height:0;
+  border-top:1px solid var(--rubric);opacity:.6;margin:0 auto 1.5rem;
+}
 [data-custom-style="QuranArabic"]{
   font-family:"Amiri Quran","Amiri",serif;
   font-size:1.5rem;line-height:2.05;
@@ -177,8 +185,15 @@ h4{
   margin:0;padding:0 1.3rem;text-indent:0;text-align:justify;hyphens:auto;
 }
 
-hr{border:none;margin:2.6rem 0;text-align:center}
-hr::after{content:"\\2766";color:var(--rubric);font-size:1rem}
+/* ---- Section divider: an ornament resting on a hairline (manuscript style) ---- */
+hr{
+  border:none;border-top:1px solid var(--rule);height:0;overflow:visible;
+  max-width:14rem;margin:3rem auto;text-align:center;
+}
+hr::after{
+  content:"\\2766";color:var(--rubric);background:var(--paper);
+  position:relative;top:-.72em;padding:0 .9rem;font-size:1.05rem;
+}
 
 /* ---- Inline Arabic inside English prose (glossary glosses, first-use terms) ---- */
 span[lang="ar"]{font-family:"Amiri","Amiri Quran",serif;font-size:1.06em;unicode-bidi:isolate}
