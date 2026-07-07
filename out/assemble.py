@@ -242,8 +242,10 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description="Assemble translated chunks into one book markdown.")
     p.add_argument("chunk_dir")
     p.add_argument("out_path")
-    p.add_argument("--title", help="book title (title page + document title)")
-    p.add_argument("--author", help="author line under the title")
+    p.add_argument("--title", help="book title in English (title page + document title)")
+    p.add_argument("--title-ar", dest="title_ar", help="book title in Arabic (front matter)")
+    p.add_argument("--author", help="author line in English under the title")
+    p.add_argument("--author-ar", dest="author_ar", help="author name in Arabic (front matter)")
     p.add_argument("--no-numbering", action="store_true",
                    help="skip dataset-sourced ayah numbering")
     p.add_argument("--no-hadith-numbers", action="store_true",
@@ -258,26 +260,30 @@ if __name__ == "__main__":
     p.add_argument("--edition", help="edition line (optional, for front matter)")
     p.add_argument("--year", help="publication year (optional, for front matter)")
     args = p.parse_args()
-    qi = None
-    if not args.no_numbering:
-        from retrieval.quran_index import QuranIndex
-        qi = QuranIndex.load()
     gloss = None
     if args.glossary:
         from scripts.glossary import load as _load_gloss
         gloss = _load_gloss(args.glossary)
     meta = None
     if args.matter:
-        if not gloss or "book" not in gloss:
-            raise KeyError("--matter requires --glossary with a 'book' block containing "
-                          "title_en, title_ar, author_en, author_ar")
-        meta = dict(gloss.get("book", {}))
-        if args.translator:
-            meta["translator"] = args.translator
-        if args.edition:
-            meta["edition"] = args.edition
-        if args.year:
-            meta["year"] = args.year
+        # start from the glossary 'book' block (if any), then overlay CLI args (CLI wins)
+        meta = dict(gloss.get("book", {})) if gloss else {}
+        for key, val in (("title_en", args.title), ("title_ar", args.title_ar),
+                         ("author_en", args.author), ("author_ar", args.author_ar),
+                         ("translator", args.translator), ("edition", args.edition),
+                         ("year", args.year)):
+            if val:
+                meta[key] = val
+        missing = [k for k in ("title_en", "title_ar", "author_en", "author_ar")
+                   if not meta.get(k)]
+        if missing:
+            p.error("--matter needs title_en, title_ar, author_en, author_ar — supply a "
+                    "--glossary with a book block or pass "
+                    "--title/--title-ar/--author/--author-ar; missing: %s" % ", ".join(missing))
+    qi = None
+    if not args.no_numbering:
+        from retrieval.quran_index import QuranIndex
+        qi = QuranIndex.load()
     assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
              quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss,
              indexes=args.indexes, matter=args.matter, meta=meta)

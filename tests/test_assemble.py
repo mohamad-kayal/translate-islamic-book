@@ -1,8 +1,12 @@
 import os
+import subprocess
+import sys
 
 from out.assemble import (append_glossary, assemble, assign_hadith_numbers, build_indexes,
                           merge, number_quran_ayat, strip_page_notes, front_matter, back_matter)
 from retrieval.quran_index import QuranIndex
+
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # synthetic surah: ayah 3 carries a rub-el-hizb mark like the real dataset does
 QIDX = QuranIndex({(1, 1): "بحر نهر", (1, 2): "جبل شمس", (1, 3): "۞ليل نهار"},
@@ -231,3 +235,38 @@ def test_front_matter_omits_absent_optional_lines():
 
 def test_back_matter_is_colophon():
     assert "{.colophon}" in back_matter()
+
+
+def test_assemble_matter_writes_cover_and_colophon(tmp_path):
+    # end-to-end: the wired matter path (not just the pure functions) reaches the file
+    (tmp_path / "chunk_0001.md").write_text("body one", encoding="utf-8")
+    out = tmp_path / "book.md"
+    book = assemble(str(tmp_path), str(out), title="X", matter=True, meta=_META)
+    assert "{.cover}" in book and "{.colophon}" in book
+    written = (tmp_path / "book.md").read_text(encoding="utf-8")
+    assert "{.cover}" in written and "{.colophon}" in written
+
+
+def _run_cli(tmp_path, *extra):
+    (tmp_path / "chunk_0001.md").write_text("body", encoding="utf-8")
+    out = tmp_path / "book.md"
+    cmd = [sys.executable, "-m", "out.assemble", str(tmp_path), str(out),
+           "--no-numbering"] + list(extra)
+    r = subprocess.run(cmd, cwd=_REPO_ROOT, capture_output=True, text=True)
+    return r, out
+
+
+def test_cli_matter_without_meta_errors_cleanly(tmp_path):
+    # no glossary, no --title-ar: --matter must clean-error (exit 2), never traceback
+    r, _ = _run_cli(tmp_path, "--matter")
+    assert r.returncode == 2
+    assert "Traceback" not in r.stderr and "KeyError" not in r.stderr
+    assert "title_ar" in r.stderr  # names the missing required field(s)
+
+
+def test_cli_matter_with_cli_meta_succeeds(tmp_path):
+    # supplying the Arabic title/author on the CLI makes --matter usable without a book block
+    r, out = _run_cli(tmp_path, "--title", "X", "--title-ar", "س",
+                      "--author", "A", "--author-ar", "ع", "--matter")
+    assert r.returncode == 0, r.stderr
+    assert "{.cover}" in out.read_text(encoding="utf-8")
