@@ -76,7 +76,8 @@ plus what only you know:
 - Chunk state: N done / M missing, listing the missing chunk numbers.
 - The exact commands with their run-specific flags (`--target` used at chunk time,
   `--no-hadith-numbers` at assemble, …) and the glossary path.
-- Which usage window tripped and its reset time (from the gate verdict), when applicable.
+- Which usage window tripped and its reset time (from the PAUSE verdict printed by the `--gate`
+  run that triggered the stop, not the bare status command), when applicable.
 - The one-line instruction for the user: "Resume the <book> run in <work dir>".
 
 **To resume:** run `python -m scripts.run_status <book>/work`; confirm `structure.json` and

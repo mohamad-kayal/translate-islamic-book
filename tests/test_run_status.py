@@ -170,3 +170,27 @@ def test_cli_bad_work_dir_exits_2(tmp_path):
         capture_output=True, text=True,
     )
     assert proc.returncode == 2
+
+
+def test_cli_corrupt_chunks_json_exits_2(tmp_path):
+    work = tmp_path / "work"
+    work.mkdir()
+    (work / "chunks.json").write_text("{ broken json")
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.run_status", str(work)],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 2
+    assert "unreadable chunks.json" in proc.stderr
+
+
+def test_cli_non_list_chunks_json_exits_2(tmp_path):
+    work = tmp_path / "work"
+    work.mkdir()
+    (work / "chunks.json").write_text("42")
+    proc = subprocess.run(
+        [sys.executable, "-m", "scripts.run_status", str(work)],
+        capture_output=True, text=True,
+    )
+    assert proc.returncode == 2
+    assert "unreadable chunks.json" in proc.stderr

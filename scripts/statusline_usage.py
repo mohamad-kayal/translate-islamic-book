@@ -12,6 +12,7 @@ import tempfile
 import time
 
 DEFAULT_SNAPSHOT = os.path.expanduser("~/.claude/usage-snapshot.json")
+# Keys must stay in sync with WINDOWS in scripts/run_status.py (labels differ; keys don't).
 WINDOWS = (("five_hour", "session"), ("seven_day", "week"))
 
 

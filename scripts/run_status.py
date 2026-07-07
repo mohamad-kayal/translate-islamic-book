@@ -17,6 +17,7 @@ import time
 
 DEFAULT_SNAPSHOT = os.path.expanduser("~/.claude/usage-snapshot.json")
 STALE_SECONDS = 900
+# Keys must stay in sync with WINDOWS in scripts/statusline_usage.py (labels differ; keys don't).
 WINDOWS = (("five_hour", "session (5-hour)"), ("seven_day", "weekly"))
 
 
@@ -24,7 +25,9 @@ def chunk_state(work_dir):
     """Diff chunks.json against translated/chunk_NNNN.md.
 
     Returns {"total", "done", "missing"} (1-based chunk numbers), or {"not_chunked": True}
-    when chunks.json does not exist. A 0-byte chunk file counts as missing."""
+    when chunks.json does not exist. A 0-byte chunk file counts as missing. The "size > 0 = done"
+    heuristic cannot detect a truncated/partial chunk file; acceptable because the translate step
+    saves the complete subagent result on arrival, not a partial stream."""
     chunks_path = os.path.join(work_dir, "chunks.json")
     if not os.path.exists(chunks_path):
         return {"not_chunked": True}
@@ -87,7 +90,10 @@ def main():
     if not os.path.isdir(args.work_dir):
         ap.exit(2, "run_status: work dir not found: %s\n" % args.work_dir)
 
-    state = chunk_state(args.work_dir)
+    try:
+        state = chunk_state(args.work_dir)
+    except (json.JSONDecodeError, ValueError, OSError, TypeError):
+        ap.exit(2, "run_status: unreadable chunks.json in %s\n" % args.work_dir)
     if state.get("not_chunked"):
         print("not chunked yet — no chunks.json in %s; restart from step 1 (ingest)"
               % args.work_dir)
