@@ -15,6 +15,18 @@ _REF_TAIL = re.compile(r"\s*(\[[^\]]*\])\s*$")
 _RUB_MARK = "۞"   # U+06DE start of rub-el-hizb — a division marker, not verse text
 _TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
 
+# Index patterns
+_H2 = re.compile(r"^##\s+(?!Index of|Glossary)(.+?)\s*$", re.M)
+_QURAN_MARK = re.compile(r"<!--quran\s+s=(\d+)\s+a=(\d+)-(\d+)[^>]*-->")
+_HADITH_MARK = re.compile(r"<!--hadith\s+coll=(\w+)\s+num=(\S+)[^>]*-->")
+
+_COLL_NAMES = {
+    "bukhari": "al-Bukhari", "muslim": "Muslim", "abudawud": "Abu Dawud",
+    "tirmidhi": "al-Tirmidhi", "nasai": "al-Nasa'i", "ibnmajah": "Ibn Majah",
+    "malik": "Malik", "ahmad": "Ahmad", "darimi": "al-Darimi",
+    "hakim": "al-Hakim", "bayhaqi": "al-Bayhaqi",
+}
+
 
 def _arabic_num(n):
     return str(n).translate(_TO_ARABIC)
@@ -51,6 +63,60 @@ def _renumber(m, quran_index):
     arabic = re.sub(r"\s+", " ", arabic.replace(_RUB_MARK, "")).strip()
     lines[idx] = arabic + ((" " + ref) if ref else "")
     return head + "\n".join(lines) + tail
+
+
+def _chapter_at(md, pos):
+    """The nearest '## ' chapter heading at or before pos (else 'Front matter')."""
+    best = "Front matter"
+    for m in _H2.finditer(md):
+        if m.start() <= pos:
+            best = m.group(1)
+        else:
+            break
+    return best
+
+
+def build_indexes(book_md):
+    verses, hadith = [], []
+    for m in _QURAN_MARK.finditer(book_md):
+        s, a0, a1 = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        if s == 0:
+            continue  # fallback marker, not a locatable citation
+        verses.append((s, a0, a1, _chapter_at(book_md, m.start())))
+    for m in _HADITH_MARK.finditer(book_md):
+        coll, num = m.group(1), m.group(2)
+        hadith.append((coll, num, _chapter_at(book_md, m.start())))
+    if not verses and not hadith:
+        return ""
+    out = []
+    if verses:
+        out.append("## Index of Qur'anic Verses\n")
+        seen = set()
+        for s, a0, a1, chap in sorted(verses, key=lambda v: (v[0], v[1], v[2])):
+            ref = "Surah %d:%d" % (s, a0) + ("" if a0 == a1 else "–%d" % a1)
+            key = (ref, chap)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append("%s — *%s*  " % (ref, chap))
+        out.append("")
+    if hadith:
+        out.append("## Index of Hadith\n")
+        seen = set()
+        def _sortkey(h):
+            try:
+                return (h[0], int(h[1]))
+            except ValueError:
+                return (h[0], 1 << 30)
+        for coll, num, chap in sorted(hadith, key=_sortkey):
+            ref = "%s %s" % (_COLL_NAMES.get(coll, coll.title()), num)
+            key = (ref, chap)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append("%s — *%s*  " % (ref, chap))
+        out.append("")
+    return "\n".join(out)
 
 
 def number_quran_ayat(md, quran_index):
@@ -109,7 +175,7 @@ def merge(chunk_texts):
 
 
 def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
-             hadith_numbers=True, glossary=None):
+             hadith_numbers=True, glossary=None, indexes=False):
     files = sorted(glob.glob(os.path.join(chunk_dir, "chunk_*.md")))
     body = merge([open(f, encoding="utf-8").read() for f in files])
     body = strip_page_notes(body)
@@ -125,6 +191,10 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
         book = "%s\n%s" % (head, book)
     if glossary:
         book = append_glossary(book, glossary)
+    if indexes:
+        idx_text = build_indexes(book)
+        if idx_text:
+            book = "%s\n\n%s" % (book, idx_text)
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(book)
     return book
@@ -142,6 +212,8 @@ if __name__ == "__main__":
                    help="strip hadith markers instead of numbering them "
                         "(for books that cite hadith inline, not as a numbered collection)")
     p.add_argument("--glossary", help="path to the book's glossary.json (adds a Glossary appendix)")
+    p.add_argument("--indexes", action="store_true",
+                   help="build citation indexes (Qur'anic Verses and Hadith)")
     args = p.parse_args()
     qi = None
     if not args.no_numbering:
@@ -152,5 +224,6 @@ if __name__ == "__main__":
         from scripts.glossary import load as _load_gloss
         gloss = _load_gloss(args.glossary)
     assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
-             quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss)
+             quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss,
+             indexes=args.indexes)
     print("assembled -> %s" % args.out_path)

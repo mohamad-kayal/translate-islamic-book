@@ -1,7 +1,7 @@
 import os
 
-from out.assemble import (append_glossary, assemble, assign_hadith_numbers, merge,
-                          number_quran_ayat, strip_page_notes)
+from out.assemble import (append_glossary, assemble, assign_hadith_numbers, build_indexes,
+                          merge, number_quran_ayat, strip_page_notes)
 from retrieval.quran_index import QuranIndex
 
 # synthetic surah: ayah 3 carries a rub-el-hizb mark like the real dataset does
@@ -115,3 +115,52 @@ def test_append_glossary_excludes_names_and_structure():
 def test_append_glossary_empty_terms_is_noop():
     assert append_glossary("body", {"terms": {}, "names": {}, "structure": {}}) == "body"
     assert append_glossary("body", {}) == "body"
+
+
+_IDX_MD = """## Chapter One
+
+<!--quran s=2 a=255-255 tr=saheeh-->
+آية [X]
+"t" [X]
+<!--/quran-->
+
+<!--hadith coll=bukhari num=1 conf=1.0 src=dataset-->
+«متن»
+"t" (al-Bukhari 1)
+<!--/hadith-->
+
+## Chapter Two
+
+<!--quran s=1 a=1-3 tr=saheeh-->
+آية [X]
+"t" [X]
+<!--/quran-->
+"""
+
+
+def test_build_indexes_has_both_sections_sorted():
+    out = build_indexes(_IDX_MD)
+    assert "## Index of Qur'anic Verses" in out
+    assert "## Index of Hadith" in out
+    # surah 1 sorts before surah 2
+    assert out.index("Surah 1:1") < out.index("Surah 2:255")
+
+
+def test_index_entry_names_its_chapter():
+    out = build_indexes(_IDX_MD)
+    # the 2:255 verse lives under Chapter One; 1:1-3 under Chapter Two
+    assert "Chapter One" in out and "Chapter Two" in out
+
+
+def test_hadith_index_lists_collection_and_number():
+    out = build_indexes(_IDX_MD)
+    assert "al-Bukhari 1" in out or "Bukhari 1" in out
+
+
+def test_build_indexes_empty_when_no_markers():
+    assert build_indexes("## Chapter\n\nplain prose, no citations.") == ""
+
+
+def test_single_ayah_renders_without_range_dash():
+    out = build_indexes(_IDX_MD)
+    assert "Surah 2:255" in out and "255–255" not in out
