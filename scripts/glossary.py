@@ -51,22 +51,41 @@ def _clean(val):
     return val
 
 
+_NEW_KEY_FOR_SECTION = {"terms": "new_terms", "names": "new_names", "structure": "new_structure"}
+
+
 def merge(master, book, only=None):
+    """Write approved entries from `book` into a copy of `master`.
+
+    Reuses `diff` to classify entries so `merge`'s notion of "safe to write" matches
+    what the sign-off proposals actually showed the user:
+      - new_* entries (no override) are applied; `only` further restricts them to the
+        named keys.
+      - `override` entries are book-local deviations and are NEVER applied — `diff`
+        already excludes them from new_*/conflicts, so they're untouched by construction.
+      - conflicts (existing key, differing value, no override) are applied ONLY if their
+        Arabic key is explicitly named in `only` — merging a conflict is an accept, and
+        the user must name what they're accepting.
+    """
     result = copy.deepcopy(master)
+    d = diff(master, book)
     for section in SECTIONS:
         dest = result.setdefault(section, {})
-        for arabic, book_val in (book.get(section, {}) or {}).items():
+        for arabic, book_val in d[_NEW_KEY_FOR_SECTION[section]].items():
             if only is not None and arabic not in only:
                 continue
-            clean = _clean(book_val)
-            if arabic not in dest or dest[arabic] != clean:
-                dest[arabic] = clean
+            dest[arabic] = _clean(book_val)
+    if only:
+        for c in d["conflicts"]:
+            if c["arabic"] in only:
+                dest = result.setdefault(c["section"], {})
+                dest[c["arabic"]] = _clean(c["book"])
     return result
 
 
 def _write(path, data):
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2, sort_keys=True)
         f.write("\n")
 
 

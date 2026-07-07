@@ -181,7 +181,7 @@ hr{border:none;margin:2.6rem 0;text-align:center}
 hr::after{content:"\\2766";color:var(--rubric);font-size:1rem}
 
 /* ---- Inline Arabic inside English prose (glossary glosses, first-use terms) ---- */
-span[lang="ar"]{font-family:"Amiri","Amiri Quran",serif;font-size:1.06em}
+span[lang="ar"]{font-family:"Amiri","Amiri Quran",serif;font-size:1.06em;unicode-bidi:isolate}
 
 /* ---- Glossary appendix: hanging-indent entries, no panel ---- */
 .glossary{max-width:30em;margin:0 auto}

@@ -1,5 +1,5 @@
 {
-  "style": "al- (no sun-letter assimilation); ' for ayn/hamza; no macrons; first use: *translit* (ARABIC, english), short form after",
+  "style": "al- (no sun-letter assimilation); ' for ayn/hamza; no macrons; first use: *translit* ([ARABIC]{lang=ar dir=rtl}, english), short form after",
   "terms": {
     "التوحيد": {"translit": "tawhid", "english": "the Oneness of Allah"},
     "الشرك": {"translit": "shirk", "english": "associating partners with Allah"},

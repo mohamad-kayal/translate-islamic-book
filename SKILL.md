@@ -66,8 +66,13 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 8. **Harvest the glossary.** `python -m scripts.glossary diff <book>/work/glossary.json` lists this
    book's new terms and any conflicts with the master. Write them into `<book>/work/review.md` under
    a "Glossary proposals" heading for the user's sign-off. After sign-off, run
-   `python -m scripts.glossary merge <book>/work/glossary.json` (add `--only <keys>` to accept a
-   subset) and commit the updated `data/glossary.json`. Never merge before sign-off.
+   `python -m scripts.glossary merge <book>/work/glossary.json` and commit the updated
+   `data/glossary.json`. By default `merge` writes ONLY brand-new terms (Arabic keys absent from
+   the master) — safe additions the proposals already showed. A conflict (an existing key whose
+   book value differs) is never applied unless the user explicitly accepts it by naming its Arabic
+   key: `merge <book>/work/glossary.json --only <arabic-keys>`. This book's `override` entries
+   (deliberate book-local deviations) are NEVER merged into the master, with or without `--only`.
+   Never merge before sign-off.
 9. **Convert.** `python -m out.convert <book>/work/book.md <book>/output` → `book.docx` + `book.html`
    (title page, table of contents, book typography, embedded fonts).
 10. **Report.** Give the user `output/book.docx`, `output/book.html`, and `review.md`. For PDF: open

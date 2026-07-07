@@ -68,12 +68,38 @@ def test_merge_adds_new_terms_and_returns_new_object():
     assert "الثغور" not in master["terms"]          # input untouched
 
 
-def test_merge_applies_override_and_strips_reason():
+def test_merge_never_applies_override():
     master = _master()
     book = {"terms": {"التزكية": {"translit": "tazkiyah", "english": "inner purification",
                                    "override": "book sense"}},
             "names": {}, "structure": {}}
     merged = merge(master, book)
+    # override is a deliberate book-local deviation — must not reach the master
+    assert merged["terms"]["التزكية"] == _master()["terms"]["التزكية"]
+
+
+def test_merge_never_applies_override_even_with_only():
+    master = _master()
+    book = {"terms": {"التزكية": {"translit": "tazkiyah", "english": "inner purification",
+                                   "override": "book sense"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book, only={"التزكية"})
+    assert merged["terms"]["التزكية"] == _master()["terms"]["التزكية"]
+
+
+def test_merge_does_not_apply_conflict_by_default():
+    master = _master()
+    book = {"terms": {"التزكية": {"translit": "tazkiyah", "english": "inner purification"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book)
+    assert merged["terms"]["التزكية"] == _master()["terms"]["التزكية"]
+
+
+def test_merge_applies_conflict_when_named_in_only():
+    master = _master()
+    book = {"terms": {"التزكية": {"translit": "tazkiyah", "english": "inner purification"}},
+            "names": {}, "structure": {}}
+    merged = merge(master, book, only={"التزكية"})
     assert merged["terms"]["التزكية"] == {"translit": "tazkiyah", "english": "inner purification"}
 
 
