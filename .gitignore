@@ -13,3 +13,6 @@ output/
 
 # Large downloaded datasets (~60MB, public-domain, re-created by scripts/setup_data.py)
 data/
+# ...but the curated master glossary IS source, not a download — keep it tracked.
+!data/glossary.json
+!data/glossary-seed-notes.md
