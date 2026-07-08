@@ -82,13 +82,15 @@ __FONT_FACES__
 
 :root{
   color-scheme:light;
-  --paper:oklch(0.988 0.002 90);
-  --ink:oklch(0.24 0.012 60);
-  --ink-quiet:oklch(0.35 0.012 60);
-  --rubric:oklch(0.44 0.14 29);
-  --rule:oklch(0.87 0.015 60);
+  --paper:oklch(0.997 0.001 85);
+  --ink:oklch(0.19 0.006 55);
+  --ink-quiet:oklch(0.33 0.008 55);
+  --rubric:oklch(0.44 0.15 29);
+  --rule:oklch(0.8 0.012 60);
 }
-html{direction:ltr;scroll-behavior:smooth}
+/* the page tone covers the whole sheet, not a floating panel */
+html{direction:ltr;scroll-behavior:smooth;background:var(--paper);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0 auto;max-width:34em;
@@ -115,17 +117,26 @@ header#title-block-header::after{
   font-size:1.3rem;margin-top:2rem;
 }
 
-/* ---- Contents ---- */
-nav#TOC{margin:0 auto 5rem;max-width:26em}
+/* ---- Contents: a proper book table of contents (left-aligned, ruled) ---- */
+nav#TOC{margin:0 auto 5rem;max-width:33em}
 nav#TOC::before{
-  content:"Contents";display:block;text-align:center;
-  letter-spacing:.22em;text-transform:uppercase;font-size:.85rem;
-  color:var(--rubric);margin-bottom:1.6rem;
+  content:"Contents";display:block;width:fit-content;
+  font-family:"Cardo",serif;font-weight:400;font-size:1.95rem;
+  color:var(--rubric);margin:0 auto 2.2rem;
+  border-bottom:1.5px solid var(--rubric);padding-bottom:.55rem;
 }
 nav#TOC ul{list-style:none;margin:0;padding:0}
-nav#TOC li{margin:.4rem 0;text-align:center}
-nav#TOC a{color:var(--ink);text-decoration:none}
+nav#TOC>ul>li{border-bottom:1px solid var(--rule)}
+nav#TOC>ul>li:first-child{border-top:1px solid var(--rule)}
+nav#TOC li{margin:0;text-align:left}
+nav#TOC a{
+  color:var(--ink);text-decoration:none;display:block;
+  padding:.62rem .1rem;line-height:1.34;
+}
 nav#TOC a:hover{color:var(--rubric)}
+nav#TOC ul ul a{                       /* any nested sub-entries: quieter, indented */
+  padding-left:1.7em;color:var(--ink-quiet);font-size:.94em;
+}
 
 /* ---- Prose: justified book paragraphs with first-line indents ---- */
 p{margin:0;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-wrap:pretty}
@@ -145,14 +156,14 @@ h2::after{                                   /* a short rule seals the chapter t
   content:"";display:block;width:2.8rem;height:0;
   border-top:1.5px solid var(--rubric);margin:1.5rem auto 0;
 }
-h3{
-  font-weight:700;text-align:center;color:var(--ink);
-  font-size:1.17rem;margin:3.2rem 0 1.4rem;
+h3{                                     /* segment heading — left, as a book sets them */
+  font-weight:700;text-align:left;color:var(--ink);
+  font-size:1.2rem;margin:3rem 0 1.1rem;
 }
-h4{
-  font-weight:400;text-align:center;color:var(--rubric);
-  letter-spacing:.2em;text-transform:uppercase;font-size:.83rem;
-  margin:2.7rem 0 1.2rem;
+h4{                                     /* benefit/sub-heading — left, quiet rubric caps */
+  font-weight:700;text-align:left;color:var(--rubric);
+  letter-spacing:.06em;font-size:.92rem;text-transform:uppercase;
+  margin:2.4rem 0 1rem;
 }
 
 /* ---- Sacred quotation: set apart by space + a delicate rubric rule, never a box ---- */
