@@ -10,7 +10,8 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 
 ## One-time setup
 - `python scripts/setup_data.py` — downloads the Quran + hadith datasets into `data/`.
-- Ensure `pandoc` and poppler (`pdftotext`, `pdfinfo`, `pdffonts`) are installed.
+- Ensure `pandoc`, poppler (`pdftotext`, `pdfinfo`, `pdffonts`), and Google Chrome / Chromium
+  (for rendering the PDF) are installed.
 - Fonts for the DOCX (Word must have them installed): `cp assets/fonts/*.ttf ~/Library/Fonts/`
   (Cardo, Amiri, Amiri Quran — all OFL).
 - **Usage gate (recommended):** `cp scripts/statusline_usage.py ~/.claude/` and add to
@@ -75,8 +76,13 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
    Never merge before sign-off.
 9. **Convert.** `python -m out.convert <book>/work/book.md <book>/output` → `book.docx` + `book.html`
    (title page, table of contents, book typography, embedded fonts).
-10. **Report.** Give the user `output/book.docx`, `output/book.html`, and `review.md`. For PDF: open
-    the HTML in a browser and print to PDF (chapters break onto new pages), or export from Word.
+10. **Render the PDF.** `python -m scripts.render_pdf <book>/output/book.html
+    <book>/output/<book>-book.pdf` — headless Chrome prints the HTML to PDF, honouring the print
+    styles' **A5 trim + ~14pt body** so the text reads large on a phone (chapters break onto new
+    pages, folios in the footer). Alternatively open the HTML in a browser and print to PDF, or
+    export from Word (`.docx`).
+11. **Report.** Give the user `output/<book>-book.pdf`, `output/book.docx`, `output/book.html`,
+    and `review.md`.
 
 ## Pausing and resuming a run
 

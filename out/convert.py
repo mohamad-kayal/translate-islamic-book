@@ -297,7 +297,8 @@ h2+p::first-letter{
 
 /* ---- Print (the book is finished by printing to PDF) ---- */
 @media print{
-  body{max-width:none;padding:0;font-size:11.5pt}
+  html{font-size:12.5pt}                              /* root scale for the printed A5 book — every rem size grows with it */
+  body{max-width:none;padding:0;font-size:1.12rem}    /* ~14pt body: comfortable on a phone-sized A5 page, matches the source books */
   header#title-block-header{margin-top:9cm;page-break-after:always}
   nav#TOC{page-break-after:always}
   h2{page-break-before:always}
@@ -309,7 +310,8 @@ h2+p::first-letter{
   a{color:inherit;text-decoration:none}
 }
 @page{
-  margin:20mm 18mm;
+  size:148mm 210mm;                                   /* A5 — matches the source books' trim so text is large on a phone */
+  margin:14mm 13mm;
   @bottom-center{content:counter(page);font-family:"Cardo",serif;font-size:9pt;color:#6a6259}
 }
 @page cover{@bottom-center{content:none}}   /* no folio on the cover */
