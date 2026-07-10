@@ -16,6 +16,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -r requirements-dev.txt
-      # Integration tests need the downloaded datasets + poppler/pandoc; the unit
-      # suite is self-contained.
+      # The convert tests characterize real pandoc output; integration tests
+      # (deselected) additionally need the downloaded datasets + poppler.
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq pandoc
       - run: pytest -m "not integration" -q
