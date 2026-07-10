@@ -79,6 +79,14 @@ def _known_translits(glossary):
         if isinstance(v, str) and v:
             known.add(v.casefold())
             known.add(v.split(" (")[0].casefold())
+    # cited-work titles: recognized for drift-checking but NOT emitted in the
+    # back-of-book Glossary appendix (append_glossary reads `terms` only)
+    for v in (glossary.get("works") or {}).values():
+        if isinstance(v, str) and v:
+            known.add(v.casefold())
+            known.add(v.split(" (")[0].casefold())
+        elif isinstance(v, dict) and v.get("translit"):
+            known.add(v["translit"].casefold())
     return known
 
 
