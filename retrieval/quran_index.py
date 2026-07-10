@@ -68,6 +68,11 @@ class QuranIndex:
                 pos += len(w)
             self._surah_text[s] = "".join(parts)
             self._surah_map[s] = spans
+        # Word -> ayat inverted index for nearest() suggestions on failed matches.
+        self._word_ayat = {}
+        for key, norm in self.norm.items():
+            for w in set(norm.split()):
+                self._word_ayat.setdefault(w, []).append(key)
 
     @classmethod
     def load(cls, data_dir=None):
@@ -83,28 +88,60 @@ class QuranIndex:
                                             os.path.join(d, ".cache"))
         return cls(arabic, saheeh, clear)
 
-    def identify_span(self, arabic_query):
-        """Return (surah, ayah_start, ayah_end, coverage) or None.
+    def identify_spans(self, arabic_query, cap=20):
+        """Every (surah, ayah_start, ayah_end) where the quotation occurs, in mushaf
+        order (capped), plus the TRUE total count. A repeated (mutashabih) phrase —
+        e.g. ولقد يسرنا القرآن للذكر at 54:17/22/32/40 — occurs at several locations
+        the caller must disambiguate by the author's citation or the context;
+        returning only the first would silently mis-cite.
 
-        Locates the match-key query as a substring of a surah's match-key corpus,
-        then maps the character range back to ayah number(s). Handles exact ayat,
+        Locates the match-key query as a substring of each surah's match-key corpus,
+        then maps character ranges back to ayah numbers. Handles exact ayat,
         multi-ayah ranges, partial/mid-ayah quotes, and Uthmani-vs-Imla'i spelling.
         """
         qn = _match_key(arabic_query)
         if not qn:
-            return None
+            return [], 0
         # Anchor at word boundaries: a quotation never starts or ends mid-word
         # (otherwise short queries match inside longer words, e.g. طه in مطهرة).
         pat = re.compile(r"(?<!\S)%s(?!\S)" % re.escape(qn))
+        spans, total = [], 0
         for s in sorted(self._surah_text):
-            m = pat.search(self._surah_text[s])
-            if m is None:
-                continue
-            pos, end = m.start(), m.end()
-            overlaps = [a for (st, en, a) in self._surah_map[s] if st < end and en > pos]
-            if overlaps:
-                return (s, overlaps[0], overlaps[-1], 1.0)
-        return None
+            for m in pat.finditer(self._surah_text[s]):
+                pos, end = m.start(), m.end()
+                overlaps = [a for (st, en, a) in self._surah_map[s]
+                            if st < end and en > pos]
+                if not overlaps:
+                    continue
+                total += 1
+                if len(spans) < cap:
+                    spans.append((s, overlaps[0], overlaps[-1]))
+        return spans, total
+
+    def identify_span(self, arabic_query):
+        """First location as (surah, ayah_start, ayah_end, coverage) or None —
+        the primary result; identify_spans carries the full location list."""
+        spans, _ = self.identify_spans(arabic_query, cap=1)
+        if not spans:
+            return None
+        s, a0, a1 = spans[0]
+        return (s, a0, a1, 1.0)
+
+    def nearest(self, arabic_query, k=3, min_score=0.5):
+        """Closest ayat by word overlap for a query with NO verbatim span — the
+        usual cause is a misread word in the page image. [(surah, ayah, score)],
+        best first, so the caller can correct its reading instead of retrying blind."""
+        qtokens = set(_match_key(arabic_query).split())
+        if not qtokens:
+            return []
+        shared = {}
+        for w in qtokens:
+            for key in self._word_ayat.get(w, ()):
+                shared[key] = shared.get(key, 0) + 1
+        scored = sorted(((n / len(qtokens), key) for key, n in shared.items()),
+                        key=lambda t: (-t[0], t[1]))
+        return [(s, a, round(score, 3)) for score, (s, a) in scored[:k]
+                if score >= min_score]
 
     def get_verse(self, s, a):
         if (s, a) not in self.arabic:

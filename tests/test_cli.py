@@ -39,6 +39,46 @@ def test_quran_cli(tmp_path):
         encoding="utf-8")
     r = _run("retrieval.quran_lookup", "بحر نهر", tmp_path)
     assert r["matched"] and r["ref_en"] == "[Al-Fatihah: 1]" and r["english_saheeh"] == "sea river"
+    assert r["n_locations"] == 1 and not r["locations_truncated"]
+    assert r["locations"] == [{"surah": 1, "ayah_start": 1, "ayah_end": 1,
+                               "ref_en": "[Al-Fatihah: 1]"}]
+
+
+def test_quran_cli_repeated_phrase_reports_all_locations(tmp_path):
+    qd = tmp_path / "quran"
+    qd.mkdir()
+    verses = [{"chapter": 1, "verse": 1, "text": "بحر نهر"},
+              {"chapter": 2, "verse": 9, "text": "بحر نهر"}]
+
+    def w(name, key):
+        (qd / name).write_text(json.dumps(
+            {"quran": [dict(v, text=v["text"] if key == "ar" else "x") for v in verses]},
+            ensure_ascii=False), encoding="utf-8")
+
+    w("ara-quranuthmanihaf.json", "ar")
+    w("eng-ummmuhammad.json", "en")
+    w("eng-mustafakhattaba.json", "en")
+    (tmp_path / "surah_names.json").write_text(
+        json.dumps([{"number": 1, "arabic": "الفاتحة", "en": "Al-Fatihah"},
+                    {"number": 2, "arabic": "البقرة", "en": "Al-Baqarah"}],
+                   ensure_ascii=False), encoding="utf-8")
+    r = _run("retrieval.quran_lookup", "بحر نهر", tmp_path)
+    assert r["matched"] and r["surah"] == 1          # primary = first, as before
+    assert r["n_locations"] == 2
+    assert [loc["ref_en"] for loc in r["locations"]] == ["[Al-Fatihah: 1]", "[Al-Baqarah: 9]"]
+
+
+def test_quran_cli_nearest_on_miss(tmp_path):
+    qd = tmp_path / "quran"
+    qd.mkdir()
+    for name in ("ara-quranuthmanihaf.json", "eng-ummmuhammad.json", "eng-mustafakhattaba.json"):
+        (qd / name).write_text(json.dumps(
+            {"quran": [{"chapter": 1, "verse": 1, "text": "جبل شمس قمر نهر"}]},
+            ensure_ascii=False), encoding="utf-8")
+    r = _run("retrieval.quran_lookup", "جبل شمس قمر خطأ", tmp_path)
+    assert r["matched"] is False
+    assert r["nearest"][0]["surah"] == 1 and r["nearest"][0]["ayah"] == 1
+    assert r["nearest"][0]["score"] >= 0.7 and "جبل" in r["nearest"][0]["arabic"]
 
 
 def test_hadith_cli_no_match(tmp_path):

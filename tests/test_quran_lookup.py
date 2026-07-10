@@ -53,3 +53,46 @@ def test_short_word_does_not_match_inside_longer_word():
     i2 = QuranIndex({(1, 1): "مطهرة نهر", (2, 1): "طه"}, {(1, 1): "x", (2, 1): "y"},
                     {(1, 1): "x", (2, 1): "y"})
     assert i2.identify_span("طه")[:3] == (2, 1, 1)
+
+
+# A mutashabih phrase: identical wording at three locations (twice in surah 2,
+# once in surah 1 — like ولقد يسرنا القرآن للذكر at 54:17/22/32/40).
+REPEATED = {(1, 1): "بحر نهر", (1, 2): "جبل شمس قمر",
+            (2, 1): "بحر نهر", (2, 5): "نجم بحر نهر ضوء", (2, 7): "سحاب مطر"}
+
+
+def ridx():
+    eng = {k: "x" for k in REPEATED}
+    return QuranIndex(REPEATED, eng, dict(eng))
+
+
+def test_identify_spans_lists_every_location():
+    spans, total = ridx().identify_spans("بحر نهر")
+    assert total == 3
+    assert spans == [(1, 1, 1), (2, 1, 1), (2, 5, 5)]
+
+
+def test_identify_spans_cap_keeps_true_total():
+    spans, total = ridx().identify_spans("بحر نهر", cap=2)
+    assert len(spans) == 2 and total == 3
+
+
+def test_identify_span_unchanged_returns_first_location():
+    assert ridx().identify_span("بحر نهر") == (1, 1, 1, 1.0)
+
+
+def test_identify_spans_unique_phrase():
+    spans, total = ridx().identify_spans("سحاب مطر")
+    assert total == 1 and spans == [(2, 7, 7)]
+
+
+def test_nearest_suggests_closest_ayah_on_miss():
+    # 3 of 4 query words sit in ayah (1,2): no exact span, but a strong suggestion
+    i = idx()
+    assert i.identify_span("جبل شمس قمر خطأ") is None
+    near = i.nearest("جبل شمس قمر خطأ")
+    assert near and near[0][0] == 1 and near[0][1] == 2 and near[0][2] >= 0.7
+
+
+def test_nearest_empty_when_nothing_shared():
+    assert idx().nearest("زيتون تين") == []
