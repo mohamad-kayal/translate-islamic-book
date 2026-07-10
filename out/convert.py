@@ -297,8 +297,8 @@ h2+p::first-letter{
 
 /* ---- Print (the book is finished by printing to PDF) ---- */
 @media print{
-  html{font-size:12.5pt}                              /* root scale for the printed A5 book — every rem size grows with it */
-  body{max-width:none;padding:0;font-size:1.12rem}    /* ~14pt body: comfortable on a phone-sized A5 page, matches the source books */
+  html{font-size:9.8pt}                               /* root scale for the printed A5 book — every rem size grows with it */
+  body{max-width:none;padding:0;font-size:1.12rem}    /* ~11pt body: top of the standard 9-11pt range for an A5 trim */
   header#title-block-header{margin-top:9cm;page-break-after:always}
   nav#TOC{page-break-after:always}
   h2{page-break-before:always}
