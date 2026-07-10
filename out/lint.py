@@ -183,8 +183,19 @@ def completeness_warnings(chunk_texts, chunks, manifest):
     the cheap machine signal for a silently dropped page or paragraph."""
     chars_by_page = {p["page"]: p["chars"] for p in manifest.get("pages", [])
                      if p.get("classification") == "text"}
+    # Pair by the file's chunk NUMBER, not by position — during a resumed run the
+    # translated/ dir can have gaps, and a positional zip would misattribute every
+    # file after the first missing chunk.
+    by_num = {}
+    for name, text in chunk_texts:
+        m = re.search(r"chunk_(\d+)", name)
+        if m:
+            by_num[int(m.group(1))] = (name, text)
     ratios = []
-    for (name, text), chunk in zip(chunk_texts, chunks):
+    for i, chunk in enumerate(chunks, 1):
+        if i not in by_num:
+            continue
+        name, text = by_num[i]
         src = sum(chars_by_page.get(p, 0)
                   for p in range(chunk["start_page"], chunk["end_page"] + 1))
         if src <= 0:

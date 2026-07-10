@@ -135,6 +135,16 @@ def test_completeness_outlier_flagged(tmp_path):
     assert not any("chunk_0001" in w and "omission" in w for w in r["warnings"])
 
 
+def test_completeness_pairs_by_chunk_number_across_gaps(tmp_path):
+    """A resumed run can have holes in translated/ — files after the gap must pair
+    with THEIR chunk metadata, not shift up a slot."""
+    work = _work(tmp_path, [300, 310, 305])
+    os.remove(os.path.join(work, "translated", "chunk_0002.md"))   # gap in the middle
+    r = lint(work)
+    # chunks 1 and 3 both translated normally: nothing may be misflagged
+    assert not any("omission" in w for w in r["warnings"])
+
+
 def test_completeness_skipped_without_manifest(tmp_path):
     work = _work(tmp_path, [300, 310, 40])
     os.remove(os.path.join(work, "manifest.json"))
