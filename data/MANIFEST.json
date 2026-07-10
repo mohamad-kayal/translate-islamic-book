@@ -1,0 +1,101 @@
+{
+  "fetched_at": "2026-07-10",
+  "files": {
+    "hadith/ara-abudawud.json": {
+      "bytes": 7345422,
+      "sha256": "216139c5f40a8147e700d62ffa3b5b2fe45d0e034f86941a193c598c10056189"
+    },
+    "hadith/ara-bukhari.json": {
+      "bytes": 9770083,
+      "sha256": "e34a3402889ca378871da3c5984b7875c680920e93f1c8738ac7afe502179562"
+    },
+    "hadith/ara-dehlawi.json": {
+      "bytes": 9168,
+      "sha256": "913fa23adf0a7b62bf8a3fd80f8c8a8efc2f66ac9b7ec950443a701285193d54"
+    },
+    "hadith/ara-ibnmajah.json": {
+      "bytes": 5583102,
+      "sha256": "b406e6be81588ab0ec1ddbed32f5fd95bbcdda242c460d88331e82eb5c2bc0aa"
+    },
+    "hadith/ara-malik.json": {
+      "bytes": 2150337,
+      "sha256": "088b1f354e110211da006d47e37dd8f8837368f318ed683271f0fdb0f09a3ab5"
+    },
+    "hadith/ara-muslim.json": {
+      "bytes": 8685140,
+      "sha256": "194073b24090c5368e4d14a3f55c9e0ef144c7437bd7e5aa83aa4d2bc54a8ea0"
+    },
+    "hadith/ara-nasai.json": {
+      "bytes": 7152291,
+      "sha256": "c705983c19bb089c87cd6531aff609bd94d862183ed0859115b0ff991826a956"
+    },
+    "hadith/ara-nawawi.json": {
+      "bytes": 49340,
+      "sha256": "91f559b90422005b768bb449426d87d2e6fabbb43ac3a31e5c24c50ca77465e6"
+    },
+    "hadith/ara-qudsi.json": {
+      "bytes": 55258,
+      "sha256": "8645482e46b9ab145b3a8b740ffc7dc6902cc1cc0a1845da35b2057ec23bb55a"
+    },
+    "hadith/ara-tirmidhi.json": {
+      "bytes": 7120806,
+      "sha256": "408028cd56329ed78edbe3ad443beb96b58e16c3e5bd49f9bc7b0eac77c8820f"
+    },
+    "hadith/eng-abudawud.json": {
+      "bytes": 4311308,
+      "sha256": "f6bcf73ad96d2f28296232e201e12963e7b3dd5325572fb88365edbbfb0ecd40"
+    },
+    "hadith/eng-bukhari.json": {
+      "bytes": 5181725,
+      "sha256": "b3a10b8d50949e86cec82b0d323ce0eae3e2f713fa2f3daa5361638feb795988"
+    },
+    "hadith/eng-dehlawi.json": {
+      "bytes": 8091,
+      "sha256": "73136b1b00bf199b830f1033aac09e3144f8ce7188052af60d31e8df09a5ec00"
+    },
+    "hadith/eng-ibnmajah.json": {
+      "bytes": 3241088,
+      "sha256": "5e9479efd403e935ddcf746a709b2727d535a41fe1f496deadc8a43f1d103cd7"
+    },
+    "hadith/eng-malik.json": {
+      "bytes": 1614960,
+      "sha256": "fb02a0ae16ebba1a658b107da3b93e72ecb59c2acd871819e2b1f3bd2e90d27b"
+    },
+    "hadith/eng-muslim.json": {
+      "bytes": 4296152,
+      "sha256": "2ef51a2a1980fb91e395fbf1580cc9c9413297f54bb8cad271e1499417299488"
+    },
+    "hadith/eng-nasai.json": {
+      "bytes": 4033923,
+      "sha256": "4f2aaca4229b96210fdaa887915c69ba99dda8726816856cc8660e996b6b3a1f"
+    },
+    "hadith/eng-nawawi.json": {
+      "bytes": 36009,
+      "sha256": "3c8124e3f633a576d1fb6e6a9cb352e162436781b15bc78188c28203ff08743d"
+    },
+    "hadith/eng-qudsi.json": {
+      "bytes": 41399,
+      "sha256": "4d9a35148af7b04ec41f6cc3dbaf0bdb82d2f2c93d03052ee229e86dd0f6c53c"
+    },
+    "hadith/eng-tirmidhi.json": {
+      "bytes": 3124797,
+      "sha256": "f64f1a5e6f2614e164e3b10138412af322d3959011bf84d67f428f79b3858afb"
+    },
+    "quran/ara-quranuthmanihaf.json": {
+      "bytes": 1967747,
+      "sha256": "66dadae2f7c7bb762aaf77603489951da4fe555fcee9f0106bfddae860e89cb4"
+    },
+    "quran/eng-mustafakhattaba.json": {
+      "bytes": 1454489,
+      "sha256": "0d7458a1d8ebe1402d3e142947f482d5f89f67e276fe0dc25e0ff567f8f9ffe6"
+    },
+    "quran/eng-ummmuhammad.json": {
+      "bytes": 1447900,
+      "sha256": "5ac5aab3e152dd76b615d8748e2198c428f88cd3bd19d240b3e8feb89de6f28c"
+    }
+  },
+  "pins": {
+    "hadith-api": "df57907be35291c91ad6a6691180e22ca9920784",
+    "quran-api": "6be8e17f2a0c13b1f33b1c3057f73cb28d5e848e"
+  }
+}

@@ -17,6 +17,8 @@ data/*
 # ...but the curated master glossary IS source, not a download — keep it tracked.
 !data/glossary.json
 !data/glossary-seed-notes.md
-# ...as are the sign-off-gated dataset-English corrections and the download manifest.
+# ...as are the sign-off-gated dataset-English corrections, the download manifest,
+# and the surah-names snapshot (its source API is unpinnable, so the file is source).
 !data/english-fixes.json
 !data/MANIFEST.json
+!data/surah_names.json
