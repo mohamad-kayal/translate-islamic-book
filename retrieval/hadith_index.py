@@ -2,6 +2,7 @@
 import json
 import os
 
+from .cache import load_cached
 from .normalize import normalize_arabic
 
 COLLECTIONS = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
@@ -34,22 +35,32 @@ class HadithIndex:
     @classmethod
     def load(cls, data_dir=None, collections=None):
         d = data_dir or os.path.join(_data_dir(), "hadith")
-        records = []
-        for c in (collections or COLLECTIONS):
-            ap, ep = os.path.join(d, "ara-%s.json" % c), os.path.join(d, "eng-%s.json" % c)
-            if not os.path.exists(ap):
-                continue
-            with open(ap, encoding="utf-8") as f:
-                ara = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
-            eng = {}
-            if os.path.exists(ep):
-                with open(ep, encoding="utf-8") as f:
-                    eng = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
-            for num, h in ara.items():
-                records.append({"collection": c, "number": num, "arabic": h["text"],
-                                "english": eng.get(num, {}).get("text", ""),
-                                "reference": h.get("reference", {})})
-        return cls.from_records(records)
+        colls = collections or COLLECTIONS
+        sources = [os.path.join(d, "%s-%s.json" % (pfx, c))
+                   for c in colls for pfx in ("ara", "eng")]
+
+        def build():
+            records = []
+            for c in colls:
+                ap, ep = os.path.join(d, "ara-%s.json" % c), os.path.join(d, "eng-%s.json" % c)
+                if not os.path.exists(ap):
+                    continue
+                with open(ap, encoding="utf-8") as f:
+                    ara = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
+                eng = {}
+                if os.path.exists(ep):
+                    with open(ep, encoding="utf-8") as f:
+                        eng = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
+                for num, h in ara.items():
+                    records.append({"collection": c, "number": num, "arabic": h["text"],
+                                    "english": eng.get(num, {}).get("text", ""),
+                                    "reference": h.get("reference", {})})
+            return cls.from_records(records).entries
+
+        # Cache the normalized entries (JSON parse + 40k matn normalizations dominate);
+        # the inverted index is rebuilt from them at each load, which is cheap.
+        entries = load_cached("hadith_index", sources, build, os.path.join(d, ".cache"))
+        return cls(entries)
 
     def get(self, collection, number):
         """Exact (collection, number) lookup — used by out.verify body checks."""

@@ -4,6 +4,7 @@ import os
 import re
 import unicodedata
 
+from .cache import load_cached
 from .normalize import fix_kfgqpc_spaces, normalize_arabic
 
 # Invisible bidi controls that leak from the dataset into pasted text.
@@ -71,11 +72,16 @@ class QuranIndex:
     @classmethod
     def load(cls, data_dir=None):
         d = data_dir or os.path.join(_data_dir(), "quran")
-        return cls(
-            _load_edition(os.path.join(d, "ara-quranuthmanihaf.json")),
-            _load_edition(os.path.join(d, "eng-ummmuhammad.json")),
-            _load_edition(os.path.join(d, "eng-mustafakhattaba.json")),
-        )
+        sources = [os.path.join(d, n + ".json") for n in
+                   ("ara-quranuthmanihaf", "eng-ummmuhammad", "eng-mustafakhattaba")]
+
+        def build():
+            return tuple(_load_edition(p) for p in sources)
+
+        # Cache the parsed editions; the match-key corpus is rebuilt at init (cheap).
+        arabic, saheeh, clear = load_cached("quran_index", sources, build,
+                                            os.path.join(d, ".cache"))
+        return cls(arabic, saheeh, clear)
 
     def identify_span(self, arabic_query):
         """Return (surah, ayah_start, ayah_end, coverage) or None.
