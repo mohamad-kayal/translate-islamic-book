@@ -399,9 +399,9 @@ def to_html(md_path, out_path):
             os.remove(header)
 
 
-def convert_all(md_path, out_dir):
+def convert_all(md_path, out_dir, name=None):
     os.makedirs(out_dir, exist_ok=True)
-    base = os.path.splitext(os.path.basename(md_path))[0]
+    base = name or os.path.splitext(os.path.basename(md_path))[0]
     docx = os.path.join(out_dir, base + ".docx")
     html = os.path.join(out_dir, base + ".html")
     to_docx(md_path, docx)
@@ -412,4 +412,6 @@ def convert_all(md_path, out_dir):
 if __name__ == "__main__":
     import json
     import sys
-    print(json.dumps(convert_all(sys.argv[1], sys.argv[2])))
+    # convert.py <book.md> <out_dir> [output_basename]
+    name = sys.argv[3] if len(sys.argv) > 3 else None
+    print(json.dumps(convert_all(sys.argv[1], sys.argv[2], name)))
