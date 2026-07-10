@@ -7,6 +7,13 @@ from .normalize import normalize_arabic
 
 COLLECTIONS = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
                "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi"]
+# Tie-break order for equal-quality matches: the Six Books + Muwatta before the
+# derivative "forty" collections (nawawi/qudsi/dehlawi restate canonical hadith
+# matn-only, which the recall term would otherwise always favor).
+_CANONICAL_RANK = {c: i for i, c in enumerate(COLLECTIONS)}
+# Candidates within this containment distance of the best are "ties": the query
+# matches them all; only then do prefer/canonicity/recall arbitrate.
+_EPS = 0.02
 
 
 def _data_dir():
@@ -69,7 +76,14 @@ class HadithIndex:
                 return e
         return None
 
-    def match(self, arabic_query, min_conf=0.6, max_candidates=200):
+    def match(self, arabic_query, min_conf=0.6, prefer=None, max_candidates=200):
+        """Best dataset entry for an Arabic matn, or None below min_conf.
+
+        Ranking: containment (fraction of the query found in the entry) decides;
+        candidates within _EPS of the best are ties, ordered by the author's cited
+        collection (`prefer`) first, then canonical rank, then recall. The result
+        carries `alternates`: the other tied collections, so a caller can line the
+        match up against the author's takhrij."""
         qwords = set(normalize_arabic(arabic_query).split())
         if not qwords:
             return None
@@ -80,17 +94,34 @@ class HadithIndex:
         if not shared:
             return None
         ranked = sorted(shared, key=shared.get, reverse=True)[:max_candidates]
-        best = None                                  # (containment, recall, entry)
+        scored = []                                  # (containment, recall, entry)
         for i in ranked:
             e = self.entries[i]
             inter = len(qwords & e["words"])
-            containment = inter / len(qwords)         # fraction of query found in this hadith
-            recall = inter / len(e["words"])          # fraction of this hadith covered by query
-            if best is None or (containment, recall) > (best[0], best[1]):
-                best = (containment, recall, e)
-        if best is None or best[0] < min_conf:
+            scored.append((inter / len(qwords), inter / len(e["words"]), e))
+        best_containment = max(s[0] for s in scored)
+        if best_containment < min_conf:
             return None
-        containment, _, e = best
+
+        def order(s):
+            containment, recall, e = s
+            return (e["collection"] != prefer,
+                    _CANONICAL_RANK.get(e["collection"], len(COLLECTIONS)),
+                    -recall, -containment)
+
+        shortlist = sorted((s for s in scored if s[0] >= best_containment - _EPS),
+                           key=order)
+        containment, _, e = shortlist[0]
+        alternates, seen = [], {e["collection"]}
+        for c2, _, e2 in shortlist[1:]:
+            if e2["collection"] in seen:
+                continue
+            seen.add(e2["collection"])
+            alternates.append({"collection": e2["collection"], "number": e2["number"],
+                               "confidence": round(c2, 3)})
+            if len(alternates) == 3:
+                break
         return {"collection": e["collection"], "number": e["number"],
                 "confidence": round(containment, 3), "arabic": e["arabic"],
-                "english": e["english"], "reference": e["reference"]}
+                "english": e["english"], "reference": e["reference"],
+                "alternates": alternates}

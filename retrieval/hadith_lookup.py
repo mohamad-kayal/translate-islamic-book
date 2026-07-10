@@ -14,17 +14,31 @@ def _index():
     return _INDEX
 
 
-def match(arabic_query, min_conf=0.6):
-    r = _index().match(arabic_query, min_conf=min_conf)
-    return r if r is not None else {"matched": False}
+def match(arabic_query, min_conf=0.6, prefer=None):
+    """matched:true + the entry, or matched:false — with `nearest` (the best
+    sub-threshold candidate) when one exists, so a subagent can correct its
+    reading of the page instead of retrying blind."""
+    r = _index().match(arabic_query, min_conf=0.0, prefer=prefer)
+    if r is None:
+        return {"matched": False}
+    if r["confidence"] < min_conf:
+        return {"matched": False,
+                "nearest": {"collection": r["collection"], "number": r["number"],
+                            "confidence": r["confidence"],
+                            "arabic": r["arabic"][:200]}}
+    return dict(r, matched=True)
 
 
 def main(argv=None):
     p = argparse.ArgumentParser(description="Match an Arabic hadith matn to the dataset.")
     p.add_argument("--match", required=True)
     p.add_argument("--min-conf", type=float, default=0.6)
+    p.add_argument("--prefer", default=None, metavar="COLLECTION",
+                   help="the collection the AUTHOR cites (takhrij) — wins ties; "
+                        "an unbundled collection is a harmless no-op")
     args = p.parse_args(argv)
-    print(json.dumps(match(args.match, args.min_conf), ensure_ascii=False, indent=2))
+    print(json.dumps(match(args.match, args.min_conf, prefer=args.prefer),
+                     ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
