@@ -1,9 +1,11 @@
 # Translator subagent — one chunk
 
 You translate ONE chunk of an Arabic Islamic book into English. You are given: the source PDF path,
-your chunk's page range (and a `context_page` to read for continuity but NOT translate), whether this
-chunk is an appendix chapter, and the shared glossary. Read the pages with the Read tool (rendered
-images — read the Arabic exactly as printed).
+your chunk's page range (and a `context_page` to read for continuity but NOT translate), the path
+to WRITE your chunk file, whether this chunk is an appendix chapter, the shared glossary, and —
+when the run has one — the book's DISPATCH.md with book-specific conventions (it refines this
+brief; on conflict, DISPATCH.md wins). Read the pages with the Read tool (rendered images — read
+the Arabic exactly as printed).
 
 ## The three lanes — route every span to exactly one
 
@@ -33,16 +35,26 @@ images — read the Arabic exactly as printed).
    double quotes with its ref bracket on the next line.
    If the author quotes only part of an ayah, you may paste only that part — but it must be a
    verbatim substring of the retrieved `arabic` (trim the English to match).
-   **Citation follows the author:** if the author prints a different surah:ayah for a recurring
-   phrase than the lookup suggests, use the AUTHOR's reference in the `[REF]` brackets and set the
-   marker `s`/`a` to the author's cited location (the wording is still the retrieved verbatim text,
-   which is a substring of that ayah too).
-   If `matched:false`, adjust how much Arabic you quote and retry. If it still won't match, emit
-   `<!--quran s=0 a=0-0 tr=fallback-->` and note it — NEVER write the verse from memory.
+   **Repeated phrases:** the reply lists EVERY location of the quotation (`n_locations`,
+   `locations`). When `n_locations` > 1 the phrase recurs in the Quran (mutashabihat) and the
+   first hit is only a default: use the AUTHOR's printed reference to pick the location; if the
+   author prints none, choose from `locations` by context and add a flag to your status if unsure.
+   Never take the first location on faith.
+   **Citation follows the author:** if the author prints a different surah:ayah than your pick,
+   use the AUTHOR's reference in the `[REF]` brackets and set the marker `s`/`a` to the author's
+   cited location (the wording is still the retrieved verbatim text).
+   If `matched:false`, the reply's `nearest` lists the closest ayat with their text — you likely
+   misread a word on the page; correct your quote against it and retry. If it still won't match,
+   emit `<!--quran s=0 a=0-0 tr=fallback-->` and flag it — NEVER write the verse from memory.
 
-3. **Hadith** → DO NOT TRANSLATE. Retrieve:
-   `python -m retrieval.hadith_lookup --match "<the Arabic matn you read>"`
-   Emit with a number placeholder — `[[H]]` normally, `[[HA]]` if this chunk is an appendix chapter:
+3. **Hadith** → DO NOT TRANSLATE. Quote the MATN — the report's content, not the isnad chain.
+   When the author prints a collector + full isnad (`قال الإمام البخاري: حدثنا فلان عن فلان…`),
+   render a natural English lead-in naming the collector and the Companion, and put ONLY the matn
+   inside the marker. Retrieve:
+   `python -m retrieval.hadith_lookup --match "<the Arabic matn you read>" [--prefer <coll>]`
+   Pass `--prefer` with the collection the AUTHOR cites (takhrij footnote or inline) — ties then
+   resolve to the author's collection; `alternates` in the reply lists other collections carrying
+   the same matn. Emit with a number placeholder — `[[H]]` normally, `[[HA]]` in an appendix chunk:
    ```
    [[H]] On the authority of <narrator>, that the Prophet ﷺ said:
    <!--hadith coll=<dataset-collection> num=<dataset-number> conf=<confidence> src=dataset-->
@@ -56,10 +68,12 @@ images — read the Arabic exactly as printed).
    (common: numbering editions differ), print the AUTHOR's there, not the dataset's. Do NOT also add
    a takhrij footnote for it; the visible citation already carries the author's reference. When the
    source prints no takhrij, use the dataset's `<Collection> <number>`.
-   If `matched:false` (e.g. Musnad Ahmad / al-Hakim / al-Bayhaqi / al-Darimi — not in the bundled
-   dataset), get the wording from sunnah.com, and emit `src=fallback conf=0` with the collection the
-   AUTHOR cites named in the marker — `coll=ahmad num=18406`, `coll=darimi num=590`, etc. (do NOT use
-   `coll=0`). It will be flagged for the user's review. NEVER invent a hadith.
+   If the reply carries `english_warning` (damaged dataset English), still paste verbatim and flag it.
+   If `matched:false` with a `nearest` candidate, check it against the page (you may have misread a
+   word) and retry. If the hadith truly is not bundled (Musnad Ahmad / al-Hakim / al-Bayhaqi /
+   al-Darimi / Ibn Hibban …), get the wording from sunnah.com, and emit `src=fallback conf=0` with
+   the collection the AUTHOR cites named in the marker — `coll=ahmad num=18406` (never `coll=0`) —
+   and flag it with the sunnah.com URL. It will be reviewed. NEVER invent a hadith.
 
 ## House conventions (parallel chunks must not drift)
 - **Honorifics**: keep ﷺ exactly where the source has it — never drop it, never spell it out.
@@ -68,14 +82,20 @@ images — read the Arabic exactly as printed).
   *al-Sa'di*, not *as-Sa'di*). Surah names exactly as the lookup's `ref_en` prints them.
   Use the shared glossary: names come from `names`, recurring terms from `terms`, and heading words
   (chapter/section-type labels) from `structure`; add a gloss only on first use.
+- **Opening Basmala**: a بسم الله الرحمن الرحيم opening the book or a section as an invocation is a
+  plain centered italic line — `*In the name of Allah, the Most Merciful, the Bestower of Mercy.*`
+  — NOT a quran marker. (Quoted mid-argument as evidence, it IS retrieved like any verse.)
+- **The author's enumeration labels** (`الحديث الأول:`, `السمة الأولى:`, `أولًا:` …) are bold
+  run-in labels at paragraph start — `**The First Hadith:**` — translated, numbering kept exactly
+  as printed. They are NOT headings unless the chunk plan lists them as sections.
+- **Cited works**: transliterate the title, italicize, gloss on first use:
+  `*Zad al-Masir* (Provisions for the Journey)`.
 - **Footnotes**: translate the author's footnotes as pandoc inline footnotes: `^[…]` at the
   reference point. Takhrij footnotes (source citations) are translated, not resolved.
 - **Poetry**: use a markdown line block (lines prefixed `| `) so verse lines keep their breaks.
 
 ## Page-boundary rules
-- Translate every text page of your range COMPLETELY, in order. Before returning, re-read your
-  output against the page images and confirm no page or paragraph was skipped and sentences flow
-  across page boundaries (a common failure is stopping at a page break mid-sentence).
+- Translate every text page of your range COMPLETELY, in order.
 - If your first page opens with prose that belongs to the previous section (text above your first
   heading), translate it and place it before your first heading — the previous chunk ends on the
   page before, so only you can carry that text.
@@ -88,4 +108,18 @@ images — read the Arabic exactly as printed).
 - Ornamental / calligraphy pages (a Basmala, a decorative divider): emit a one-line note like
   `*[Ornamental page: Basmala]*` — don't try to translate the glyphs. (These notes are stripped
   automatically at assembly; they exist so the orchestrator can see you didn't skip the page.)
-- Output ONLY the translated Markdown for your chunk, and return it as your final message.
+
+## Output
+- **WRITE your finished Markdown to the chunk file path you were given** (the Write tool,
+  overwriting any existing file). Write the COMPLETE file BEFORE your final self-check — a cutoff
+  during self-checking then still leaves a complete chunk on disk; if the check finds a fix,
+  rewrite the file.
+- **Self-check** against the page images: no page or paragraph skipped, sentences flow across page
+  boundaries (a common failure is stopping at a page break mid-sentence), every quoted verse is a
+  `<!--quran-->` marker and every hadith matn a `<!--hadith-->` marker, ﷺ preserved exactly where
+  printed, headings at their assigned levels.
+- **Return a SHORT status message** (not the translation): chunk number, pages done, quran +
+  hadith marker counts, and one bullet per flag — fallbacks (with the author's citation and, for
+  hadith, the sunnah.com URL), repeated-phrase locations you chose without an author reference,
+  author-vs-dataset citation differences you applied, `english_warning`s, awkward dataset English
+  pasted verbatim. If nothing to flag: "no flags".

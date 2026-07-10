@@ -59,46 +59,63 @@ PDF ──▶ ingest ──▶ (agent reads ToC) ──▶ chunk ──▶ trans
                                                         │  Qur'an ─▶ retrieval/quran_lookup
                                                         │  hadith ─▶ retrieval/hadith_lookup
                                                         ▼
-                            assemble ──▶ verify ──▶ convert ──▶ HTML + DOCX  (+ review.md)
+                                         revise (parallel QA subagents, page-by-page)
+                                                        ▼
+                     assemble ──▶ verify + lint ──▶ convert ──▶ HTML + DOCX  (+ review.md)
 ```
+
+Two independent quality nets sit behind the translators: a **reviser subagent** re-reads every
+chunk against the source pages (completeness, fidelity, conventions) before assembly, and after
+assembly `out.verify` machine-checks every sacred quotation against the datasets while `out.lint`
+sweeps the prose fabric (untranslated remnants, seam defects, transliteration drift, possible
+omissions by word-count outlier).
 
 The full step-by-step workflow the agent follows lives in [`SKILL.md`](SKILL.md).
 
 ## Repository layout
 
 ```
-retrieval/     Qur'an + hadith lookup, Arabic orthography normalization
+retrieval/     Qur'an + hadith lookup, orthography normalization, index cache
 ingest/        PDF page classification, structure, and section-aware chunking
-out/           assemble (merge + number), verify (integrity check), convert (HTML/DOCX)
-scripts/       data download, ingest CLI, glossary diff/merge, run-status gate, docx builder
-templates/     the translator-subagent brief + the DOCX reference template
-data/          the master glossary (datasets are downloaded here, not committed)
+out/           assemble (merge + number), verify (sacred-text check), lint (prose checks), convert
+scripts/       pinned data download + manifest, ingest CLI, glossary diff/merge, run-status gate
+templates/     the translator + reviser subagent briefs, the DOCX reference template
+data/          curated source: master glossary, english-fixes, MANIFEST, surah names
+               (the datasets themselves are downloaded here, never committed)
 assets/        embedded OFL fonts
-tests/         pytest suite (retrieval, ingest, assembly, verification, conversion)
+tests/         pytest suite (retrieval, ingest, lint, assembly, verification, conversion)
 SKILL.md       the pipeline the orchestrating agent runs
 ```
 
 ## Setup
 
-Requirements: **Python 3.9+**, [`pandoc`](https://pandoc.org), and
-[`poppler`](https://poppler.freedesktop.org) (`pdftotext`, `pdfinfo`, `pdffonts`).
+Requirements: **Python 3.9+**, [`pandoc`](https://pandoc.org),
+[`poppler`](https://poppler.freedesktop.org) (`pdftotext`, `pdfinfo`, `pdffonts`), and
+Chrome/Chromium for PDF rendering (auto-detected; override with `CHROME=/path/to/chrome`).
+Developed and verified on macOS; the pipeline is plain Python + CLI tools and should run
+anywhere they do (install `assets/fonts/*.ttf` per your OS for Word).
 
 ```bash
-python scripts/setup_data.py     # downloads the Qur'an + hadith datasets into data/
-pip install -r requirements-dev.txt   # (tests only)
+python scripts/setup_data.py     # downloads the PINNED datasets + verifies data/MANIFEST.json
+python scripts/setup_data.py --check   # re-verify the corpus anytime (SHA-256)
+pip install -r requirements-dev.txt    # (tests only)
 pytest -m "not integration"
 ```
 
+To run it as a Claude Code skill: `ln -s "$(pwd)" ~/.claude/skills/translate-islamic-book`.
 Then follow [`SKILL.md`](SKILL.md) to run a book through the pipeline. In outline:
 
 ```bash
 python -m scripts.ingest_book analyze <book.pdf> --work <book>/work
 # (the agent reads the ToC pages and writes structure.json)
 python -m scripts.ingest_book chunk   <book.pdf> --work <book>/work --target 10
-# (translator subagents write <book>/work/translated/chunk_NNNN.md)
+# (translator subagents write <book>/work/translated/chunk_NNNN.md,
+#  then reviser subagents re-check each chunk against the source pages)
 python -m out.assemble <book>/work/translated <book>/work/book.md --glossary <book>/work/glossary.json --indexes --matter
 python -m out.verify   <book>/work/book.md
+python -m out.lint     <book>/work --glossary <book>/work/glossary.json
 python -m out.convert  <book>/work/book.md <book>/output
+python -m scripts.render_pdf <book>/output/book.html <book>/output/book.pdf
 ```
 
 ## Data sources & credits
@@ -108,7 +125,9 @@ downloaded at setup, not committed):
 
 - **Qur'an & hadith text/translations** — fetched via the public
   [`fawazahmed0/quran-api`](https://github.com/fawazahmed0/quran-api) and
-  [`hadith-api`](https://github.com/fawazahmed0/hadith-api) (API code released under The Unlicense).
+  [`hadith-api`](https://github.com/fawazahmed0/hadith-api) (API code released under The Unlicense),
+  **pinned to exact upstream commits** and integrity-checked against a committed SHA-256 manifest
+  (`data/MANIFEST.json`) so the corpus a book was verified against can never drift silently.
   English Qur'an renderings include **Saheeh International** and **The Clear Quran**; hadith are given
   in their published English translations.
 - **Fonts** — [Cardo](https://scholarsfonts.net/cardofnt.html),

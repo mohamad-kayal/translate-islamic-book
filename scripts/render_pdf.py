@@ -30,6 +30,9 @@ STABLE_S = 2.5       # PDF is done once its size holds this long
 
 
 def _chrome():
+    override = os.environ.get("CHROME")
+    if override:
+        return override
     for c in CHROME_CANDIDATES:
         if os.path.sep in c:
             if os.path.exists(c):
