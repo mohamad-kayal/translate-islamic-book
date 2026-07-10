@@ -49,7 +49,22 @@ def analyze_page(pdf, page):
             "quran_font": _page_has_quran_font(pdf, page)}
 
 
+def _all_pages_text(pdf, n):
+    """Per-page texts from ONE whole-document pdftotext call (pages split on the
+    form-feeds it emits) — or None when the count disagrees (a text layer with
+    embedded form-feeds), in which case the caller re-extracts page by page."""
+    parts = _run(["pdftotext", "-enc", "UTF-8", pdf, "-"]).split("\f")
+    if len(parts) == n + 1 and not parts[-1].strip():   # trailing \f after last page
+        parts = parts[:n]
+    return parts if len(parts) == n else None
+
+
 def analyze_book(pdf):
     n = page_count(pdf)
-    return {"pdf": os.path.abspath(pdf), "total_pages": n,
-            "pages": [analyze_page(pdf, p) for p in range(1, n + 1)]}
+    texts = _all_pages_text(pdf, n)
+    out = []
+    for p in range(1, n + 1):
+        chars = _char_count(texts[p - 1] if texts is not None else _page_text(pdf, p))
+        out.append({"page": p, "chars": chars, "classification": classify(chars),
+                    "quran_font": _page_has_quran_font(pdf, p)})
+    return {"pdf": os.path.abspath(pdf), "total_pages": n, "pages": out}
