@@ -157,3 +157,20 @@ def test_fallback_placeholder_collection_is_flagged_not_problem():
 def test_dataset_hadith_unknown_collection_is_a_problem():
     md = "<!--hadith coll=bogus num=1 conf=1.0 src=dataset-->\nx\n<!--/hadith-->"
     assert any("unknown hadith collection" in p for p in verify(md)["problems"])
+
+
+def test_replacement_character_in_hadith_body_is_flagged():
+    # 76 dataset entries carry U+FFFD (OCR damage, e.g. "brot�ier"); pasted
+    # verbatim into a book it must reach review.md, not ship silently
+    md = ('<!--hadith coll=bukhari num=6011 conf=1.0 src=dataset-->\n'
+          '«...»\n"your brot�ier" (al-Bukhari 6011)\n<!--/hadith-->')
+    assert any("U+FFFD" in f for f in verify(md)["flagged"])
+
+
+def test_replacement_character_in_quran_body_is_flagged():
+    md = '<!--quran s=1 a=1-1 tr=saheeh-->\n(بحر نهر) [X: 1]\n"sea �river" [X: 1]\n<!--/quran-->'
+    assert any("U+FFFD" in f for f in verify(md)["flagged"])
+
+
+def test_clean_bodies_not_flagged_for_ufffd():
+    assert not any("U+FFFD" in f for f in verify(GOOD)["flagged"])

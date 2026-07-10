@@ -21,6 +21,29 @@ def _data_dir():
                           os.path.join(os.path.dirname(__file__), "..", "data"))
 
 
+def _load_english_fixes(path):
+    """{(collection, number-as-str): [fix, ...]} from english-fixes.json (absent = {})."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    fixes = {}
+    for fix in data.get("fixes", []):
+        fixes.setdefault((fix["collection"], str(fix["number"])), []).append(fix)
+    return fixes
+
+
+def _apply_english_fixes(fixes, collection, number, english):
+    import sys
+    for fix in fixes.get((collection, str(number)), []):
+        if fix["old"] in english:
+            english = english.replace(fix["old"], fix["new"])
+        else:
+            print("english-fix %s %s: old text not found (dataset drift?): %r"
+                  % (collection, number, fix["old"]), file=sys.stderr)
+    return english
+
+
 class HadithIndex:
     def __init__(self, entries):
         self.entries = entries                       # each has a precomputed "words" set
@@ -43,10 +66,14 @@ class HadithIndex:
     def load(cls, data_dir=None, collections=None):
         d = data_dir or os.path.join(_data_dir(), "hadith")
         colls = collections or COLLECTIONS
+        # Sign-off-gated corrections to the datasets' English (OCR damage, typos) live
+        # beside the dataset dirs; entries are added only after the user approves them.
+        fixes_path = os.path.abspath(os.path.join(d, os.pardir, "english-fixes.json"))
         sources = [os.path.join(d, "%s-%s.json" % (pfx, c))
-                   for c in colls for pfx in ("ara", "eng")]
+                   for c in colls for pfx in ("ara", "eng")] + [fixes_path]
 
         def build():
+            fixes = _load_english_fixes(fixes_path)
             records = []
             for c in colls:
                 ap, ep = os.path.join(d, "ara-%s.json" % c), os.path.join(d, "eng-%s.json" % c)
@@ -59,8 +86,10 @@ class HadithIndex:
                     with open(ep, encoding="utf-8") as f:
                         eng = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
                 for num, h in ara.items():
+                    english = _apply_english_fixes(
+                        fixes, c, num, eng.get(num, {}).get("text", ""))
                     records.append({"collection": c, "number": num, "arabic": h["text"],
-                                    "english": eng.get(num, {}).get("text", ""),
+                                    "english": english,
                                     "reference": h.get("reference", {})})
             return cls.from_records(records).entries
 

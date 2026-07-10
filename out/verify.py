@@ -135,6 +135,9 @@ def verify(md, quran_index=None, hadith_index=None):
 
     for raw, body in quran_blocks:
         q = _attrs(raw)
+        if "�" in body:
+            flagged.append("quran %s: U+FFFD replacement character in block body "
+                           "(damaged dataset English?) — review" % q.get("s", "?"))
         if q.get("tr") == "fallback" or q.get("s") == "0":
             flagged.append("quran fallback block (unmatched verse) — review")
             continue
@@ -158,6 +161,9 @@ def verify(md, quran_index=None, hadith_index=None):
         h = _attrs(raw)
         coll = h.get("coll", "")
         ref = "%s %s" % (coll, h.get("num", "?"))
+        if "�" in body:
+            flagged.append("hadith %s: U+FFFD replacement character in block body "
+                           "(damaged dataset English?) — review" % ref)
         is_fallback = h.get("src") == "fallback"
         # A fallback is text not in the bundled datasets (e.g. al-Darimi, Ahmad); its
         # collection may be unbundled or a placeholder, so it is a review flag, not an

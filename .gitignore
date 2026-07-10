@@ -11,8 +11,12 @@ venv/
 work/
 output/
 
-# Large downloaded datasets (~60MB, public-domain, re-created by scripts/setup_data.py)
-data/
+# Large downloaded datasets (~60MB, public-domain, re-created by scripts/setup_data.py).
+# data/* (not data/) so the negations below can re-include curated source files.
+data/*
 # ...but the curated master glossary IS source, not a download — keep it tracked.
 !data/glossary.json
 !data/glossary-seed-notes.md
+# ...as are the sign-off-gated dataset-English corrections and the download manifest.
+!data/english-fixes.json
+!data/MANIFEST.json

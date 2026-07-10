@@ -101,6 +101,13 @@ def test_hadith_cli_prefer_flag(tmp_path):
     assert r["collection"] == "nawawi"
 
 
+def test_hadith_cli_warns_on_ufffd_english(tmp_path):
+    matn = "من كان يؤمن بالله واليوم الاخر فليكرم ضيفه"
+    _write_hadith(tmp_path, "bukhari", 6019, matn, english="honor his g�est")
+    r = _run("retrieval.hadith_lookup", matn, tmp_path)
+    assert r["matched"] is True and "U+FFFD" in r["english_warning"]
+
+
 def test_hadith_cli_nearest_on_sub_threshold(tmp_path):
     """A weak overlap must not dead-end: matched:false carries the best candidate so
     the subagent can correct its reading instead of burning retries."""

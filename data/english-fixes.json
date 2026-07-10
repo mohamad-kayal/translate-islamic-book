@@ -1,0 +1,4 @@
+{
+  "_comment": "Sign-off-gated corrections to the bundled hadith datasets' English (OCR damage, typos). Applied verbatim (old -> new) when the index loads. NEVER add an entry without the user's explicit sign-off — propose candidates under 'English-fix proposals' in the book's review.md first (see SKILL.md, harvest step).",
+  "fixes": []
+}

@@ -26,7 +26,11 @@ def match(arabic_query, min_conf=0.6, prefer=None):
                 "nearest": {"collection": r["collection"], "number": r["number"],
                             "confidence": r["confidence"],
                             "arabic": r["arabic"][:200]}}
-    return dict(r, matched=True)
+    out = dict(r, matched=True)
+    if "�" in r["english"]:
+        out["english_warning"] = ("dataset English contains U+FFFD replacement "
+                                  "characters — paste verbatim and flag for review")
+    return out
 
 
 def main(argv=None):
