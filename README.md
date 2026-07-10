@@ -143,8 +143,7 @@ downloaded at setup, not committed):
 
 ## License
 
-No license is set yet. Before publishing, add a `LICENSE` file for the **code** — a permissive
-license such as [MIT](https://choosealicense.com/licenses/mit/) is a sensible default for a tool
-like this — and update this section. Whatever you choose applies only to the code here; it does
-**not** extend to the datasets, translations, fonts, or any source book processed with it, which
-retain their own licenses as noted above.
+The code is released under the [MIT License](LICENSE). It applies **only to the code** here — it
+does **not** extend to the datasets, translations, fonts (SIL OFL, see
+[`assets/fonts/`](assets/fonts/)), or any source book processed with this tool, which retain
+their own licenses as noted above.

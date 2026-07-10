@@ -127,9 +127,10 @@ section). Font attribution: confirm `assets/fonts/OFL.txt` covers Amiri AND Card
 lines; add per-family notices if not. Minimal `.github/workflows/tests.yml` (pytest,
 `-m "not integration"`, no dataset downloads). Hygiene: re-scan tracked files + full history for
 personal data / absolute paths / book content (today's scan: clean; nothing from `runs/` or
-datasets ever committed). Surface to the user, decision theirs: personal email in git history
-(`24418997+mohamad-kayal@users.noreply.github.com`) — keep, or rewrite history / switch to a noreply email before first
-push. `render_pdf.py`: verify Chrome discovery is overridable (env/flag) for non-macOS.
+datasets ever committed). Surface to the user, decision theirs: the author's personal email
+address sits in commit-author metadata — keep, or rewrite history / switch to a noreply email
+before first push. `render_pdf.py`: verify Chrome discovery is overridable (env/flag) for
+non-macOS.
 
 ### T11 — Ship checks
 Full suite green; `out.verify` re-run on all four books (expect: 0 problems, same flags + new
