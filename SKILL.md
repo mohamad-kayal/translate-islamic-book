@@ -83,12 +83,30 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
      re-dispatch the TRANSLATOR for it with the reviser's notes appended, then re-revise — one
      round only; if majors persist, put the chunk in review.md for the user.
    - Skip this step only when the user explicitly asks for a quick draft, and say so in review.md.
+   - **At scale (a whole book, or a batch of books = dozens+ of chunks), run this step as a
+     resumable Workflow instead of hand-dispatched waves** — a fleet of hand-launched background
+     agents does not survive a session/process interruption (a single blip strands every
+     in-flight agent), whereas a Workflow re-runs only what didn't finish. Pattern (see
+     `runs/_finish_book.py` for the re-render half): `pipeline(chunks, reviseStage, fixMajorsStage)`
+     — stage 1 = a Sonnet reviser per chunk with a structured `{slug,chunk,edits[],majors[],flags[]}`
+     schema that applies minor fixes in place; stage 2 = fire a translator ONLY when `majors` is
+     non-empty. Feed the chunk work-list via `args` (and **parse it defensively**: `const A =
+     typeof args === 'string' ? JSON.parse(args) : args` — the runtime may hand `args` back as a
+     JSON string). After the workflow lands, re-assemble + verify + lint + convert + render each
+     touched book (that is exactly what `runs/_finish_book.py <slug>` does).
 8. **Assemble.** `python -m out.assemble <book>/work/translated <book>/work/book.md
    --title "<English book title>" --author "<Author name>" --glossary <book>/work/glossary.json`.
    This strips chunk-seam page notes, inserts ayah numbers into multi-verse Quran blocks from the
    dataset (and drops stray ۞ division marks), and numbers hadith. `--glossary` appends a back-of-book
    Glossary appendix (terms only). Add `--no-hadith-numbers` when the book cites hadith inline as
    evidence (the common case) rather than as a numbered collection.
+   - **Front matter / credit.** `--matter --indexes --translator "<name>" --edition "…" --year "…"`
+     builds the cover + copyright + citation indexes. The copyright page carries a standing note —
+     *"This edition has not been fully verified against the Arabic source by a human and may contain
+     errors."* — emitted automatically by `front_matter()`; keep it (these are machine-assisted
+     translations). To re-render an already-built book with a corrected credit/disclaimer, just
+     re-run `runs/_finish_book.py <slug>` (it re-assembles with the standard flags, then
+     verify→lint→convert→render).
 9. **Verify + lint.** `python -m out.verify <book>/work/book.md` — checks marker refs AND that
    every quran/hadith Arabic body is verbatim dataset text (and flags U+FFFD damage in pasted
    English). `problems` = fix (usually re-run that chunk); `flagged` (fallback-sourced or

@@ -54,7 +54,9 @@ def front_matter(meta):
               "Qur'anic quotations are the Saheeh International translation; "
               "hadith are given in their published translations. All sacred "
               "text is retrieved verbatim from source datasets and "
-              "machine-verified, never machine-written.", ":::", ""]
+              "machine-verified, never machine-written.", "",
+              "This edition has not been fully verified against the Arabic "
+              "source by a human and may contain errors.", ":::", ""]
     return cover + half + "\n".join(lines) + "\n"
 
 
