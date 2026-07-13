@@ -894,9 +894,14 @@ $("#btnUndo").onclick=undo; $("#btnRedo").onclick=redo;
 $("#btnGloss").onclick=()=> $("#panel").classList.contains("show")?panelClose():panelOpen();
 $("#panelClose").onclick=panelClose; $("#scrim").onclick=panelClose;
 $("#btnBiling").onclick=()=>{
-  if(state.biling){ document.body.classList.toggle("biling");
-    $("#btnBiling").classList.toggle("on",document.body.classList.contains("biling")); render(); }
-  else $("#bilingInput").click();
+  if(state.biling){
+    const on=document.body.classList.toggle("biling");
+    $("#btnBiling").classList.toggle("on",on); render();
+    toast(on ? "Arabic source shown under each cue" : "Arabic source hidden");
+  } else {
+    toast("Pick this video's bilingual.md (from the run output) to show the Arabic source per cue");
+    $("#bilingInput").click();
+  }
 };
 $("#btnFind").onclick=()=>{ const f=$("#finder"); f.classList.toggle("open");
   $("#btnFind").classList.toggle("on",f.classList.contains("open"));
