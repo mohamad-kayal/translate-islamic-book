@@ -65,7 +65,8 @@ def lint_run(run_dir, master):
         result["problems"].append("segments not covered by any sentence: %s"
                                   % sorted(missing)[:20])
 
-    arabic_folded = " %s " % fold(" ".join(seg["text"] for seg in data["segments"]))
+    arabic_folded = " %s " % fold(" ".join(
+        seg["text"] for seg in data["segments"] if seg["i"] in covered))
     english = " ".join(" ".join(c["lines"]) for c in cues).lower()
     for ar, val in (master.get("terms") or {}).items():
         if " %s " % fold(ar) in arabic_folded:

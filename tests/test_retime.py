@@ -43,14 +43,17 @@ def test_no_marks_falls_back_to_spaces():
 
 
 def test_cues_tile_span_proportionally():
-    text = "aaaa aaaa | bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb"
-    cues, _ = sentence_cues(text, 100.0, 110.0)
+    # duration (12s > max_dur) forces the split; both pieces wrap fine, so the
+    # mark is used and time is allocated by character share (then capped at 7s)
+    text = "aaaa aaaa | bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb"
+    cues, _ = sentence_cues(text, 100.0, 112.0)
     assert cues[0]["start"] == pytest.approx(100.0)
-    assert cues[-1]["end"] == pytest.approx(110.0)
+    assert cues[-1]["end"] == pytest.approx(112.0)
     for a, b in zip(cues, cues[1:]):
         assert b["start"] == pytest.approx(a["end"])
-    # first chunk is much shorter than the second
+    # first chunk (far fewer chars) gets less time than the second
     assert cues[0]["end"] - cues[0]["start"] < cues[-1]["end"] - cues[-1]["start"]
+    assert all(c["end"] - c["start"] <= 7.0 + 1e-6 for c in cues)
 
 
 def test_min_duration_borrowing():
@@ -81,3 +84,30 @@ def test_wrap_lines_balanced_two():
 def test_wrap_lines_impossible_warns():
     lines = wrap_lines("x" * 60)
     assert lines == ["x" * 60]
+
+
+def test_split_chunks_all_wrap_within_limit():
+    # a clause the greedy splitter must not leave unwrappable (>42 with no balanced break)
+    text = "we seek His forgiveness for our sins and repent to Him | and we ask Allah for steadfastness"
+    cues, _ = sentence_cues(text, 0.0, 6.0)
+    for c in cues:
+        assert all(len(l) <= 42 for l in c["lines"]), c["lines"]
+
+
+def test_no_cue_exceeds_max_duration():
+    cues, _ = sentence_cues("short bit | some much longer clause is here", 0.0, 16.0)
+    assert all(c["end"] - c["start"] <= 7.0 + 1e-6 for c in cues)
+
+
+def test_real_pilot_block_meets_all_constraints():
+    import json, pathlib
+    fix = json.loads((pathlib.Path(__file__).parent / "fixtures" / "real_block0.json")
+                     .read_text(encoding="utf-8"))
+    segs = fix["segments"]
+    for s in fix["sentences"]:
+        a, b = s["segs"]
+        cues, _ = sentence_cues(s["en"], segs[a]["t0"], segs[b]["t1"])
+        for c in cues:
+            assert all(len(l) <= 42 for l in c["lines"]), (s["segs"], c["lines"])
+            assert len(c["lines"]) <= 2
+            assert c["end"] - c["start"] <= 7.0 + 1e-6, (s["segs"], c)

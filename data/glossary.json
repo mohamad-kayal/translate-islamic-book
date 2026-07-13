@@ -9,11 +9,17 @@
     "الصحابة": "the Companions",
     "النبي": "the Prophet ﷺ",
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
+    "رسول الله": "the Messenger of Allah",
     "فرعون": "Pharaoh (Fir'awn)",
+    "محمد": "Muhammad",
     "موسى": "Musa"
   },
   "style": "al- (no sun-letter assimilation); ' for ayn/hamza; no macrons; keep صلى الله عليه وسلم as ﷺ; term first use in a video: english (translit), short translit after",
   "terms": {
+    "إن شاء الله": {
+      "english": "in sha' Allah (God willing)",
+      "translit": "in sha' Allah"
+    },
     "الإصلاح": {
       "english": "reform",
       "translit": "islah"
@@ -49,6 +55,10 @@
     "السنن الإلهية": {
       "english": "the divine norms — God's unchanging ways",
       "translit": "al-sunan al-ilahiyyah"
+    },
+    "السيرة النبوية": {
+      "english": "the Prophetic biography",
+      "translit": "al-sirah al-nabawiyyah"
     },
     "الشرك": {
       "english": "associating partners with Allah",

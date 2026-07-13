@@ -67,6 +67,24 @@ def _split_positions(text, k, marks):
     return cuts
 
 
+def _cap_max_dur(spans, max_dur):
+    """Donate any span's excess over max_dur to the roomiest neighbor (fixpoint exists
+    whenever sum(spans) <= len(spans)*max_dur, which choosing k >= ceil(dur/max_dur) ensures)."""
+    for _ in range(len(spans) * 3):
+        over = [i for i, d in enumerate(spans) if d > max_dur + 1e-9]
+        if not over:
+            return True
+        i = over[0]
+        neighbors = [j for j in (i - 1, i + 1) if 0 <= j < len(spans) and spans[j] < max_dur]
+        if not neighbors:
+            return False
+        j = min(neighbors, key=lambda j: spans[j])
+        move = min(spans[i] - max_dur, max_dur - spans[j])
+        spans[i] -= move
+        spans[j] += move
+    return all(d <= max_dur + 1e-9 for d in spans)
+
+
 def _borrow_min_dur(spans, min_dur):
     """spans: mutable list of durations tiling the sentence span."""
     for _ in range(len(spans) * 2):
@@ -96,14 +114,13 @@ def sentence_cues(en_marked, t0, t1, max_cps=MAX_CPS, max_line=MAX_LINE,
         warnings.append("reading speed %.1f cps exceeds %.0f (span %.2fs, %d chars)"
                         % (cps(text, dur), max_cps, dur, len(text)))
 
-    per_cue = max_line * max_lines
-    if len(text) <= per_cue and dur <= max_dur:
-        lines = wrap_lines(text, max_line, max_lines)
-        if any(len(l) > max_line for l in lines):
-            warnings.append("unbreakable overlong line: %r" % text[:50])
-        return [{"start": t0, "end": t1, "lines": lines}], warnings
+    def _wraps(chunk):
+        return all(len(l) <= max_line for l in wrap_lines(chunk, max_line, max_lines))
 
-    k = max(math.ceil(len(text) / per_cue), math.ceil(dur / max_dur))
+    per_cue = max_line * max_lines
+    if dur <= max_dur and _wraps(text):
+        return [{"start": t0, "end": t1, "lines": wrap_lines(text, max_line, max_lines)}], warnings
+
     # char positions in `text` where a piece boundary's separating space sits
     marks = []
     pos = 0
@@ -111,17 +128,29 @@ def sentence_cues(en_marked, t0, t1, max_cps=MAX_CPS, max_line=MAX_LINE,
         pos += len(piece)
         marks.append(pos)  # index of the joining space
         pos += 1
-    cuts = _split_positions(text, k, marks)
-    chunks = []
-    prev = 0
-    for c in cuts:
-        chunks.append(text[prev:c].strip())
-        prev = c + 1
-    chunks.append(text[prev:].strip())
-    chunks = [c for c in chunks if c]
+    k = max(math.ceil(len(text) / per_cue), math.ceil(dur / max_dur), 1)
+    max_k = text.count(" ") + 1
+    while True:
+        cuts = _split_positions(text, k, marks)
+        chunks = []
+        prev = 0
+        for c in cuts:
+            chunks.append(text[prev:c].strip())
+            prev = c + 1
+        chunks.append(text[prev:].strip())
+        chunks = [c for c in chunks if c]
+        if all(_wraps(c) for c in chunks) or k >= max_k:
+            break
+        k += 1
+    for chunk in chunks:
+        if not _wraps(chunk):
+            warnings.append("unbreakable overlong line: %r" % chunk[:50])
 
     total = float(sum(len(c) for c in chunks))
     spans = [dur * len(c) / total for c in chunks]
+    if not _cap_max_dur(spans, max_dur):
+        warnings.append("could not keep every cue under %.1fs (span %.2fs, %d cues)"
+                        % (max_dur, dur, len(chunks)))
     if not _borrow_min_dur(spans, min_dur):
         warnings.append("could not keep every cue above %.1fs (span %.2fs, %d cues)"
                         % (min_dur, dur, len(chunks)))
@@ -129,9 +158,6 @@ def sentence_cues(en_marked, t0, t1, max_cps=MAX_CPS, max_line=MAX_LINE,
     t = t0
     for i, (chunk, d) in enumerate(zip(chunks, spans)):
         end = t1 if i == len(chunks) - 1 else t + d
-        lines = wrap_lines(chunk, max_line, max_lines)
-        if any(len(l) > max_line for l in lines):
-            warnings.append("unbreakable overlong line: %r" % chunk[:50])
-        cues.append({"start": t, "end": end, "lines": lines})
+        cues.append({"start": t, "end": end, "lines": wrap_lines(chunk, max_line, max_lines)})
         t = end
     return cues, warnings
