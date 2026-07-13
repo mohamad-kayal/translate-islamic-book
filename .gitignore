@@ -1,0 +1,7 @@
+runs/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+data/quran/
+data/hadith/
