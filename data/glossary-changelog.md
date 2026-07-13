@@ -7,3 +7,147 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: محمد → Muhammad
 - names: رسول الله → the Messenger of Allah
 - terms: إن شاء الله → in sha' Allah, in sha' Allah (God willing)
+
+## 2026-07-13 — sirah-01
+- names: ابن هشام → Ibn Hisham
+- terms: سيرة ابن هشام → Sirat Ibn Hisham, Ibn Hisham's Sirah
+- terms: سيرة رسول الله → Sirat Rasul Allah, The Biography of the Messenger of Allah ﷺ
+- terms: أبجديات الثقافة → Abjadiyyat al-Thaqafah, The ABCs of Culture
+- terms: السيرة النبوية للمصلحين → al-Sirah al-Nabawiyyah lil-Muslihin, The Prophetic Biography for Reformers
+- terms: الفقه → fiqh, fiqh
+- terms: أصول الفقه → usul al-fiqh, the principles of jurisprudence
+- names: الشافعي → al-Shafi'i
+- terms: الرسالة → al-Risalah, al-Risalah
+- terms: السيرة → sirah, the Prophetic biography
+- names: ابن إسحاق → Ibn Ishaq
+- names: الطبري → al-Tabari
+- terms: تفسير الطبري → Tafsir al-Tabari, the Tafsir of al-Tabari
+- terms: التفسير → tafsir, Qur'anic exegesis
+- terms: المفسرون → mufassirun, the exegetes
+- terms: السنة → al-sunnah, the Sunnah
+- terms: غزوة بدر → Ghazwat Badr, the Battle of Badr
+- terms: سورة يوسف → Surat Yusuf, Surah Yusuf
+- terms: سورة الأنفال → Surat al-Anfal, Surat al-Anfal
+- names: عبادة بن الصامت → 'Ubada ibn al-Samit
+- names: قريش → Quraysh
+- names: حمزة → Hamzah (a student present)
+- terms: سيرة ابن إسحاق → Sirat Ibn Ishaq, the sirah of Ibn Ishaq
+- names: زياد بن عبد الله البكائي → Ziyad ibn 'Abdullah al-Bakka'i
+- terms: غريب → gharib, rare and obscure wording (gharib)
+- names: الزهري → Imam al-Zuhri
+- names: عاصم بن عمر بن قتادة → 'Asim ibn 'Umar ibn Qatadah
+- terms: التابعون → tabi'in, the Successors
+- terms: إسناد → isnad, chain of transmission
+- terms: تهذيب → tahdhib, refinement
+- terms: مجاهيل → majahil, unknown narrators
+- names: الأنصار → the Ansar
+- names: ابن سعد → Ibn Sa'd
+- names: الواقدي → al-Waqidi
+- terms: مسند → musnad, with full chains of transmission (musnad)
+- terms: البداية والنهاية → al-Bidayah wa-l-Nihayah, al-Bidayah wa-l-Nihayah
+- terms: الطبقات الكبرى → al-Tabaqat al-Kubra, al-Tabaqat al-Kubra
+- terms: خير القرون → Khayr al-Qurun, Khayr al-Qurun (the speaker's earlier lecture series)
+- names: عمر بن الخطاب → 'Umar ibn al-Khattab
+- names: عبد الله بن مسعود → 'Abdullah ibn Mas'ud
+- names: الكعبة → the Ka'bah
+- names: الحبشة → Abyssinia
+- names: يزيد بن رومان → Yazid ibn Ruman
+- names: عروة بن الزبير → 'Urwah ibn al-Zubayr
+- names: بنو أسد → Banu Asad
+- terms: البعثة → bi'thah, the prophetic mission
+- terms: المستهزئون → al-mustahzi'un, the mockers
+- names: الخزرج → the Khazraj
+- names: العقبة → al-'Aqabah
+- names: الوليد بن المغيرة → al-Walid ibn al-Mughirah
+- names: العاص بن وائل → al-'As ibn Wa'il
+- terms: علم العلل → 'ilm al-'ilal, the science of hidden defects ('ilal)
+- names: ابن كثير → Ibn Kathir
+- names: الإمام أحمد → Imam Ahmad
+- names: المدينة → Madinah
+- terms: زاد المعاد → Zad al-Ma'ad, Zad al-Ma'ad
+- terms: الطبقات → al-Tabaqat, al-Tabaqat (of Ibn Sa'd)
+- terms: الإرهاصات → irhasat, the precursor signs of prophethood
+- terms: حادثة الفيل → hadithat al-fil, the incident of the Elephant
+- terms: خليل الرحمن → Khalil al-Rahman, the intimate friend of the Most Merciful
+- terms: حدثنا → haddathana, 'he narrated to us' (hadith transmission formula)
+- names: آمنة بنت وهب → Aminah bint Wahb
+- names: حواء → Hawwa' (Eve)
+- names: إدريس → Idris
+- names: نوح → Nuh
+- names: إسماعيل → Isma'il
+- names: آدم → Adam
+- names: قصي → Qusayy
+- terms: الأنساب → ansab, genealogies (ansab)
+- names: بنو أمية → Banu Umayyah
+- names: عثمان بن عفان → 'Uthman ibn 'Affan
+- names: رقية بنت رسول الله → Ruqayyah, daughter of the Messenger of Allah ﷺ
+- names: أبو حذيفة بن عتبة → Abu Hudhayfah ibn 'Utbah
+- names: سهلة بنت سهيل → Sahlah bint Suhayl
+- names: الزبير بن العوام → al-Zubayr ibn al-'Awwam
+- terms: الفواطم والعواتك → al-Fawatim wa-l-'Awatik, the Fatimahs and the 'Awatik
+- terms: الروض الأنف والمشرع الروى في تفسير ما اشتمل عليه حديث السيرة واحتوى → al-Rawd al-Unuf wa-l-Mashra' al-Rawa fi Tafsir ma Ishtamala 'alayhi Hadith al-Sirah wa-Htawa, al-Rawd al-Unuf (The Untrodden Meadow and the Quenching Spring: Explaining What the Narrative of the Sirah Contains and Comprises)
+- names: أبو القاسم السهيلي → Abu al-Qasim al-Suhayli
+- names: محمد بن إسحاق المطلبي → Muhammad ibn Ishaq al-Muttalibi
+- names: عبد الملك بن هشام المعافري → 'Abd al-Malik ibn Hisham al-Mu'afiri
+- names: عبد الرحمن بن عوف → 'Abd al-Rahman ibn 'Awf
+- names: أبو سلمة بن عبد الأسد → Abu Salamah ibn 'Abd al-Asad
+- names: مصعب بن عمير → Mus'ab ibn 'Umayr
+- terms: الله المستعان → Allah al-musta'an, Allah is the One whose help is sought
+- names: السهيلي → al-Suhayli
+- names: أبو القاسم → Abu al-Qasim
+- names: محمد بن إسحاق → Muhammad ibn Ishaq
+- names: ابن حزم → Ibn Hazm
+- terms: البناء المنهجي → al-Bina' al-Manhaji, al-Bina' al-Manhaji (educational program)
+- terms: البناء الفكري → al-Bina' al-Fikri, al-Bina' al-Fikri (educational program)
+- terms: الهدي النبوي → al-hady al-nabawi, the Prophetic guidance
+- terms: الجواب الصحيح لمن بدل دين المسيح → al-Jawab al-Sahih li-man baddala din al-Masih, al-Jawab al-Sahih li-man baddala din al-Masih
+- terms: دلائل النبوة → dala'il al-nubuwwah, the proofs of prophethood
+- terms: كرامات → karamat, wondrous deeds (karamat)
+- terms: الأمة → ummah, ummah
+- names: الصفا → al-Safa
+- names: سورة المؤمنون → Surat al-Mu'minun
+- terms: الروض الأنف → al-Rawd al-Unuf, al-Rawd al-Unuf
+- terms: تهذيب سيرة ابن هشام → Tahdhib Sirat Ibn Hisham, the abridgment of Sirat Ibn Hisham
+- names: عبد السلام هارون → 'Abd al-Salam Harun
+- terms: بذل القوة في حوادث سني النبوة → Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah, Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah
+- names: محمد هاشم بن عبد الغفور السندي الحنفي → Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi
+- terms: المغازي → maghazi, the military expeditions
+- terms: السرايا → saraya, raiding parties
+- terms: الهجرة → hijrah, the emigration
+- terms: أم المؤمنين → Umm al-Mu'minin, the Mother of the Believers
+- terms: بيعة العقبة → bay'at al-'Aqabah, the Pledge of al-'Aqabah
+- names: خديجة → Khadijah
+- names: الزرقاني → al-Zurqani
+- names: أبو بكر الصديق → Abu Bakr al-Siddiq
+- names: علي بن أبي طالب → 'Ali ibn Abi Talib
+- names: فاطمة بنت الخطاب → Fatimah bint al-Khattab
+- names: عامر بن فهيرة → 'Amir ibn Fuhayrah
+- names: زينب → Zaynab
+- names: رقية → Ruqayyah
+- names: أم كلثوم → Umm Kulthum
+- names: زيد → Zayd
+- terms: المواهب اللدنية → al-Mawahib al-Laduniyyah, al-Mawahib (al-Zurqani's commentary on it)
+- terms: السيرة الشامية → al-Sirah al-Shamiyyah, al-Sirah al-Shamiyyah
+- terms: الكتب الستة → al-kutub al-sittah, the Six Books
+- names: غزوة تبوك → the expedition of Tabuk
+- names: عمر → 'Umar
+- names: حسام عبد الله حمشو → Husam 'Abdullah Hamshu
+- terms: السيرة النبوية من خلال الكتب الستة دراسة معاصرة → al-Sirah al-Nabawiyyah min khilal al-Kutub al-Sittah: Dirasah Mu'asirah, The Prophetic Biography Through the Six Books: A Contemporary Study
+- names: أبو بكر → Abu Bakr
+- terms: التوكل → tawakkul, reliance
+- names: مكة → Makkah
+- names: بدر → Badr
+- names: أحد → Uhud
+- names: الخندق → the Trench (al-Khandaq)
+- names: سورة الأنعام → Surat al-An'am
+- terms: المشركون → al-mushrikun, the polytheists
+- terms: الهجرة إلى الحبشة → al-hijrah ila al-Habashah, the migration to Abyssinia
+- terms: الإسراء والمعراج → al-Isra' wal-Mi'raj, the Isra' and Mi'raj (the Night Journey and Ascension)
+- terms: عام الحزن → 'am al-huzn, the Year of Sorrow
+- names: دار الأرقم → Dar al-Arqam
+- names: هود → Hud
+- names: يوسف → Yusuf
+- terms: غيث الساري → Ghayth al-Sari, Ghayth al-Sari
+- terms: الشمائل → shama'il, the noble qualities (shama'il)
+- terms: الوسيلة → al-wasilah, the highest station
+- terms: المقام المحمود → maqam mahmud, the praised station
