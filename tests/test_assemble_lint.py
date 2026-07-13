@@ -93,6 +93,42 @@ def test_lint_run_clean_and_coverage(tmp_path):
     assert r["problems"] == []
 
 
+def test_lint_warnings_carry_timestamps():
+    fast = [{"start": 65.0, "end": 66.0,
+             "lines": ["this is far too much text to read in one second"]}]
+    assert any(w.startswith("[01:05]") for w in lint_cues(fast)["warnings"])
+
+
+def test_assemble_warnings_carry_timestamps(tmp_path):
+    run = _make_run(tmp_path)
+    bf = run / "work" / "translated" / "block_000.json"
+    payload = json.loads(bf.read_text(encoding="utf-8"))
+    payload["sentences"][1]["en"] = " | ".join(["far too many words to read here"] * 5)
+    bf.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    stats = assemble(run)
+    speed = [w for w in stats["warnings"] if "reading speed" in w]
+    assert speed and all(w.startswith("[00:04]") for w in speed)
+
+
+def test_assemble_italics_scripture(tmp_path):
+    run = _make_run(tmp_path)
+    stats = assemble(run, italics=True)
+    out = (run / "output" / "sirah-01.en.srt").read_text(encoding="utf-8")
+    assert "<i>Praise be to Allah, Lord of the worlds</i>" in out   # quran cue
+    assert "<i>and He is the One" not in out            # prose untouched
+    assert stats["cues"] >= 2
+
+    assemble(run)  # default stays tag-free
+    out = (run / "output" / "sirah-01.en.srt").read_text(encoding="utf-8")
+    assert "<i>" not in out
+
+
+def test_lint_measures_visible_text_not_italic_tags():
+    line = "<i>%s</i>" % ("x" * 40)                     # 47 raw chars, 40 visible
+    r = lint_cues([{"start": 0.0, "end": 6.0, "lines": [line]}])
+    assert r["problems"] == [] and r["warnings"] == []
+
+
 def test_lint_run_glossary_drift(tmp_path):
     run = _make_run(tmp_path)
     assemble(run)

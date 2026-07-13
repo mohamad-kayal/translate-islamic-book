@@ -14,21 +14,55 @@ import pathlib
 import sys
 
 from subs.assemble import validate_tiling
-from subs.glossary import subset_for
+from subs.glossary import fold, subset_for
 
 MASTER = "data/glossary.json"
+LOOKAHEAD_SEGS = 5
 
 
 def _load(run_dir):
     return json.loads((pathlib.Path(run_dir) / "work" / "blocks.json").read_text(encoding="utf-8"))
 
 
+def _lookahead(data, n):
+    """The next block's opening speech — lets a translator close a sentence the block cuts."""
+    if n + 1 >= len(data["blocks"]):
+        return ""
+    nxt = data["blocks"][n + 1]
+    segs = data["segments"][nxt["s0"]:nxt["s1"] + 1][:LOOKAHEAD_SEGS]
+    return " ".join(s["text"] for s in segs)
+
+
+def _provisional_terms(run_dir, n, block_text, subset):
+    """new_terms coined by already-translated sibling blocks that recur in this block's text."""
+    known = {fold(k) for section in ("terms", "names", "works")
+             for k in (subset.get(section) or {})}
+    folded_text = " %s " % fold(block_text)
+    out, seen = [], set()
+    for f in sorted((pathlib.Path(run_dir) / "work" / "translated").glob("block_*.json")):
+        if f.name == "block_%03d.json" % n:
+            continue
+        try:
+            payload = json.loads(f.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        for t in payload.get("new_terms") or []:
+            key = fold(t.get("ar", ""))
+            if not key or key in known or key in seen:
+                continue
+            if " %s " % key in folded_text:
+                out.append(t)
+                seen.add(key)
+    return out
+
+
 def show(run_dir, n, master_path):
     data = _load(run_dir)
     block = data["blocks"][n]
     segs = data["segments"][block["s0"]:block["s1"] + 1]
+    block_text = " ".join(s["text"] for s in segs)
     master = json.loads(pathlib.Path(master_path).read_text(encoding="utf-8"))
-    subset = subset_for(" ".join(s["text"] for s in segs), master)
+    subset = subset_for(block_text, master)
     out = ["BLOCK %d of %s — segments %d..%d (inclusive), %d segments"
            % (n, run_dir, block["s0"], block["s1"], len(segs)),
            "OUTPUT FILE: %s/work/translated/block_%03d.json" % (run_dir, n), ""]
@@ -36,9 +70,21 @@ def show(run_dir, n, master_path):
         out.append("CONTEXT (previous speech, for continuity only — do NOT translate):")
         out.append(block["context"])
         out.append("")
+    lookahead = _lookahead(data, n)
+    if lookahead:
+        out.append("LOOKAHEAD (start of the NEXT block — use it to close a sentence this "
+                   "block cuts off; do NOT translate it):")
+        out.append(lookahead)
+        out.append("")
     out.append("GLOSSARY (use these exact renderings):")
     out.append(json.dumps(subset, ensure_ascii=False, indent=2))
     out.append("")
+    provisional = _provisional_terms(run_dir, n, block_text, subset)
+    if provisional:
+        out.append("PROVISIONAL RENDERINGS (coined earlier in this lecture — reuse them "
+                   "unless clearly wrong; no need to re-report in new_terms):")
+        out.append(json.dumps(provisional, ensure_ascii=False, indent=2))
+        out.append("")
     out.append("SEGMENTS [index|spoken-duration]:")
     for s in segs:
         out.append("[%d|%.1fs] %s" % (s["i"], s["t1"] - s["t0"], s["text"]))

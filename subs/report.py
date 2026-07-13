@@ -2,6 +2,8 @@
 import json
 import pathlib
 
+from subs.srt_io import mmss as _mmss
+
 
 def _load_run(run_dir):
     run_dir = pathlib.Path(run_dir)
@@ -10,12 +12,6 @@ def _load_run(run_dir):
     for f in sorted((run_dir / "work" / "translated").glob("block_*.json")):
         sentences.extend(json.loads(f.read_text(encoding="utf-8"))["sentences"])
     return data["segments"], sentences
-
-
-def _mmss(sec):
-    m, s = divmod(int(sec), 60)
-    h, m = divmod(m, 60)
-    return "%d:%02d:%02d" % (h, m, s) if h else "%02d:%02d" % (m, s)
 
 
 def write_bilingual(run_dir):

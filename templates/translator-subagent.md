@@ -6,7 +6,9 @@ subtitle sentences. You are given the run directory and your block number. Start
     python -m scripts.block_brief show <run> --block <N>
 
 It prints your numbered proto-segments `[index|duration] text`, the previous speech as CONTEXT
-(never translate it), the GLOSSARY subset you must follow, and your OUTPUT FILE path.
+(never translate it), a LOOKAHEAD of the next block's opening (when one exists — also never
+translated), the GLOSSARY subset you must follow (plus PROVISIONAL renderings coined earlier
+in this lecture, when any — reuse them, don't re-report them), and your OUTPUT FILE path.
 
 The captions are unpunctuated ASR text: ta marbuta may appear as ه, hamza may be dropped, and a
 word is occasionally misheard — read for meaning, and flag (don't guess silently) anything you
@@ -51,6 +53,14 @@ Write JSON to the OUTPUT FILE (Write tool) with exactly this shape:
   رضي الله عنه/عنها → "(RA)". Never drop one the speaker said.
 - **`new_terms`**: recurring Islamic terms, proper nouns, or cited work titles you rendered
   that were NOT in your glossary subset. Report each once with the rendering you used.
+- **Block boundaries:** blocks are cut on pauses, not sentence ends. If your block OPENS
+  mid-sentence (CONTEXT shows how it started), translate your part as a natural continuation.
+  If it ENDS mid-sentence, use LOOKAHEAD to see where the thought goes and shape your final
+  sentence to hand off cleanly; only when the continuation is truly unguessable end with " —"
+  and add a `"boundary"` flag.
+- **Speaker changes:** a student/audience reply is rendered inside the flow — set it off with
+  a leading dash (`— Badr. — Good.`) or fold a short back-and-forth into the question. Flag
+  only when who-is-speaking is genuinely unclear.
 
 ## Qur'an and hadith — never translate from memory
 

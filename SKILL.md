@@ -36,9 +36,11 @@ yt-dlp --version                        # only needed for the URL input path
    (URL → yt-dlp json3 word timings; .srt/.vtt → tolerant parse + rolling-overlap flattening).
    Prints `words/segments/blocks/duration`. Sanity-check: duration ≈ video length; skim the
    first segments of `runs/<slug>/work/blocks.json` for garbage.
-2. **Prime** — read `data/glossary.json`; if the video is part of a series with established
-   conventions, note them in `runs/<slug>/work/DISPATCH.md` (speaker, series title, recurring
-   works). Optional; the glossary subset is injected automatically per block.
+2. **Prime** — read `data/glossary.json`; then check `data/series/` for this series' notes
+   file (e.g. `data/series/sirah.md` for `sirah-NN` runs) and fold it into
+   `runs/<slug>/work/DISPATCH.md`. New series → start a notes file (speaker, series title,
+   format, coined renderings). The glossary subset is injected automatically per block;
+   series notes carry what the glossary can't.
 3. **Pilot** — dispatch ONE translator subagent (Agent tool, `run_in_background: false`) for
    block 0 with a prompt of this shape (adding DISPATCH.md to the reading list when it exists):
 
@@ -66,15 +68,19 @@ yt-dlp --version                        # only needed for the URL input path
    for that block, then re-revise it). At whole-lecture scale run this as a Workflow too
    (see **Scale**).
 7. **Finish** — `python -m scripts.finish_run runs/<slug>` (assemble → lint → harvest →
-   review.md + bilingual.md; also refreshes `editor/glossary.json` so the editor app always
-   auto-loads the current glossary). Lint problems = fix and re-run (usually a subagent left
-   Arabic in `en`, or tiling broke during revision). Then commit the glossary growth:
-   `git add data/glossary.json data/glossary-changelog.md editor/glossary.json && git commit
-   -m "glossary: <slug>"`.
+   review.md + bilingual.md; also copies `glossary.json`, this run's `bilingual.md` and
+   `.en.srt` into `editor/` so the editor app auto-loads them when served). Add `--italics`
+   if the user wants quran/hadith cues wrapped in `<i>` tags (standard subtitle convention;
+   ask once per series and note the answer in the series file). Lint problems = fix and
+   re-run (usually a subagent left Arabic in `en`, or tiling broke during revision). Then
+   update `data/series/<series>.md` (new episode line + any renderings coined this run) and
+   commit: `git add data/glossary.json data/glossary-changelog.md editor/glossary.json
+   data/series/ && git commit -m "glossary: <slug>"`.
 8. **Deliver + sign-off** — give the user `runs/<slug>/output/<slug>.en.srt`, walk them
-   through `review.md` (scripture fallbacks, flags, CPS residuals, glossary conflicts).
-   Conflicts they accept: `python -m scripts.glossary resolve runs/<slug> --accept <ar1,ar2>`
-   (+ commit).
+   through `review.md` (scripture fallbacks, flags, CPS residuals — all timestamped,
+   glossary conflicts). For proofing, offer the editor: `python3 -m http.server 8777` from
+   `editor/` auto-loads the current glossary + this run's bilingual review. Conflicts they
+   accept: `python -m scripts.glossary resolve runs/<slug> --accept <ar1,ar2>` (+ commit).
 
 ## Scale — big jobs run as a resumable Workflow
 
@@ -106,5 +112,6 @@ says where the run stopped and why.
 `subs/` pipeline package (srt_io, timeline, segment, retime, assemble, lint, glossary, report)
 · `scripts/` CLIs (ingest_video, block_brief, run_status, glossary, finish_run, setup_data) ·
 `retrieval/` Qur'an+hadith lookup (vendored from translate-islamic-book) · `templates/`
-subagent briefs · `data/` master glossary + changelog + datasets · `tests/` pytest (must stay
-green) · `editor/` the mobile SRT editor web app (separate sub-project).
+subagent briefs · `data/` master glossary + changelog + datasets + `series/` per-series
+conventions · `tests/` pytest (must stay green) · `editor/` the mobile SRT editor web app
+(separate sub-project).

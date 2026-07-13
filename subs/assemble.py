@@ -7,7 +7,7 @@ import json
 import pathlib
 
 from subs.retime import sentence_cues
-from subs.srt_io import compose_srt
+from subs.srt_io import compose_srt, mmss
 
 
 def validate_tiling(block, sentences):
@@ -46,7 +46,7 @@ def load_translated(run_dir):
     return data["segments"], out
 
 
-def assemble(run_dir):
+def assemble(run_dir, italics=False):
     run_dir = pathlib.Path(run_dir)
     segments, translated = load_translated(run_dir)
     cues, warnings = [], []
@@ -59,8 +59,11 @@ def assemble(run_dir):
             a, b = s["segs"]
             t0, t1 = segments[a]["t0"], segments[b]["t1"]
             sent_cues, sent_warnings = sentence_cues(s["en"], t0, t1)
+            if italics and s.get("type") in ("quran", "hadith"):
+                for cue in sent_cues:
+                    cue["lines"] = ["<i>%s</i>" % l for l in cue["lines"]]
             cues.extend(sent_cues)
-            warnings.extend(sent_warnings)
+            warnings.extend("[%s] %s" % (mmss(t0), w) for w in sent_warnings)
             stats["sentences"] += 1
             if s.get("type") in ("quran", "hadith"):
                 stats[s["type"]] += 1

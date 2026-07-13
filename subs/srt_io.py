@@ -27,6 +27,13 @@ def fmt_ts(sec):
     return "%02d:%02d:%02d,%03d" % (h, mi, s, ms)
 
 
+def mmss(sec):
+    """Human display time for review docs and warnings ([mm:ss], hours when needed)."""
+    m, s = divmod(int(sec), 60)
+    h, m = divmod(m, 60)
+    return "%d:%02d:%02d" % (h, m, s) if h else "%02d:%02d" % (m, s)
+
+
 def _blocks(text):
     text = text.lstrip("﻿").replace("\r\n", "\n").replace("\r", "\n")
     return [b for b in re.split(r"\n{2,}", text) if b.strip()]

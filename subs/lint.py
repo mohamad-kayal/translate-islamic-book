@@ -8,17 +8,21 @@ import re
 
 from subs.glossary import fold
 from subs.retime import MAX_CPS, MAX_DUR, MAX_LINE, MAX_LINES, cps
-from subs.srt_io import parse_srt
+from subs.srt_io import mmss, parse_srt
 
 _ARABIC = re.compile("[؀-ۿݐ-ݿ]")
+_ITALIC_TAG = re.compile(r"</?i>")
 
 
 def lint_cues(cues):
     problems, warnings = [], []
     for i, cue in enumerate(cues, 1):
-        lines = cue.get("lines") or cue.get("text", "").split("\n")
+        # measure what the viewer reads, not the markup
+        lines = [_ITALIC_TAG.sub("", l)
+                 for l in (cue.get("lines") or cue.get("text", "").split("\n"))]
         text = " ".join(lines)
         dur = cue["end"] - cue["start"]
+        at = mmss(cue["start"])
         if dur <= 0:
             problems.append("cue %d: non-positive duration" % i)
         if dur > MAX_DUR + 1e-6:
@@ -29,9 +33,9 @@ def lint_cues(cues):
             if len(line) > MAX_LINE:
                 problems.append("cue %d: line exceeds %d chars: %r" % (i, MAX_LINE, line[:50]))
         if cps(text, dur) > MAX_CPS:
-            warnings.append("cue %d: reading speed %.1f cps" % (i, cps(text, dur)))
+            warnings.append("[%s] cue %d: reading speed %.1f cps" % (at, i, cps(text, dur)))
         if dur < 0.5:
-            warnings.append("cue %d: very short (%.2fs)" % (i, dur))
+            warnings.append("[%s] cue %d: very short (%.2fs)" % (at, i, dur))
         if _ARABIC.search(text):
             problems.append("cue %d: leftover Arabic characters: %r" % (i, text[:50]))
     for i, (a, b) in enumerate(zip(cues, cues[1:]), 1):

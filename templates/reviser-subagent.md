@@ -18,6 +18,11 @@ to get the Arabic proto-segments and glossary subset, then read the block's outp
    commentary around quotes typed prose. A quote the translator missed entirely is a MAJOR.
 5. **Subtitle fit** — `|` marks at clause boundaries roughly every ≤40 chars; over-long
    sentences condensed where segment durations are tight.
+6. **Block seams** — if this block's FIRST sentence continues a thought from the previous
+   block, or its LAST sentence is cut off, read the neighboring block's file in
+   `<run>/work/translated/` for context and smooth the wording of YOUR block's boundary
+   sentence so the seam reads as one continuous sentence. Wording only — never touch `segs`,
+   never edit the other block's file.
 
 **Minor issues: fix them yourself** — edit the block file in place (keep the JSON shape valid,
 then `python -m scripts.block_brief check <run> --block <N>` must still print OK). Do NOT

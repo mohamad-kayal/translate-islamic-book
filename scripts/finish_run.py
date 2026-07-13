@@ -17,17 +17,24 @@ from subs.lint import lint_run
 from subs.report import write_bilingual, write_review
 
 
-def _sync_editor_glossary(master_path):
-    """Keep the editor's auto-loaded glossary copy current with the master.
+def sync_editor_outputs(run_dir, master_path, editor_dir="editor"):
+    """Keep the editor's auto-loaded copies current: glossary.json + this run's
+    bilingual.md and .en.srt land next to index.html (all gitignored except glossary).
 
     Only runs for the real master (data/glossary.json) so tests passing a temp --master
-    never clobber the shipped editor/glossary.json.
+    never clobber the shipped editor/ copies.
     """
     if pathlib.Path(master_path).resolve() != pathlib.Path("data/glossary.json").resolve():
         return
-    editor_dir = pathlib.Path("editor")
-    if editor_dir.is_dir():
-        shutil.copyfile(master_path, editor_dir / "glossary.json")
+    editor_dir = pathlib.Path(editor_dir)
+    if not editor_dir.is_dir():
+        return
+    shutil.copyfile(master_path, editor_dir / "glossary.json")
+    run_dir = pathlib.Path(run_dir)
+    for f in (run_dir / "output" / ("%s.en.srt" % run_dir.name),
+              run_dir / "output" / "bilingual.md"):
+        if f.exists():
+            shutil.copyfile(f, editor_dir / f.name)
 
 
 def main():
@@ -35,15 +42,17 @@ def main():
     ap.add_argument("run")
     ap.add_argument("--master", default="data/glossary.json")
     ap.add_argument("--changelog", default="data/glossary-changelog.md")
+    ap.add_argument("--italics", action="store_true",
+                    help="wrap quran/hadith cues in <i> tags in the exported SRT")
     args = ap.parse_args()
 
-    stats = assemble(args.run)
+    stats = assemble(args.run, italics=args.italics)
     master = json.loads(pathlib.Path(args.master).read_text(encoding="utf-8"))
     lint_result = lint_run(args.run, master)
     harvest_result = harvest(args.run, args.master, args.changelog)
     write_review(args.run, stats, harvest_result, lint_result)
     write_bilingual(args.run)
-    _sync_editor_glossary(args.master)
+    sync_editor_outputs(args.run, args.master)
 
     print("cues: %(cues)d · sentences: %(sentences)d · quran: %(quran)d · "
           "hadith: %(hadith)d · fallbacks: %(fallbacks)d" % stats)
