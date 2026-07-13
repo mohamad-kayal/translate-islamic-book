@@ -5,36 +5,35 @@ import sys
 from scripts.run_status import chunk_state, gate_verdict
 
 
-def _work(tmp_path, n_chunks, done):
+def _work(tmp_path, n_blocks, done):
     work = tmp_path / "work"
     (work / "translated").mkdir(parents=True)
-    chunks = [{"sections": ["S%d" % i], "start_page": i, "end_page": i}
-              for i in range(1, n_chunks + 1)]
-    (work / "chunks.json").write_text(json.dumps(chunks))
+    blocks = [{"n": i, "s0": i, "s1": i, "context": ""} for i in range(n_blocks)]
+    (work / "blocks.json").write_text(json.dumps({"segments": [], "blocks": blocks}))
     for i in done:
-        (work / "translated" / ("chunk_%04d.md" % i)).write_text("# translated\n")
+        (work / "translated" / ("block_%03d.json" % i)).write_text("{}\n")
     return str(work)
 
 
 def test_chunk_state_partial(tmp_path):
-    assert chunk_state(_work(tmp_path, 4, done=[1, 3])) == {
-        "total": 4, "done": [1, 3], "missing": [2, 4]}
+    assert chunk_state(_work(tmp_path, 4, done=[0, 2])) == {
+        "total": 4, "done": [0, 2], "missing": [1, 3]}
 
 
 def test_chunk_state_complete(tmp_path):
-    state = chunk_state(_work(tmp_path, 2, done=[1, 2]))
-    assert state["missing"] == [] and state["done"] == [1, 2]
+    state = chunk_state(_work(tmp_path, 2, done=[0, 1]))
+    assert state["missing"] == [] and state["done"] == [0, 1]
 
 
 def test_chunk_state_nothing_translated_yet(tmp_path):
     state = chunk_state(_work(tmp_path, 3, done=[]))
-    assert state["done"] == [] and state["missing"] == [1, 2, 3]
+    assert state["done"] == [] and state["missing"] == [0, 1, 2]
 
 
 def test_chunk_state_empty_file_counts_as_missing(tmp_path):
-    work = _work(tmp_path, 2, done=[1])
-    (tmp_path / "work" / "translated" / "chunk_0002.md").write_text("")
-    assert chunk_state(work)["missing"] == [2]
+    work = _work(tmp_path, 2, done=[0])
+    (tmp_path / "work" / "translated" / "block_001.json").write_text("")
+    assert chunk_state(work)["missing"] == [1]
 
 
 def test_chunk_state_not_chunked(tmp_path):
@@ -141,15 +140,15 @@ def test_gate_pause_null_resets_at_says_unknown(tmp_path):
 
 
 def test_cli_smoke_state_plus_degraded_gate(tmp_path):
-    work = _work(tmp_path, 3, done=[1])
+    work = _work(tmp_path, 3, done=[0])
     proc = subprocess.run(
         [sys.executable, "-m", "scripts.run_status", work,
          "--gate", "--snapshot", str(tmp_path / "none.json")],
         capture_output=True, text=True,
     )
     assert proc.returncode == 0
-    assert "chunks: 3 total, 1 done, 2 missing" in proc.stdout
-    assert "missing: chunk_0002, chunk_0003" in proc.stdout
+    assert "blocks: 3 total, 1 done, 2 missing" in proc.stdout
+    assert "missing: block_001, block_002" in proc.stdout
     assert "gate: PROCEED (gate degraded" in proc.stdout
 
 
@@ -161,7 +160,7 @@ def test_cli_not_chunked_exits_zero(tmp_path):
         capture_output=True, text=True,
     )
     assert proc.returncode == 0
-    assert "not chunked yet" in proc.stdout
+    assert "not ingested yet" in proc.stdout
 
 
 def test_cli_bad_work_dir_exits_2(tmp_path):
@@ -172,25 +171,25 @@ def test_cli_bad_work_dir_exits_2(tmp_path):
     assert proc.returncode == 2
 
 
-def test_cli_corrupt_chunks_json_exits_2(tmp_path):
+def test_cli_corrupt_blocks_json_exits_2(tmp_path):
     work = tmp_path / "work"
     work.mkdir()
-    (work / "chunks.json").write_text("{ broken json")
+    (work / "blocks.json").write_text("{ broken json")
     proc = subprocess.run(
         [sys.executable, "-m", "scripts.run_status", str(work)],
         capture_output=True, text=True,
     )
     assert proc.returncode == 2
-    assert "unreadable chunks.json" in proc.stderr
+    assert "unreadable blocks.json" in proc.stderr
 
 
-def test_cli_non_list_chunks_json_exits_2(tmp_path):
+def test_cli_non_dict_blocks_json_exits_2(tmp_path):
     work = tmp_path / "work"
     work.mkdir()
-    (work / "chunks.json").write_text("42")
+    (work / "blocks.json").write_text("42")
     proc = subprocess.run(
         [sys.executable, "-m", "scripts.run_status", str(work)],
         capture_output=True, text=True,
     )
     assert proc.returncode == 2
-    assert "unreadable chunks.json" in proc.stderr
+    assert "unreadable blocks.json" in proc.stderr

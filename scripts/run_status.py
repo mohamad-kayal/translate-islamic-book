@@ -22,22 +22,22 @@ WINDOWS = (("five_hour", "session (5-hour)"), ("seven_day", "weekly"))
 
 
 def chunk_state(work_dir):
-    """Diff chunks.json against translated/chunk_NNNN.md.
+    """Diff blocks.json against translated/block_NNN.json.
 
-    Returns {"total", "done", "missing"} (1-based chunk numbers), or {"not_chunked": True}
-    when chunks.json does not exist. A 0-byte chunk file counts as missing. The "size > 0 = done"
-    heuristic cannot detect a truncated/partial chunk file; acceptable because the translate step
-    saves the complete subagent result on arrival, not a partial stream."""
-    chunks_path = os.path.join(work_dir, "chunks.json")
-    if not os.path.exists(chunks_path):
+    Returns {"total", "done", "missing"} (0-based block numbers), or {"not_chunked": True}
+    when blocks.json does not exist. A 0-byte block file counts as missing. The "size > 0 = done"
+    heuristic cannot detect a truncated/partial block file; acceptable because subagents write
+    the complete file before their final self-check."""
+    blocks_path = os.path.join(work_dir, "blocks.json")
+    if not os.path.exists(blocks_path):
         return {"not_chunked": True}
-    with open(chunks_path) as f:
-        chunks = json.load(f)
+    with open(blocks_path) as f:
+        blocks = json.load(f)["blocks"]
     done, missing = [], []
-    for i in range(1, len(chunks) + 1):
-        path = os.path.join(work_dir, "translated", "chunk_%04d.md" % i)
+    for i in range(len(blocks)):
+        path = os.path.join(work_dir, "translated", "block_%03d.json" % i)
         (done if os.path.exists(path) and os.path.getsize(path) > 0 else missing).append(i)
-    return {"total": len(chunks), "done": done, "missing": missing}
+    return {"total": len(blocks), "done": done, "missing": missing}
 
 
 def gate_verdict(snapshot_path, threshold, now=None):
@@ -80,7 +80,7 @@ def gate_verdict(snapshot_path, threshold, now=None):
 def main():
     ap = argparse.ArgumentParser(
         description="Run state + usage gate for a translation run (see module docstring).")
-    ap.add_argument("work_dir", help="the run's work directory (contains chunks.json)")
+    ap.add_argument("work_dir", help="the run's work directory (contains blocks.json)")
     ap.add_argument("--gate", action="store_true", help="also print a PROCEED/PAUSE verdict")
     ap.add_argument("--threshold", type=float, default=90.0)
     ap.add_argument("--snapshot", default=DEFAULT_SNAPSHOT)
@@ -92,16 +92,16 @@ def main():
 
     try:
         state = chunk_state(args.work_dir)
-    except (json.JSONDecodeError, ValueError, OSError, TypeError):
-        ap.exit(2, "run_status: unreadable chunks.json in %s\n" % args.work_dir)
+    except (json.JSONDecodeError, ValueError, OSError, TypeError, KeyError):
+        ap.exit(2, "run_status: unreadable blocks.json in %s\n" % args.work_dir)
     if state.get("not_chunked"):
-        print("not chunked yet — no chunks.json in %s; restart from step 1 (ingest)"
+        print("not ingested yet — no blocks.json in %s; restart from step 1 (ingest)"
               % args.work_dir)
     else:
-        print("chunks: %d total, %d done, %d missing"
+        print("blocks: %d total, %d done, %d missing"
               % (state["total"], len(state["done"]), len(state["missing"])))
         if state["missing"]:
-            print("missing: %s" % ", ".join("chunk_%04d" % i for i in state["missing"]))
+            print("missing: %s" % ", ".join("block_%03d" % i for i in state["missing"]))
         print("state: %s" % json.dumps(state))
 
     if args.gate:
