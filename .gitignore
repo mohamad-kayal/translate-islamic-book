@@ -9,4 +9,3 @@ data/hadith/
 # editor local sample copies (derived from runs/ + data/)
 editor/sirah-01.en.srt
 editor/bilingual.md
-editor/glossary.json

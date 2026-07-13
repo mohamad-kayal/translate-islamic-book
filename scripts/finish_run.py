@@ -8,12 +8,26 @@ Exits 1 when lint finds problems (the .srt is still written for inspection).
 import argparse
 import json
 import pathlib
+import shutil
 import sys
 
 from subs.assemble import assemble
 from subs.glossary import harvest
 from subs.lint import lint_run
 from subs.report import write_bilingual, write_review
+
+
+def _sync_editor_glossary(master_path):
+    """Keep the editor's auto-loaded glossary copy current with the master.
+
+    Only runs for the real master (data/glossary.json) so tests passing a temp --master
+    never clobber the shipped editor/glossary.json.
+    """
+    if pathlib.Path(master_path).resolve() != pathlib.Path("data/glossary.json").resolve():
+        return
+    editor_dir = pathlib.Path("editor")
+    if editor_dir.is_dir():
+        shutil.copyfile(master_path, editor_dir / "glossary.json")
 
 
 def main():
@@ -29,6 +43,7 @@ def main():
     harvest_result = harvest(args.run, args.master, args.changelog)
     write_review(args.run, stats, harvest_result, lint_result)
     write_bilingual(args.run)
+    _sync_editor_glossary(args.master)
 
     print("cues: %(cues)d · sentences: %(sentences)d · quran: %(quran)d · "
           "hadith: %(hadith)d · fallbacks: %(fallbacks)d" % stats)

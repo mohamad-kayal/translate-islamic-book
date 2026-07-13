@@ -66,9 +66,11 @@ yt-dlp --version                        # only needed for the URL input path
    for that block, then re-revise it). At whole-lecture scale run this as a Workflow too
    (see **Scale**).
 7. **Finish** — `python -m scripts.finish_run runs/<slug>` (assemble → lint → harvest →
-   review.md + bilingual.md). Lint problems = fix and re-run (usually a subagent left Arabic in
-   `en`, or tiling broke during revision). Then commit the glossary growth:
-   `git add data/glossary.json data/glossary-changelog.md && git commit -m "glossary: <slug>"`.
+   review.md + bilingual.md; also refreshes `editor/glossary.json` so the editor app always
+   auto-loads the current glossary). Lint problems = fix and re-run (usually a subagent left
+   Arabic in `en`, or tiling broke during revision). Then commit the glossary growth:
+   `git add data/glossary.json data/glossary-changelog.md editor/glossary.json && git commit
+   -m "glossary: <slug>"`.
 8. **Deliver + sign-off** — give the user `runs/<slug>/output/<slug>.en.srt`, walk them
    through `review.md` (scripture fallbacks, flags, CPS residuals, glossary conflicts).
    Conflicts they accept: `python -m scripts.glossary resolve runs/<slug> --accept <ar1,ar2>`

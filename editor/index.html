@@ -221,7 +221,22 @@ body.biling .cue-ar.has{display:block}
 }
 .statusbar .grow{margin-left:auto}
 .statusbar b{color:var(--ink-2);font-weight:650}
-.statusbar .over-n{color:var(--over)}
+.statusbar .over-n{color:var(--over);font-weight:650}
+.filter-btn{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;
+  color:var(--muted);padding:5px 9px;border-radius:999px;border:1px solid transparent;
+  transition:background .14s ease,border-color .14s ease,color .14s ease;
+}
+.filter-btn svg{width:13px;height:13px;stroke-width:2}
+.filter-btn:hover{background:var(--surface-2);color:var(--ink-2)}
+.filter-btn.on{background:var(--over-soft);border-color:var(--over);color:var(--over)}
+.filter-btn.on .over-n{color:var(--over)}
+.iconbtn.ready{position:relative}
+.iconbtn.ready::after{content:"";position:absolute;top:8px;right:8px;width:6px;height:6px;
+  border-radius:50%;background:var(--accent)}
+.allclear{text-align:center;padding:48px 24px;color:var(--muted)}
+.allclear p{margin:0 0 14px;font-size:15px}
+.allclear .mini{margin:0 auto}
 
 /* ---------- Glossary panel ---------- */
 .scrim{position:fixed;inset:0;background:oklch(0 0 0 / 0.5);opacity:0;pointer-events:none;
@@ -429,7 +444,7 @@ function badCue(c){
 /* ---------- app state ---------- */
 const state = {
   cues:[], fileName:"", dirty:false, editing:-1, selected:-1,
-  glossary:null, glossIndex:[], biling:null,
+  glossary:null, glossIndex:[], biling:null, filterBad:false,
   undo:[], redo:[], matches:[], matchPos:-1, dbKey:"",
 };
 const listEl = $("#list"), emptyEl = $("#empty"), statusEl = $("#statusbar");
@@ -519,15 +534,40 @@ function render(){
   $("#btnExport").disabled=!has;
   if(!has) return;
   const frag=document.createDocumentFragment();
-  state.cues.forEach((c,i)=>frag.appendChild(makeCue(c,i)));
+  let shown=0;
+  state.cues.forEach((c,i)=>{ if(state.filterBad && !badCue(c)) return; frag.appendChild(makeCue(c,i)); shown++; });
+  if(state.filterBad && shown===0){
+    const d=document.createElement("div"); d.className="allclear";
+    d.innerHTML=`<p>✓ Every cue is within reading-speed and line limits.</p>
+      <button class="mini" id="clearFilter">Show all cues</button>`;
+    frag.appendChild(d);
+  }
   listEl.replaceChildren(frag);
+  const cf=$("#clearFilter"); if(cf) cf.onclick=()=>{ state.filterBad=false; render(); };
   updateStatus();
   if(state.matches.length) paintMatches();
 }
+function toggleFilter(){
+  const bad=state.cues.filter(badCue).length;
+  if(!bad) return;
+  state.filterBad=!state.filterBad; listEl.scrollTop=0; render();
+  toast(state.filterBad ? `Showing ${bad} cue${bad>1?"s":""} needing attention` : "Showing all cues");
+}
 function updateStatus(){
-  const over = state.cues.filter(badCue).length;
-  $("#statCues").innerHTML = `<b>${state.cues.length}</b> cues`;
-  $("#statOver").innerHTML = over ? `<span class="over-n">${over}</span> need attention` : `all within limits`;
+  const bad = state.cues.filter(badCue).length;
+  $("#statCues").innerHTML = state.filterBad
+    ? `showing <b>${bad}</b> of ${state.cues.length}`
+    : `<b>${state.cues.length}</b> cues`;
+  const el=$("#statOver");
+  if(bad){
+    el.innerHTML = `<button class="filter-btn${state.filterBad?" on":""}" id="filterBtn" title="Filter to cues over the CPS / line limits">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg>
+      <span class="over-n">${bad}</span> need attention</button>`;
+    $("#filterBtn").onclick=toggleFilter;
+  } else {
+    el.innerHTML = state.cues.length ? `all within limits` : ``;
+    state.filterBad=false;
+  }
 }
 
 /* Arabic lookup for bilingual: nearest source sentence by time overlap */
@@ -596,6 +636,7 @@ function closeEdit(){
   if(el){ el.classList.remove("editing"); el.querySelector(".cue-edit").innerHTML=""; }
 }
 function renderCue(i){
+  if(state.filterBad){ render(); return; }
   const el=listEl.querySelector(`.cue[data-i="${i}"]`);
   if(!el) return;
   const fresh=makeCue(state.cues[i],i);
@@ -865,14 +906,30 @@ document.addEventListener("drop",e=>{ e.preventDefault(); emptyEl.classList.remo
 
 window.addEventListener("beforeunload",e=>{ if(state.dirty){ e.preventDefault(); e.returnValue=""; } });
 
+// auto-load assets shipped next to the app (works when served/hosted; file:// falls back to manual)
+async function autoLoadAssets(){
+  try{
+    const r=await fetch("./glossary.json",{cache:"no-cache"});
+    if(r.ok){ state.glossary=await r.json(); buildGlossIndex(state.glossary); }
+  }catch(e){/* file:// or not present — load manually from the glossary panel */}
+  try{
+    const r=await fetch("./bilingual.md",{cache:"no-cache"});
+    if(r.ok){ const bl=parseBilingual(await r.text()); if(bl.length){ state.biling=bl; $("#btnBiling").classList.add("ready"); } }
+  }catch(e){/* per-review file; load manually via the bilingual button */}
+}
+
 // boot
 initTheme();
 idb.open().then(async()=>{
+  await autoLoadAssets();
   const last=await idb.latest();
   if(last && last.cues && last.cues.length){
     state.cues=last.cues; state.fileName=last.name||"restored.srt"; state.dbKey=last.key;
     $("#brandFile").textContent=state.fileName; $("#brandFile").hidden=false;
+    if(state.biling) document.body.classList.add("biling"), $("#btnBiling").classList.add("on");
     render(); toast(`Restored ${last.cues.length} cues from last session`);
+  } else {
+    if(state.glossIndex.length) renderGlossary();
   }
 });
 </script>
