@@ -406,7 +406,7 @@ body.biling .cue-ar.has{display:block}
 <div class="toast" id="toast"></div>
 <input type="file" id="fileInput" accept=".srt,.vtt,text/plain" hidden>
 <input type="file" id="glossInput" accept=".json,application/json" hidden>
-<input type="file" id="bilingInput" accept=".md,.txt,text/markdown" hidden>
+<input type="file" id="bilingInput" accept=".srt,.vtt,.md,.txt,text/plain,text/markdown" hidden>
 
 <script>
 "use strict";
@@ -750,7 +750,22 @@ function renderGlossary(){
   $("#gSearch").oninput=e=>draw(e.target.value);
 }
 
-/* ---------- bilingual parse (from output/bilingual.md) ---------- */
+/* ---------- bilingual source: pipeline bilingual.md OR a plain Arabic .srt/.vtt ---------- */
+function loadBilingualSource(name, text){
+  const looksSrt = /\.(srt|vtt)$/i.test(name) || /-->/.test(text.slice(0,600));
+  let src;
+  if(looksSrt){
+    const {cues}=parseSubs(text);
+    src = cues.map(c=>({t0:c.t0, t1:c.t1, ar:c.text.replace(/\n/g," ")}));
+  } else {
+    src = parseBilingual(text);
+  }
+  if(!src.length){ toast("No usable lines found in that source file"); return; }
+  state.biling = src;
+  document.body.classList.add("biling"); $("#btnBiling").classList.add("on","ready");
+  render();
+  toast(`Arabic source paired: ${src.length} lines`);
+}
 function parseBilingual(md){
   // blocks: **[mm:ss]** \n <div dir="rtl">ARABIC</div> \n ENGLISH
   const out=[]; const lines=md.split(/\r?\n/);
@@ -884,10 +899,8 @@ $("#fileInput").onchange=e=>{ const f=e.target.files[0]; if(f) readFile(f,t=>loa
 $("#glossInput").onchange=e=>{ const f=e.target.files[0]; if(!f)return; readFile(f,t=>{
   try{ state.glossary=JSON.parse(t); buildGlossIndex(state.glossary); render(); renderGlossary(); toast("Glossary loaded"); }
   catch(err){ toast("Could not parse glossary JSON"); } }); e.target.value=""; };
-$("#bilingInput").onchange=e=>{ const f=e.target.files[0]; if(!f)return; readFile(f,t=>{
-  state.biling=parseBilingual(t);
-  if(state.biling.length){ document.body.classList.add("biling"); $("#btnBiling").classList.add("on"); render(); toast(`Bilingual: ${state.biling.length} source lines`); }
-  else toast("No bilingual blocks found"); }); e.target.value=""; };
+$("#bilingInput").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
+  readFile(f,t=>loadBilingualSource(f.name,t)); e.target.value=""; };
 $("#btnExport").onclick=exportSrt;
 $("#btnTheme").onclick=()=>applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light");
 $("#btnUndo").onclick=undo; $("#btnRedo").onclick=redo;
@@ -899,7 +912,7 @@ $("#btnBiling").onclick=()=>{
     $("#btnBiling").classList.toggle("on",on); render();
     toast(on ? "Arabic source shown under each cue" : "Arabic source hidden");
   } else {
-    toast("Pick this video's bilingual.md (from the run output) to show the Arabic source per cue");
+    toast("Pick the Arabic .srt (or the run's bilingual.md) to pair as the source");
     $("#bilingInput").click();
   }
 };
