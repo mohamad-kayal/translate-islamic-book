@@ -30,7 +30,7 @@ def write_bilingual(run_dir):
         lines.append("**[%s]**%s" % (_mmss(segments[a]["t0"]), tag))
         lines.append("<div dir=\"rtl\">%s</div>" % arabic)
         lines.append("")
-        lines.append(s["en"].replace("|", " ").replace("  ", " ").strip())
+        lines.append(" ".join(s["en"].replace("|", " ").split()))
         lines.append("")
     out = run_dir / "output" / "bilingual.md"
     out.parent.mkdir(parents=True, exist_ok=True)

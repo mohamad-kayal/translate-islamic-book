@@ -32,7 +32,8 @@ def test_split_at_marks_by_length():
 
 def test_split_forced_by_max_duration():
     cues, _ = sentence_cues("short words | more words", 0.0, 16.0)
-    assert len(cues) == 3  # ceil(16 / 7)
+    assert len(cues) >= 3  # at least ceil(16 / 7)
+    assert all(c["end"] - c["start"] <= 7.0 + 1e-6 for c in cues)
 
 
 def test_no_marks_falls_back_to_spaces():
@@ -43,12 +44,12 @@ def test_no_marks_falls_back_to_spaces():
 
 
 def test_cues_tile_span_proportionally():
-    # duration (12s > max_dur) forces the split; both pieces wrap fine, so the
-    # mark is used and time is allocated by character share (then capped at 7s)
-    text = "aaaa aaaa | bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb bbbb"
-    cues, _ = sentence_cues(text, 100.0, 112.0)
+    # a two-clause sentence over a 9s span (>max_dur, so it must split; char shares
+    # keep both cues under 7s): time is allocated by character share
+    text = "aaaa aaaa | bbbb bbbb bbbb bbbb bbbb bbbb"
+    cues, _ = sentence_cues(text, 100.0, 109.0)
     assert cues[0]["start"] == pytest.approx(100.0)
-    assert cues[-1]["end"] == pytest.approx(112.0)
+    assert cues[-1]["end"] == pytest.approx(109.0)
     for a, b in zip(cues, cues[1:]):
         assert b["start"] == pytest.approx(a["end"])
     # first chunk (far fewer chars) gets less time than the second
@@ -111,3 +112,24 @@ def test_real_pilot_block_meets_all_constraints():
             assert all(len(l) <= 42 for l in c["lines"]), (s["segs"], c["lines"])
             assert len(c["lines"]) <= 2
             assert c["end"] - c["start"] <= 7.0 + 1e-6, (s["segs"], c)
+
+
+def test_long_span_sentence_never_exceeds_max_dur():
+    # char-uneven multi-clause sentences over long spans must add cuts until
+    # no single cue exceeds max_dur (regression: real sirah-01 cues 75/327/1295)
+    cases = [
+        ("For that reason, in this series I have relied | on the book of Ibn Hisham's Sirah, | "
+         "titled 'Sirat Rasul Allah ﷺ' — | 'The Biography of the Messenger of Allah ﷺ' — | "
+         "and I will most likely keep that same name, | meaning the series will be titled | "
+         "'The Sirah of the Messenger of Allah ﷺ.'", 24.6),
+        ("For instance, nowadays, | say there are people from Palestine, | and the speaker's "
+         "grandfather | lived through 1948 — | the displacement that happened, and all of that.", 20.4),
+        ('You have praised Yourself. | And praise be to Allah, Lord of the worlds. | "By Allah, '
+         'without Allah we would not have been guided, | neither would we have given in charity, | '
+         'nor would we have prayed. | So (O Allah), please send Sakina (i.e. calmness) upon us, | '
+         'and make our feet firm if we meet the enemy."', 34.9),
+    ]
+    for text, span in cases:
+        cues, _ = sentence_cues(text, 0.0, span)
+        assert all(c["end"] - c["start"] <= 7.0 + 1e-6 for c in cues), (
+            span, [round(c["end"] - c["start"], 2) for c in cues])

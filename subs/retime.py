@@ -130,7 +130,8 @@ def sentence_cues(en_marked, t0, t1, max_cps=MAX_CPS, max_line=MAX_LINE,
         pos += 1
     k = max(math.ceil(len(text) / per_cue), math.ceil(dur / max_dur), 1)
     max_k = text.count(" ") + 1
-    while True:
+
+    def _chunks_and_spans(k):
         cuts = _split_positions(text, k, marks)
         chunks = []
         prev = 0
@@ -139,15 +140,20 @@ def sentence_cues(en_marked, t0, t1, max_cps=MAX_CPS, max_line=MAX_LINE,
             prev = c + 1
         chunks.append(text[prev:].strip())
         chunks = [c for c in chunks if c]
-        if all(_wraps(c) for c in chunks) or k >= max_k:
+        total = float(sum(len(c) for c in chunks))
+        spans = [dur * len(c) / total for c in chunks]
+        return chunks, spans
+
+    while True:
+        chunks, spans = _chunks_and_spans(k)
+        # escalate k until every chunk both wraps and fits max_dur by char-share
+        # (more cuts shrink the largest proportional span toward the dur/k mean)
+        if (all(_wraps(c) for c in chunks) and max(spans) <= max_dur + 1e-9) or k >= max_k:
             break
         k += 1
     for chunk in chunks:
         if not _wraps(chunk):
             warnings.append("unbreakable overlong line: %r" % chunk[:50])
-
-    total = float(sum(len(c) for c in chunks))
-    spans = [dur * len(c) / total for c in chunks]
     if not _cap_max_dur(spans, max_dur):
         warnings.append("could not keep every cue under %.1fs (span %.2fs, %d cues)"
                         % (max_dur, dur, len(chunks)))
