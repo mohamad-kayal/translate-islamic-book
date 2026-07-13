@@ -54,6 +54,8 @@ yt-dlp --version                        # only needed for the URL input path
    Dispatch translator subagents for the missing blocks in parallel waves of ~8 (same one-line
    prompt, different block numbers). A dead/garbled agent costs only its block: `check` fails →
    re-dispatch that block once; if it fails again, hard-fail the block and report it.
+   Past ~one wave (a whole lecture, dozens of blocks) run this fan-out as a Workflow instead —
+   see **Scale** below.
 5. **Validate** — `run_status` shows 0 missing; `block_brief check` passes for every block.
 6. **Revise** — one reviser subagent per block (cheaper model is fine) with:
 
@@ -61,10 +63,8 @@ yt-dlp --version                        # only needed for the URL input path
    > exactly. Work from the repo root with .venv/bin/python.
 
    Minors are fixed in place by the reviser; each MAJOR gets one re-translate round (step 4
-   for that block, then re-revise it). At whole-lecture scale run this as a resumable
-   Workflow: `pipeline(blocks, reviseStage, fixMajorsStage)` with a
-   `{block, fixes, majors[], flags[]}` StructuredOutput schema — and if `args` arrives as a
-   JSON string, `JSON.parse` it first.
+   for that block, then re-revise it). At whole-lecture scale run this as a Workflow too
+   (see **Scale**).
 7. **Finish** — `python -m scripts.finish_run runs/<slug>` (assemble → lint → harvest →
    review.md + bilingual.md). Lint problems = fix and re-run (usually a subagent left Arabic in
    `en`, or tiling broke during revision). Then commit the glossary growth:
@@ -73,6 +73,25 @@ yt-dlp --version                        # only needed for the URL input path
    through `review.md` (scripture fallbacks, flags, CPS residuals, glossary conflicts).
    Conflicts they accept: `python -m scripts.glossary resolve runs/<slug> --accept <ar1,ar2>`
    (+ commit).
+
+## Scale — big jobs run as a resumable Workflow
+
+Manual Agent waves (steps 4, 6) are right for a short clip — up to about one wave. For a whole
+lecture (dozens of blocks, more than one wave) run the model-touched fan-out as a Workflow
+instead: it survives interruptions, a dead agent costs only its block, and the
+translate→check→re-dispatch loop is encoded once. Invoking this skill is itself the opt-in.
+
+- **Translate** — `pipeline(blocks, translateStage, checkStage)`: `translateStage` dispatches one
+  translator subagent per block (same one-line prompt as step 3, different block number);
+  `checkStage`'s agent runs `block_brief check` and returns a `{block, ok, majors[], flags[]}`
+  StructuredOutput. A failing block is re-dispatched once, then hard-failed and reported.
+- **Revise** — `pipeline(blocks, reviseStage, fixMajorsStage)` with a
+  `{block, fixes, majors[], flags[]}` schema; each MAJOR triggers one re-translate round.
+- The orchestrator is plain JS — no bash, no timestamps — so the `run_status` gate is replaced by
+  the pipeline's own per-block accounting, and every non-negotiable still holds because the agents
+  read the same templates. If `args` arrives as a JSON string, `JSON.parse` it first.
+- Only the model-touched steps fan out. `ingest_video` and `finish_run` stay one-time CLI calls,
+  run once before and after the Workflow.
 
 ## Resume after interruption
 
