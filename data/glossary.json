@@ -1,0 +1,79 @@
+{
+  "names": {
+    "إبراهيم": "Ibrahim",
+    "ابن القيم": "Ibn al-Qayyim",
+    "ابن تيمية": "Ibn Taymiyyah",
+    "ابن عاشور": "Ibn 'Ashur",
+    "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
+    "السعدي": "al-Sa'di",
+    "الصحابة": "the Companions",
+    "النبي": "the Prophet ﷺ",
+    "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
+    "فرعون": "Pharaoh (Fir'awn)",
+    "موسى": "Musa"
+  },
+  "style": "al- (no sun-letter assimilation); ' for ayn/hamza; no macrons; keep صلى الله عليه وسلم as ﷺ; term first use in a video: english (translit), short translit after",
+  "terms": {
+    "الإصلاح": {
+      "english": "reform",
+      "translit": "islah"
+    },
+    "الاستقامة": {
+      "english": "uprightness",
+      "translit": "istiqamah"
+    },
+    "التجديد": {
+      "english": "renewal",
+      "translit": "tajdid"
+    },
+    "التزكية": {
+      "english": "purification of the soul",
+      "translit": "tazkiyah"
+    },
+    "التمكين": {
+      "english": "empowerment; being established in the land",
+      "translit": "tamkin"
+    },
+    "التوحيد": {
+      "english": "the Oneness of Allah",
+      "translit": "tawhid"
+    },
+    "الدعوة": {
+      "english": "calling to Allah",
+      "translit": "da'wah"
+    },
+    "الرِّبانية": {
+      "english": "devotion to the Lord",
+      "translit": "rabbaniyyah"
+    },
+    "السنن الإلهية": {
+      "english": "the divine norms — God's unchanging ways",
+      "translit": "al-sunan al-ilahiyyah"
+    },
+    "الشرك": {
+      "english": "associating partners with Allah",
+      "translit": "shirk"
+    },
+    "العبودية": {
+      "english": "servitude to God",
+      "translit": "ubudiyyah"
+    },
+    "الغلو": {
+      "english": "extremism",
+      "translit": "ghuluww"
+    },
+    "الفتن": {
+      "english": "trials and tribulations",
+      "translit": "fitan"
+    },
+    "المصلح": {
+      "english": "the reformer",
+      "translit": "muslih"
+    },
+    "الوحي": {
+      "english": "revelation",
+      "translit": "wahy"
+    }
+  },
+  "works": {}
+}
