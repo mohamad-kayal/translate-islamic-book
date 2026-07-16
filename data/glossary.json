@@ -4,10 +4,12 @@
     "آمنة بنت وهب": "Aminah bint Wahb",
     "أبو القاسم": "Abu al-Qasim",
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
+    "أبو برزة الأسلمي": "Abu Barzah al-Aslami",
     "أبو بكر": "Abu Bakr",
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
+    "أبو حمزة": "Abu Hamzah",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
     "أبو موسى الأشعري": "Abu Musa al-Ash'ari",
     "أبو هريرة": "Abu Hurayrah",
@@ -27,8 +29,10 @@
     "ابن هشام": "Ibn Hisham",
     "الأنصار": "the Ansar",
     "الإمام أحمد": "Imam Ahmad",
+    "الاغر ابن يسار المزني": "al-Aghurr ibn Yasar al-Muzani",
     "الامام البخاري": "Imam al-Bukhari",
     "البخاري": "al-Bukhari",
+    "الترمذي": "al-Tirmidhi",
     "الحبشة": "Abyssinia",
     "الخزرج": "the Khazraj",
     "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
@@ -40,6 +44,7 @@
     "السهيلي": "al-Suhayli",
     "الشاطبي": "al-Shatibi",
     "الشافعي": "al-Shafi'i",
+    "الشام": "al-Sham (Syria/the Levant)",
     "الشعبي": "al-Sha'bi",
     "الصحابة": "the Companions",
     "الصفا": "al-Safa",
@@ -50,6 +55,7 @@
     "المدينة": "Madinah",
     "المهدي": "al-Mahdi",
     "النبي": "the Prophet ﷺ",
+    "النهروان": "Nahrawan",
     "النووي": "Imam al-Nawawi",
     "الواقدي": "al-Waqidi",
     "الوليد بن المغيرة": "al-Walid ibn al-Mughirah",
@@ -71,6 +77,7 @@
     "رضوان": "Ridwan (a student present)",
     "رقية": "Ruqayyah",
     "رقية بنت رسول الله": "Ruqayyah, daughter of the Messenger of Allah ﷺ",
+    "زر بن حبيش": "Zirr ibn Hubaysh",
     "زكريا": "Zakariyya",
     "زياد بن عبد الله البكائي": "Ziyad ibn 'Abdullah al-Bakka'i",
     "زيد": "Zayd",
@@ -78,10 +85,12 @@
     "سعد": "Sa'd (a student present)",
     "سعد بن ابي وقاص": "Sa'd ibn Abi Waqqas",
     "سعد بن خولة": "Sa'd ibn Khawlah",
+    "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
     "سورة الأنعام": "Surat al-An'am",
     "سورة التوبة": "Surat al-Tawbah",
     "سورة المؤمنون": "Surat al-Mu'minun",
+    "صفوان بن عسال": "Safwan ibn 'Assal",
     "عائشة": "Aisha",
     "عاصم بن عمر بن قتادة": "'Asim ibn 'Umar ibn Qatadah",
     "عامر بن فهيرة": "'Amir ibn Fuhayrah",
@@ -106,6 +115,9 @@
     "فرعون": "Pharaoh (Fir'awn)",
     "قريش": "Quraysh",
     "قصي": "Qusayy",
+    "قيس بن أبي حازم": "Qays ibn Abi Hazim",
+    "كعب بن مالك": "Ka'b ibn Malik",
+    "مؤيد": "Mu'ayyad (a student present)",
     "محمد": "Muhammad",
     "محمد بن إسحاق": "Muhammad ibn Ishaq",
     "محمد بن إسحاق المطلبي": "Muhammad ibn Ishaq al-Muttalibi",
@@ -143,6 +155,10 @@
       "english": "in sha' Allah (God willing)",
       "translit": "in sha' Allah"
     },
+    "اجتهاد": {
+      "english": "independent juristic reasoning (ijtihad)",
+      "translit": "ijtihad"
+    },
     "استقراء": {
       "english": "induction",
       "translit": "istiqra'"
@@ -154,6 +170,18 @@
     "اشراط الساعة": {
       "english": "the portents of the Hour",
       "translit": "ashrat al-sa'ah"
+    },
+    "الأحزاب": {
+      "english": "the Confederates",
+      "translit": "al-Ahzab"
+    },
+    "الأسانيد": {
+      "english": "chains of transmission",
+      "translit": "isnad"
+    },
+    "الأعرابي": {
+      "english": "the Bedouin",
+      "translit": null
     },
     "الأمة": {
       "english": "ummah",
@@ -183,9 +211,17 @@
       "english": "the seeking of reward (ihtisab)",
       "translit": "ihtisab"
     },
+    "الاستغفار": {
+      "english": "seeking forgiveness",
+      "translit": "istighfar"
+    },
     "الاستقامة": {
       "english": "uprightness",
       "translit": "istiqamah"
+    },
+    "الاستهداء بالسنة": {
+      "english": "Guided by the Sunnah",
+      "translit": "al-Istihda' bi-l-Sunnah"
     },
     "البداية والنهاية": {
       "english": "al-Bidayah wa-l-Nihayah",
@@ -207,6 +243,10 @@
       "english": "the Successors",
       "translit": "tabi'in"
     },
+    "التابعين": {
+      "english": "the Successors",
+      "translit": "al-Tabi'in"
+    },
     "التجديد": {
       "english": "renewal",
       "translit": "tajdid"
@@ -214,6 +254,14 @@
     "التزكية": {
       "english": "purification of the soul",
       "translit": "tazkiyah"
+    },
+    "التسبيح": {
+      "english": "saying 'Subhan Allah'",
+      "translit": "tasbih"
+    },
+    "التعظيم": {
+      "english": "magnifying Him",
+      "translit": "ta'zim"
     },
     "التفسير": {
       "english": "Qur'anic exegesis",
@@ -227,6 +275,10 @@
       "english": "the qualification (of an absolute wording)",
       "translit": "taqyid"
     },
+    "التكبير": {
+      "english": "saying 'Allahu akbar'",
+      "translit": "takbir"
+    },
     "التكلف": {
       "english": "needless imposition",
       "translit": "takalluf"
@@ -234,6 +286,18 @@
     "التمكين": {
       "english": "empowerment; being established in the land",
       "translit": "tamkin"
+    },
+    "التنزيه": {
+      "english": "exalting Him above imperfection",
+      "translit": "tanzih"
+    },
+    "التوبة": {
+      "english": "repentance (tawbah)",
+      "translit": "tawbah"
+    },
+    "التوبة النصوح": {
+      "english": "sincere repentance",
+      "translit": "tawbah nasuh"
     },
     "التوحيد": {
       "english": "the Oneness of Allah",
@@ -259,6 +323,10 @@
       "english": "the Sanctuary",
       "translit": "al-Haram"
     },
+    "الحمد": {
+      "english": "praise",
+      "translit": "hamd"
+    },
     "الحمية": {
       "english": "tribal zeal",
       "translit": "hamiyyah"
@@ -271,6 +339,10 @@
       "english": "the sinking",
       "translit": "al-khasf"
     },
+    "الخوارج": {
+      "english": "the Kharijites",
+      "translit": "al-Khawarij"
+    },
     "الدعوة": {
       "english": "calling to Allah",
       "translit": "da'wah"
@@ -282,6 +354,10 @@
     "الرسالة": {
       "english": "al-Risalah",
       "translit": "al-Risalah"
+    },
+    "الرفع": {
+      "english": "being raised to the Prophet (marfu')",
+      "translit": "marfu'"
     },
     "الرقائق": {
       "english": "softening narrations",
@@ -343,6 +419,10 @@
       "english": "The Prophetic Biography Through the Six Books: A Contemporary Study",
       "translit": "al-Sirah al-Nabawiyyah min khilal al-Kutub al-Sittah: Dirasah Mu'asirah"
     },
+    "الشاهد": {
+      "english": "the point of citation (shahid)",
+      "translit": "shahid"
+    },
     "الشرك": {
       "english": "associating partners with Allah",
       "translit": "shirk"
@@ -367,6 +447,10 @@
       "english": "servitude to God",
       "translit": "ubudiyyah"
     },
+    "العشرة المبشرون بالجنة": {
+      "english": "the ten given glad tidings of Paradise",
+      "translit": "al-'asharah al-mubashsharah"
+    },
     "العشره المشهود لهم بالجنه": {
       "english": "the ten given the glad tidings of Paradise",
       "translit": "al-'Asharah al-Mubashsharah bi'l-Jannah"
@@ -374,6 +458,10 @@
     "الغلو": {
       "english": "extremism",
       "translit": "ghuluww"
+    },
+    "الغيب": {
+      "english": "the unseen (ghayb)",
+      "translit": "ghayb"
     },
     "الفتح": {
       "english": "the conquest (of Makkah)",
@@ -394,6 +482,10 @@
     "الفواطم والعواتك": {
       "english": "the Fatimahs and the 'Awatik",
       "translit": "al-Fawatim wa-l-'Awatik"
+    },
+    "القدوة الحسنة": {
+      "english": "the good example",
+      "translit": "al-qudwah al-hasanah"
     },
     "الكتب الستة": {
       "english": "the Six Books",
@@ -439,6 +531,10 @@
       "english": "al-Mawahib (al-Zurqani's commentary on it)",
       "translit": "al-Mawahib al-Laduniyyah"
     },
+    "الموقوف": {
+      "english": "stopped at the Companion (mawquf)",
+      "translit": "mawquf"
+    },
     "النية": {
       "english": "intention",
       "translit": "niyyah"
@@ -450,6 +546,14 @@
     "الهجرة إلى الحبشة": {
       "english": "the migration to Abyssinia",
       "translit": "al-hijrah ila al-Habashah"
+    },
+    "الهدي": {
+      "english": "the practical example",
+      "translit": "al-hady"
+    },
+    "الهدي الفعلي": {
+      "english": "the practical guidance",
+      "translit": "al-hady al-fi'li"
     },
     "الهدي النبوي": {
       "english": "the Prophetic guidance",
@@ -471,6 +575,10 @@
       "english": "the chapter on Sincerity and Intention",
       "translit": "Bab al-Ikhlas wa'l-Niyyah"
     },
+    "باب التوبة": {
+      "english": "the chapter on Repentance",
+      "translit": "Bab al-Tawbah"
+    },
     "بذل القوة في حوادث سني النبوة": {
       "english": "Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah",
       "translit": "Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah"
@@ -478,6 +586,10 @@
     "بيعة العقبة": {
       "english": "the Pledge of al-'Aqabah",
       "translit": "bay'at al-'Aqabah"
+    },
+    "تابعي": {
+      "english": "Successor",
+      "translit": "tabi'i"
     },
     "تفسير الطبري": {
       "english": "the Tafsir of al-Tabari",
@@ -559,6 +671,10 @@
       "english": "The Biography of the Messenger of Allah ﷺ",
       "translit": "Sirat Rasul Allah"
     },
+    "عالم الشهادة": {
+      "english": "the visible world ('alam al-shahadah)",
+      "translit": "'alam al-shahadah"
+    },
     "عام الحزن": {
       "english": "the Year of Sorrow",
       "translit": "'am al-huzn"
@@ -591,6 +707,10 @@
       "english": "wondrous deeds (karamat)",
       "translit": "karamat"
     },
+    "لذة الايمان": {
+      "english": "the sweetness of faith",
+      "translit": "ladhdhat al-iman"
+    },
     "متفق عليه": {
       "english": "agreed upon (related by both Bukhari and Muslim)",
       "translit": "muttafaqun 'alayh"
@@ -598,6 +718,10 @@
     "مجاهيل": {
       "english": "unknown narrators",
       "translit": "majahil"
+    },
+    "مدارج السالكين": {
+      "english": "Stations of the Wayfarers",
+      "translit": "Madarij al-Salikin"
     },
     "مراقبة": {
       "english": "vigilant awareness of Allah",
@@ -614,6 +738,10 @@
     "مهاجر": {
       "english": "emigrant",
       "translit": "Muhajir"
+    },
+    "موجبات الاستغفار": {
+      "english": "the occasions for seeking forgiveness",
+      "translit": "mujibat al-istighfar"
     },
     "موضع الشاهد": {
       "english": "the point of evidence",

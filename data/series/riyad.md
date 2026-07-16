@@ -38,3 +38,4 @@ coined, series facts, and how the room behaves.
   the next word's start). `ingest_video` also pinned to yt-dlp's android player client
   (the default web client is PO-token-gated). Both fixes apply to every later episode.
 - `riyad-02` — باب الإخلاص والنية part 2 (Sincerity and Intention (Bab al-Ikhlas wa'l-Niyyah)).
+- `riyad-03` — باب التوبة part 1 (Repentance (Bab al-Tawbah)).

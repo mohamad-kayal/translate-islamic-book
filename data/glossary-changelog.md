@@ -227,3 +227,46 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: بشير → Bashir (a student present)
 - terms: الفردوس → al-Firdaws, Paradise (al-Firdaws)
 - terms: الحوض → al-Hawd, the basin (al-Hawd)
+
+## 2026-07-17 — riyad-03
+- terms: الاستهداء بالسنة → al-Istihda' bi-l-Sunnah, Guided by the Sunnah
+- terms: باب التوبة → Bab al-Tawbah, the chapter on Repentance
+- terms: التوبة النصوح → tawbah nasuh, sincere repentance
+- names: الاغر ابن يسار المزني → al-Aghurr ibn Yasar al-Muzani
+- terms: الأحزاب → al-Ahzab, the Confederates
+- terms: الأسانيد → isnad, chains of transmission
+- names: أبو برزة الأسلمي → Abu Barzah al-Aslami
+- names: النهروان → Nahrawan
+- terms: الخوارج → al-Khawarij, the Kharijites
+- terms: اجتهاد → ijtihad, independent juristic reasoning (ijtihad)
+- terms: الهدي الفعلي → al-hady al-fi'li, the practical guidance
+- terms: القدوة الحسنة → al-qudwah al-hasanah, the good example
+- terms: موجبات الاستغفار → mujibat al-istighfar, the occasions for seeking forgiveness
+- terms: التسبيح → tasbih, saying 'Subhan Allah'
+- terms: الحمد → hamd, praise
+- terms: التكبير → takbir, saying 'Allahu akbar'
+- terms: التعظيم → ta'zim, magnifying Him
+- terms: التنزيه → tanzih, exalting Him above imperfection
+- terms: الاستغفار → istighfar, seeking forgiveness
+- terms: لذة الايمان → ladhdhat al-iman, the sweetness of faith
+- names: مؤيد → Mu'ayyad (a student present)
+- names: أبو حمزة → Abu Hamzah
+- terms: مدارج السالكين → Madarij al-Salikin, Stations of the Wayfarers
+- names: الترمذي → al-Tirmidhi
+- names: زر بن حبيش → Zirr ibn Hubaysh
+- names: صفوان بن عسال → Safwan ibn 'Assal
+- names: كعب بن مالك → Ka'b ibn Malik
+- names: سفيان → Sufyan (a narrator in the hadith's chain)
+- names: الشام → al-Sham (Syria/the Levant)
+- terms: تابعي → tabi'i, Successor
+- terms: الهدي → al-hady, the practical example
+- terms: العشرة المبشرون بالجنة → al-'asharah al-mubashsharah, the ten given glad tidings of Paradise
+- names: قيس بن أبي حازم → Qays ibn Abi Hazim
+- terms: الرفع → marfu', being raised to the Prophet (marfu')
+- terms: الموقوف → mawquf, stopped at the Companion (mawquf)
+- terms: الغيب → ghayb, the unseen (ghayb)
+- terms: عالم الشهادة → 'alam al-shahadah, the visible world ('alam al-shahadah)
+- terms: الشاهد → shahid, the point of citation (shahid)
+- terms: الأعرابي → None, the Bedouin
+- terms: التوبة → tawbah, repentance (tawbah)
+- terms: التابعين → al-Tabi'in, the Successors
