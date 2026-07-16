@@ -270,3 +270,49 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: الأعرابي → None, the Bedouin
 - terms: التوبة → tawbah, repentance (tawbah)
 - terms: التابعين → al-Tabi'in, the Successors
+
+## 2026-07-17 — riyad-04
+- names: أبو سعيد الخدري → Abu Sa'id al-Khudri
+- names: الخضر → al-Khidr
+- terms: سورة القصص → Surat al-Qasas, Surat al-Qasas
+- terms: قصة الغلام والساحر والراهب → qissat al-ghulam wa'l-sahir wa'l-rahib, the story of the boy, the sorcerer, and the monk
+- terms: أنوار الأنبياء → Anwar al-Anbiya, The Lights of the Prophets
+- names: عبد الله بن كعب بن مالك → 'Abdullah ibn Ka'b ibn Malik
+- terms: توفيق → tawfiq, enabling success
+- terms: الصحيحين → al-Sahihayn, the two Sahihs
+- terms: بيعة الرضوان → bay'at al-Ridwan, the Pledge of al-Ridwan
+- terms: داعية → da'iyah, a caller to Islam
+- terms: مشهد → mashhad (pl. mashahid), a witnessed occasion
+- terms: التورية → tawriya, equivocation (tawriya)
+- terms: غزوة → ghazwah, expedition (ghazwah)
+- terms: الديوان → diwan, register (diwan)
+- terms: الشيطان → Shaytan, Satan
+- terms: بيان القرآن سبيل المجرمين → Bayan al-Qur'an: Sabil al-Mujrimin, The Elucidation of the Qur'an: The Way of the Criminals
+- names: سورة الأحزاب → Surat al-Ahzab
+- terms: الرافضة → al-Rafidah, the Rafidah (Shia)
+- names: عبد الله بن أم مكتوم → 'Abdullah ibn Umm Maktum
+- names: أبو عبيدة بن الجراح → Abu 'Ubaydah ibn al-Jarrah
+- names: طلحة بن عبيد الله → Talhah ibn 'Ubaydillah
+- names: معاذ بن جبل → Mu'adh ibn Jabal
+- names: جليبيب → Julaibib
+- names: بني سلمة → Banu Salamah
+- terms: إحسان الظن → husn al-zann, thinking well of others (husn al-zann)
+- terms: الربا → riba, usury (riba)
+- names: أبو خيثمة الأنصاري → Abu Khaythamah al-Ansari
+- names: حسان → Hassan
+- names: مرارة بن الربيع العمري → Murarah ibn al-Rabi' al-'Amri
+- names: هلال بن أمية الواقفي → Hilal ibn Umayyah al-Waqifi
+- terms: نسبة → nisbah, a proportional application (nisbah)
+- names: أبو قتادة → Abu Qatadah
+- names: غسان → Ghassan
+- names: هلال بن اميه → Hilal ibn Umayyah
+- names: سلع → Sal'
+- terms: ثوب → thawb, garment
+- terms: ازار → izar, the waist-wrap
+- terms: رداء → rida', the upper wrap
+- terms: قميص → qamis, shirt
+- terms: برنس → burnus, hooded cloak
+- terms: احرام → ihram, the pilgrim's garb
+- names: حفصة → Hafsah
+- names: خيبر → Khaybar
+- names: أحمد → Ahmad (a student present)

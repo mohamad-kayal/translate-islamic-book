@@ -39,3 +39,4 @@ coined, series facts, and how the room behaves.
   (the default web client is PO-token-gated). Both fixes apply to every later episode.
 - `riyad-02` — باب الإخلاص والنية part 2 (Sincerity and Intention (Bab al-Ikhlas wa'l-Niyyah)).
 - `riyad-03` — باب التوبة part 1 (Repentance (Bab al-Tawbah)).
+- `riyad-04` — باب التوبة part 2 (Repentance (Bab al-Tawbah)).
