@@ -11,8 +11,10 @@
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو حمزة": "Abu Hamzah",
     "أبو خيثمة الأنصاري": "Abu Khaythamah al-Ansari",
+    "أبو داود": "Abu Dawud",
     "أبو سعيد الخدري": "Abu Sa'id al-Khudri",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
+    "أبو طلحة": "Abu Talha",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
     "أبو قتادة": "Abu Qatadah",
     "أبو مالك الحارث بن عاصم الأشعري": "Abu Malik al-Harith ibn 'Asim al-Ash'ari",
@@ -24,19 +26,25 @@
     "أحمد": "Ahmad (a student present)",
     "أسامة بن زيد بن حارثة": "Usamah ibn Zayd ibn Harithah",
     "أسيد": "Usayd (a student present)",
+    "أم سليم": "Umm Sulaym",
+    "أم عطية": "Umm 'Atiyyah",
     "أم كلثوم": "Umm Kulthum",
     "إبراهيم": "Ibrahim",
     "إدريس": "Idris",
     "إسماعيل": "Isma'il",
     "ابن إسحاق": "Ibn Ishaq",
     "ابن القيم": "Ibn al-Qayyim",
+    "ابن المبارك": "Ibn al-Mubarak",
     "ابن تيمية": "Ibn Taymiyyah",
     "ابن حزم": "Ibn Hazm",
     "ابن رجب": "Imam Ibn Rajab",
     "ابن سعد": "Ibn Sa'd",
     "ابن عاشور": "Ibn 'Ashur",
+    "ابن عيينة": "Ibn 'Uyaynah",
     "ابن كثير": "Ibn Kathir",
     "ابن هشام": "Ibn Hisham",
+    "اسحاق بن راهويه": "Ishaq ibn Rahawayh",
+    "الأقرع بن حابس": "Aqra' ibn Habis",
     "الأنصار": "the Ansar",
     "الإمام أحمد": "Imam Ahmad",
     "الإمام مسلم": "Imam Muslim",
@@ -81,6 +89,7 @@
     "بدر": "Badr",
     "براء": "Bara' (a student present)",
     "بشر": "Bishr (a student present)",
+    "بشر بن البراء بن معرور": "Bishr ibn al-Bara' ibn Ma'rur",
     "بشير": "Bashir (a student present)",
     "بلال": "Bilal",
     "بنو أسد": "Banu Asad",
@@ -98,6 +107,7 @@
     "حضرموت": "Hadramawt",
     "حفصة": "Hafsah",
     "حمزة": "Hamzah (a student present)",
+    "حنين": "Hunayn",
     "حواء": "Hawwa' (Eve)",
     "خالد بن الوليد": "Khalid ibn al-Walid",
     "خباب": "Khabbab ibn al-Aratt",
@@ -120,6 +130,7 @@
     "سعد بن عبادة": "Sa'd ibn 'Ubada",
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
+    "سليمان بن صرد": "Sulayman ibn Sarad",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
     "سورة آل عمران": "Surat Aal 'Imran",
     "سورة الأحزاب": "Surat al-Ahzab",
@@ -138,9 +149,11 @@
     "طلحة بن عبيد الله": "Talhah ibn 'Ubaydillah",
     "عائشة": "Aisha",
     "عاد": "'Ad",
+    "عاصم": "'Asim (a narrator in the hadith's chain)",
     "عاصم بن عمر بن قتادة": "'Asim ibn 'Umar ibn Qatadah",
     "عامر بن فهيرة": "'Amir ibn Fuhayrah",
     "عبادة بن الصامت": "'Ubada ibn al-Samit",
+    "عباس بن مرداس": "'Abbas b. Mirdas",
     "عبد الرحمن": "'Abd al-Rahman (a student present)",
     "عبد الرحمن بن صخر": "'Abd al-Rahman ibn Sakhr",
     "عبد الرحمن بن عوف": "'Abd al-Rahman ibn 'Awf",
@@ -163,6 +176,7 @@
     "عمران بن الحصين الخزاعي": "'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)",
     "عمرو": "'Amr (a student present)",
     "عمواس": "Amwas",
+    "عيينة بن حصن": "'Uyaina",
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
     "غسان": "Ghassan",
@@ -182,8 +196,10 @@
     "محمد هاشم بن عبد الغفور السندي الحنفي": "Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi",
     "مرارة بن الربيع العمري": "Murarah ibn al-Rabi' al-'Amri",
     "مسلم بن الحجاج": "Muslim ibn al-Hajjaj",
+    "مصعب بن سعد": "Mus'ab ibn Sa'd (a narrator in the hadith's chain)",
     "مصعب بن عمير": "Mus'ab ibn 'Umayr",
     "معاذ": "Mu'adh",
+    "معاذ بن أنس": "Mu'adh ibn Anas",
     "معاذ بن جبل": "Mu'adh ibn Jabal",
     "معن بن يزيد بن الأخنس": "Ma'n ibn Yazid ibn al-Akhnas",
     "مكة": "Makkah",
@@ -402,6 +418,10 @@
       "english": "the Successors",
       "translit": "al-Tabi'in"
     },
+    "التبرج": {
+      "english": "ostentatious display (of adornment)",
+      "translit": "tabarruj"
+    },
     "التجديد": {
       "english": "renewal",
       "translit": "tajdid"
@@ -413,6 +433,10 @@
     "التحميد": {
       "english": "praising Allah",
       "translit": "tahmid"
+    },
+    "التحنيك": {
+      "english": "chewing a date and rubbing it on a newborn's palate",
+      "translit": "tahnik"
     },
     "التخلية": {
       "english": "emptying the soul of vice",
@@ -517,6 +541,10 @@
     "الحمية": {
       "english": "tribal zeal",
       "translit": "hamiyyah"
+    },
+    "الحور العين": {
+      "english": "the wide-eyed maidens (al-hur al-'in)",
+      "translit": "al-hur al-'in"
     },
     "الحوض": {
       "english": "the basin (al-Hawd)",
@@ -798,6 +826,10 @@
       "english": "Allah is the One whose help is sought",
       "translit": "Allah al-musta'an"
     },
+    "المؤلفة قلوبهم": {
+      "english": "those whose hearts were to be reconciled",
+      "translit": "al-mu'allafah qulubuhum"
+    },
     "المجاهدين": {
       "english": "those who strive in Allah's cause",
       "translit": "mujahidin"
@@ -817,6 +849,10 @@
     "المصلح": {
       "english": "the reformer",
       "translit": "muslih"
+    },
+    "المعراج": {
+      "english": "the Night Journey (al-Mi'raj)",
+      "translit": "al-Mi'raj"
     },
     "المغازي": {
       "english": "the military expeditions",
@@ -994,9 +1030,17 @@
       "english": "'he narrated to us' (hadith transmission formula)",
       "translit": "haddathana"
     },
+    "حديث حسن": {
+      "english": "hasan (a sound but not the highest-grade hadith)",
+      "translit": "hasan"
+    },
     "حديث قدسي": {
       "english": "sacred hadith (hadith qudsi)",
       "translit": "hadith qudsi"
+    },
+    "حسن الخلق": {
+      "english": "good character",
+      "translit": "husn al-khuluq"
     },
     "حلقات الهم والحزن": {
       "english": "the episodes on Worry and Grief (the speaker's earlier series)",
@@ -1030,6 +1074,10 @@
       "english": "the proofs of prophethood",
       "translit": "dala'il al-nubuwwah"
     },
+    "دية": {
+      "english": "blood money (diyah)",
+      "translit": "diyah"
+    },
     "رباعية": {
       "english": "incisor tooth",
       "translit": "ruba'iyyah"
@@ -1058,6 +1106,10 @@
       "english": "Surat al-Ahqaf",
       "translit": "al-Ahqaf"
     },
+    "سورة الأنبياء": {
+      "english": "Surat al-Anbiya",
+      "translit": "Surat al-Anbiya"
+    },
     "سورة الأنفال": {
       "english": "Surat al-Anfal",
       "translit": "Surat al-Anfal"
@@ -1070,6 +1122,10 @@
       "english": "Surat al-Hadid",
       "translit": "Surat al-Hadid"
     },
+    "سورة الدخان": {
+      "english": "Surat al-Dukhan",
+      "translit": "Surat al-Dukhan"
+    },
     "سورة الضحى": {
       "english": "Surat al-Duha",
       "translit": "Surat al-Duha"
@@ -1077,6 +1133,10 @@
     "سورة القصص": {
       "english": "Surat al-Qasas",
       "translit": "Surat al-Qasas"
+    },
+    "سورة المزمل": {
+      "english": "Surat al-Muzzammil",
+      "translit": "Surat al-Muzzammil"
     },
     "سورة النازعات": {
       "english": "Surat al-Nazi'at",
@@ -1105,6 +1165,10 @@
     "شبهة": {
       "english": "a misgiving / specious doubt",
       "translit": "shubhah"
+    },
+    "طروق": {
+      "english": "arriving home unannounced",
+      "translit": "tarq"
     },
     "طول الامل": {
       "english": "prolonged false hope",
@@ -1154,6 +1218,10 @@
       "english": "shirt",
       "translit": "qamis"
     },
+    "قهر الرجال": {
+      "english": "being overpowered by men (qahr al-rijal)",
+      "translit": "qahr al-rijal"
+    },
     "قيام الليل": {
       "english": "the night prayer (qiyam al-layl)",
       "translit": "qiyam al-layl"
@@ -1165,6 +1233,10 @@
     "كرامة": {
       "english": "a miracle granted to a righteous person (karamah)",
       "translit": "karamah"
+    },
+    "كظم الغيظ": {
+      "english": "suppressing anger (kazm al-ghayz)",
+      "translit": "kazm al-ghayz"
     },
     "لذة الايمان": {
       "english": "the sweetness of faith",
@@ -1201,6 +1273,10 @@
     "مشهد": {
       "english": "a witnessed occasion",
       "translit": "mashhad (pl. mashahid)"
+    },
+    "معية": {
+      "english": "God's providence for the believers",
+      "translit": "ma'iyyah"
     },
     "مقاصد الدين": {
       "english": "the objectives of the religion",

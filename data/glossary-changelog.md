@@ -450,3 +450,36 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: اعتكاف → i'tikaf, retreat at the mosque (i'tikaf)
 - terms: سورة النازعات → al-Nazi'at, Surat al-Nazi'at
 - terms: سورة الأحقاف → al-Ahqaf, Surat al-Ahqaf
+
+## 2026-07-17 — riyad-10
+- names: حنين → Hunayn
+- names: الأقرع بن حابس → Aqra' ibn Habis
+- names: عيينة بن حصن → 'Uyaina
+- terms: سورة المزمل → Surat al-Muzzammil, Surat al-Muzzammil
+- terms: سورة الدخان → Surat al-Dukhan, Surat al-Dukhan
+- terms: المعراج → al-Mi'raj, the Night Journey (al-Mi'raj)
+- terms: سورة الأنبياء → Surat al-Anbiya, Surat al-Anbiya
+- terms: دية → diyah, blood money (diyah)
+- terms: المؤلفة قلوبهم → al-mu'allafah qulubuhum, those whose hearts were to be reconciled
+- names: عباس بن مرداس → 'Abbas b. Mirdas
+- names: أبو داود → Abu Dawud
+- names: عاصم → 'Asim (a narrator in the hadith's chain)
+- names: مصعب بن سعد → Mus'ab ibn Sa'd (a narrator in the hadith's chain)
+- names: أبو طلحة → Abu Talha
+- names: ابن عيينة → Ibn 'Uyaynah
+- terms: التحنيك → tahnik, chewing a date and rubbing it on a newborn's palate
+- names: أم سليم → Umm Sulaym
+- names: أم عطية → Umm 'Atiyyah
+- terms: التبرج → tabarruj, ostentatious display (of adornment)
+- terms: معية → ma'iyyah, God's providence for the believers
+- terms: طروق → tarq, arriving home unannounced
+- names: سليمان بن صرد → Sulayman ibn Sarad
+- terms: كظم الغيظ → kazm al-ghayz, suppressing anger (kazm al-ghayz)
+- terms: الحور العين → al-hur al-'in, the wide-eyed maidens (al-hur al-'in)
+- terms: حديث حسن → hasan, hasan (a sound but not the highest-grade hadith)
+- terms: حسن الخلق → husn al-khuluq, good character
+- names: ابن المبارك → Ibn al-Mubarak
+- names: اسحاق بن راهويه → Ishaq ibn Rahawayh
+- names: معاذ بن أنس → Mu'adh ibn Anas
+- terms: قهر الرجال → qahr al-rijal, being overpowered by men (qahr al-rijal)
+- names: بشر بن البراء بن معرور → Bishr ibn al-Bara' ibn Ma'rur
