@@ -58,6 +58,7 @@
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
     "الكعبة": "the Ka'bah",
+    "المخزومية": "the Makhzumi woman",
     "المدينة": "Madinah",
     "المهدي": "al-Mahdi",
     "النبي": "the Prophet ﷺ",
@@ -76,11 +77,13 @@
     "بني سلمة": "Banu Salamah",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
     "جليبيب": "Julaibib",
+    "جهينة": "Juhaynah",
     "حسام عبد الله حمشو": "Husam 'Abdullah Hamshu",
     "حسان": "Hassan",
     "حفصة": "Hafsah",
     "حمزة": "Hamzah (a student present)",
     "حواء": "Hawwa' (Eve)",
+    "خالد بن الوليد": "Khalid ibn al-Walid",
     "خديجة": "Khadijah",
     "خيبر": "Khaybar",
     "دار الأرقم": "Dar al-Arqam",
@@ -121,9 +124,11 @@
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عثمان بن عفان": "'Uthman ibn 'Affan",
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
+    "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
     "عمر": "'Umar",
     "عمر بن الخطاب": "'Umar ibn al-Khattab",
+    "عمران بن الحصين الخزاعي": "'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)",
     "عمرو": "'Amr (a student present)",
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
@@ -171,6 +176,10 @@
     "أنوار الأنبياء": {
       "english": "The Lights of the Prophets",
       "translit": "Anwar al-Anbiya"
+    },
+    "أهواء": {
+      "english": "base desires (ahwa')",
+      "translit": "ahwa'"
     },
     "إحسان الظن": {
       "english": "thinking well of others (husn al-zann)",
@@ -244,6 +253,10 @@
       "english": "reform",
       "translit": "islah"
     },
+    "الإمام": {
+      "english": "the ruler (imam)",
+      "translit": "imam"
+    },
     "الاحتساب": {
       "english": "the seeking of reward (ihtisab)",
       "translit": "ihtisab"
@@ -275,6 +288,10 @@
     "البناء المنهجي": {
       "english": "al-Bina' al-Manhaji (educational program)",
       "translit": "al-Bina' al-Manhaji"
+    },
+    "البيعة": {
+      "english": "the pledge of allegiance",
+      "translit": "bay'ah"
     },
     "التابعون": {
       "english": "the Successors",
@@ -320,6 +337,10 @@
       "english": "needless imposition",
       "translit": "takalluf"
     },
+    "التكليف": {
+      "english": "the religious obligation",
+      "translit": "taklif"
+    },
     "التمكين": {
       "english": "empowerment; being established in the land",
       "translit": "tamkin"
@@ -356,9 +377,21 @@
       "english": "al-Jawab al-Sahih li-man baddala din al-Masih",
       "translit": "al-Jawab al-Sahih li-man baddala din al-Masih"
     },
+    "الجود بالنفس": {
+      "english": "being generous with one's own life",
+      "translit": "jud bi-l-nafs"
+    },
     "الحج": {
       "english": "the pilgrimage (hajj)",
       "translit": "hajj"
+    },
+    "الحد": {
+      "english": "legally punishable offense",
+      "translit": "hadd"
+    },
+    "الحدود": {
+      "english": "the prescribed punishments (hudud)",
+      "translit": "hudud"
     },
     "الحرم": {
       "english": "the Sanctuary",
@@ -436,6 +469,14 @@
       "english": "almsgiving (zakah)",
       "translit": "zakah"
     },
+    "الزنا": {
+      "english": "unlawful sexual intercourse (zina)",
+      "translit": "zina"
+    },
+    "السبع الموبقات": {
+      "english": "the seven destructive sins",
+      "translit": "al-sab' al-mubiqat"
+    },
     "السرايا": {
       "english": "raiding parties",
       "translit": "saraya"
@@ -476,6 +517,10 @@
       "english": "the point of citation (shahid)",
       "translit": "shahid"
     },
+    "الشرع": {
+      "english": "the Shari'ah",
+      "translit": "shari'ah"
+    },
     "الشرك": {
       "english": "associating partners with Allah",
       "translit": "shirk"
@@ -487,6 +532,10 @@
     "الشيطان": {
       "english": "Satan",
       "translit": "Shaytan"
+    },
+    "الصبر": {
+      "english": "patience",
+      "translit": "sabr"
     },
     "الصحيحين": {
       "english": "the two Sahihs",
@@ -515,6 +564,10 @@
     "العشره المشهود لهم بالجنه": {
       "english": "the ten given the glad tidings of Paradise",
       "translit": "al-'Asharah al-Mubashsharah bi'l-Jannah"
+    },
+    "الغرور": {
+      "english": "the Deceiver",
+      "translit": "al-Gharur"
     },
     "الغلو": {
       "english": "extremism",
@@ -548,9 +601,21 @@
       "english": "the good example",
       "translit": "al-qudwah al-hasanah"
     },
+    "القذف": {
+      "english": "false accusation of zina (qadhf)",
+      "translit": "qadhf"
+    },
     "الكتب الستة": {
       "english": "the Six Books",
       "translit": "al-kutub al-sittah"
+    },
+    "الكفارة": {
+      "english": "expiation",
+      "translit": "kaffarah"
+    },
+    "الله اكبر": {
+      "english": "Allahu Akbar (God is greatest)",
+      "translit": "Allahu Akbar"
     },
     "الله المستعان": {
       "english": "Allah is the One whose help is sought",
@@ -579,6 +644,10 @@
     "المفسرون": {
       "english": "the exegetes",
       "translit": "mufassirun"
+    },
+    "المقاصد": {
+      "english": "the higher objectives (of the Sharia)",
+      "translit": "maqasid"
     },
     "المقام المحمود": {
       "english": "the praised station",
@@ -619,6 +688,10 @@
     "الهدي النبوي": {
       "english": "the Prophetic guidance",
       "translit": "al-hady al-nabawi"
+    },
+    "الهوى": {
+      "english": "desire",
+      "translit": "hawa"
     },
     "الوحي": {
       "english": "revelation",
@@ -764,6 +837,10 @@
       "english": "The Biography of the Messenger of Allah ﷺ",
       "translit": "Sirat Rasul Allah"
     },
+    "طول الامل": {
+      "english": "prolonged false hope",
+      "translit": "tul al-amal"
+    },
     "عالم الشهادة": {
       "english": "the visible world ('alam al-shahadah)",
       "translit": "'alam al-shahadah"
@@ -843,6 +920,10 @@
     "مقاصد الدين": {
       "english": "the objectives of the religion",
       "translit": "maqasid al-din"
+    },
+    "منهج": {
+      "english": "methodology (manhaj)",
+      "translit": "manhaj"
     },
     "مهاجر": {
       "english": "emigrant",

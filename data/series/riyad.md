@@ -40,3 +40,4 @@ coined, series facts, and how the room behaves.
 - `riyad-02` — باب الإخلاص والنية part 2 (Sincerity and Intention (Bab al-Ikhlas wa'l-Niyyah)).
 - `riyad-03` — باب التوبة part 1 (Repentance (Bab al-Tawbah)).
 - `riyad-04` — باب التوبة part 2 (Repentance (Bab al-Tawbah)).
+- `riyad-05` — باب التوبة part 3 (Repentance (Bab al-Tawbah)).

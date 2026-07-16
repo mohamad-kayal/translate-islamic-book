@@ -316,3 +316,29 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: حفصة → Hafsah
 - names: خيبر → Khaybar
 - names: أحمد → Ahmad (a student present)
+
+## 2026-07-17 — riyad-05
+- names: عمران بن الحصين الخزاعي → 'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)
+- names: جهينة → Juhaynah
+- terms: منهج → manhaj, methodology (manhaj)
+- terms: الحد → hadd, legally punishable offense
+- terms: السبع الموبقات → al-sab' al-mubiqat, the seven destructive sins
+- names: خالد بن الوليد → Khalid ibn al-Walid
+- terms: القذف → qadhf, false accusation of zina (qadhf)
+- terms: الزنا → zina, unlawful sexual intercourse (zina)
+- terms: الإمام → imam, the ruler (imam)
+- names: المخزومية → the Makhzumi woman
+- terms: الحدود → hudud, the prescribed punishments (hudud)
+- terms: الله اكبر → Allahu Akbar, Allahu Akbar (God is greatest)
+- terms: الكفارة → kaffarah, expiation
+- terms: البيعة → bay'ah, the pledge of allegiance
+- terms: المقاصد → maqasid, the higher objectives (of the Sharia)
+- terms: الصبر → sabr, patience
+- terms: الجود بالنفس → jud bi-l-nafs, being generous with one's own life
+- terms: أهواء → ahwa', base desires (ahwa')
+- terms: الهوى → hawa, desire
+- terms: الشرع → shari'ah, the Shari'ah
+- terms: طول الامل → tul al-amal, prolonged false hope
+- terms: الغرور → al-Gharur, the Deceiver
+- terms: التكليف → taklif, the religious obligation
+- names: عكرمة بن أبي جهل → 'Ikrimah ibn Abi Jahl
