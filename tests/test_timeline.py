@@ -69,3 +69,23 @@ def test_words_from_json3():
     assert words[1]["t0"] == pytest.approx(2.2)
     assert words[1]["t1"] == pytest.approx(4.0)  # ends at event end
     assert words[2]["t1"] == pytest.approx(6.5)
+
+
+def test_words_from_json3_clamps_rolling_overlap():
+    # YouTube auto-captions re-emit words in overlapping rolling windows: event 1's window
+    # ends at 4.0s but the next event's first word already starts at 3.0s.
+    obj = {"events": [
+        {"tStartMs": 1000, "dDurationMs": 3000, "segs": [
+            {"utf8": "اول", "tOffsetMs": 0},
+            {"utf8": " ثاني", "tOffsetMs": 500},
+        ]},
+        {"tStartMs": 3000, "dDurationMs": 2000, "segs": [{"utf8": "ثالث", "tOffsetMs": 0}]},
+    ]}
+    words = words_from_json3(obj)
+    assert [w["w"] for w in words] == ["اول", "ثاني", "ثالث"]
+    # event 1's last word would be stamped to the event end (4.0), overrunning the next
+    # word's start (3.0); it must be clamped so the timeline never overlaps.
+    assert words[1]["t1"] == pytest.approx(3.0)
+    assert words[2]["t0"] == pytest.approx(3.0)
+    for a, b in zip(words, words[1:]):
+        assert a["t1"] <= b["t0"] + 1e-9

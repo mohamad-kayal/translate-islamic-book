@@ -151,3 +151,52 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: الشمائل → shama'il, the noble qualities (shama'il)
 - terms: الوسيلة → al-wasilah, the highest station
 - terms: المقام المحمود → maqam mahmud, the praised station
+
+## 2026-07-17 — riyad-01
+- terms: رياض الصالحين → Riyad al-Salihin, The Gardens of the Righteous
+- terms: الرقائق → raqa'iq, softening narrations
+- names: الامام البخاري → Imam al-Bukhari
+- names: البخاري → al-Bukhari
+- names: مسلم بن الحجاج → Muslim ibn al-Hajjaj
+- terms: متفق عليه → muttafaqun 'alayh, agreed upon (related by both Bukhari and Muslim)
+- terms: استقراء → istiqra', induction
+- terms: استنباط → istinbat, derivation
+- terms: مقاصد الدين → maqasid al-din, the objectives of the religion
+- terms: الإخلاص → ikhlas, sincerity
+- terms: النية → niyyah, intention
+- names: الشعبي → al-Sha'bi
+- names: جابر بن عبد الله → Jabir ibn 'Abdullah
+- names: عائشة → Aisha
+- names: النووي → Imam al-Nawawi
+- terms: حافظ → hafiz, memorizer
+- names: المهدي → al-Mahdi
+- terms: اشراط الساعة → ashrat al-sa'ah, the portents of the Hour
+- terms: الحرم → al-Haram, the Sanctuary
+- terms: الخسف → al-khasf, the sinking
+- terms: التكلف → takalluf, needless imposition
+- terms: الصفات → sifat, the divine attributes
+- terms: الفتح → al-Fath, the conquest (of Makkah)
+- terms: التقييد → taqyid, the qualification (of an absolute wording)
+- terms: دار الاسلام → Dar al-Islam, the abode of Islam
+- terms: دار الكفر → Dar al-Kufr, the home/abode of disbelief
+- terms: مهاجر → Muhajir, emigrant
+- terms: الجهاد → jihad, jihad
+- names: رضوان → Ridwan (a student present)
+- names: انس → Anas
+- names: سورة التوبة → Surat al-Tawbah
+- terms: قلة ذات اليد → qillat dhat al-yad, scarcity of means
+- names: معن بن يزيد بن الأخنس → Ma'n ibn Yazid ibn al-Akhnas
+- names: سعد بن ابي وقاص → Sa'd ibn Abi Waqqas
+- terms: العشره المشهود لهم بالجنه → al-'Asharah al-Mubashsharah bi'l-Jannah, the ten given the glad tidings of Paradise
+- names: سعد بن خولة → Sa'd ibn Khawlah
+- names: الشاطبي → al-Shatibi
+- terms: الموافقات → al-Muwafaqat, al-Muwafaqat
+- terms: تقرير → taqrir, tacit approval
+- terms: الحج → hajj, the pilgrimage (hajj)
+- terms: الزكاة → zakah, almsgiving (zakah)
+- terms: قيام الليل → qiyam al-layl, the night prayer (qiyam al-layl)
+- terms: الرباني → rabbani/rabbaniyyun, the God-devoted (rabbaniyyun)
+- terms: الاحتساب → ihtisab, the seeking of reward (ihtisab)
+- names: معاذ → Mu'adh
+- names: أسيد → Usayd (a student present)
+- names: غزة → Gaza

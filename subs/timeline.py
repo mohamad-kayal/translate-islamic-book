@@ -61,4 +61,11 @@ def words_from_json3(obj):
         if pending:
             pending[-1]["t1"] = max(t_end, pending[-1]["t0"])
         words.extend(pending)
+    # YouTube json3 auto-caption events use rolling windows that overlap the next event, so a
+    # word's end (esp. an event's last word, stamped to the event end) can run past the next
+    # word's start. Clamp each end to the next start so proto-segments — and the cues built
+    # from them — never overlap. Matches the rolling-overlap flattening in words_from_cues.
+    for cur, nxt in zip(words, words[1:]):
+        if cur["t1"] > nxt["t0"]:
+            cur["t1"] = max(cur["t0"], nxt["t0"])
     return words

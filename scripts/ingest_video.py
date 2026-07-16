@@ -26,7 +26,11 @@ def is_url(s):
 def fetch_json3(url, work, lang="ar"):
     """yt-dlp auto-captions → path of the downloaded json3 file."""
     template = str(work / "captions")
-    cmd = ["yt-dlp", "--skip-download", "--write-auto-subs", "--write-subs",
+    # YouTube's default web client now gates auto-caption fetches behind a PO token
+    # ("The page needs to be reloaded"); the android client still serves json3 cleanly.
+    cmd = [sys.executable, "-m", "yt_dlp",
+           "--skip-download", "--write-auto-subs", "--write-subs",
+           "--extractor-args", "youtube:player_client=android",
            "--sub-langs", lang, "--sub-format", "json3", "-o", template, url]
     subprocess.run(cmd, check=True)
     hits = sorted(work.glob("captions*.json3"))
