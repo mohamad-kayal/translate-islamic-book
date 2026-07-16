@@ -200,3 +200,30 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: معاذ → Mu'adh
 - names: أسيد → Usayd (a student present)
 - names: غزة → Gaza
+
+## 2026-07-17 — riyad-02
+- names: أبو هريرة → Abu Hurayrah
+- names: عبد الرحمن بن صخر → 'Abd al-Rahman ibn Sakhr
+- terms: باب الإخلاص والنية → Bab al-Ikhlas wa'l-Niyyah, the chapter on Sincerity and Intention
+- terms: مراقبة → muraqabah, vigilant awareness of Allah
+- names: سعد → Sa'd (a student present)
+- terms: التقوى → taqwa, piety
+- terms: المصطفى → al-Mustafa, the Chosen One
+- terms: الحمية → hamiyyah, tribal zeal
+- terms: الرياء → riya', showing off
+- names: أبو موسى الأشعري → Abu Musa al-Ash'ari
+- terms: الولاء والبراء → al-wala' wa'l-bara', loyalty and disavowal
+- names: أبو بكرة نفيع بن الحارث الثقفي → Abu Bakrah Nufay' ibn al-Harith al-Thaqafi
+- terms: موضع الشاهد → al-shahid, the point of evidence
+- names: عبد الله بن عباس → 'Abdullah ibn 'Abbas
+- names: عبد الله بن عمر → 'Abdullah ibn 'Umar
+- names: زكريا → Zakariyya
+- terms: سنن → sunan, the recommended practices
+- terms: السواك → miswak, the tooth-stick
+- names: براء → Bara' (a student present)
+- names: عمرو → 'Amr (a student present)
+- names: عبد الرحمن → 'Abd al-Rahman (a student present)
+- names: بشر → Bishr (a student present)
+- names: بشير → Bashir (a student present)
+- terms: الفردوس → al-Firdaws, Paradise (al-Firdaws)
+- terms: الحوض → al-Hawd, the basin (al-Hawd)

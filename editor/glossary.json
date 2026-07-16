@@ -6,8 +6,11 @@
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
     "أبو بكر": "Abu Bakr",
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
+    "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
+    "أبو موسى الأشعري": "Abu Musa al-Ash'ari",
+    "أبو هريرة": "Abu Hurayrah",
     "أحد": "Uhud",
     "أسيد": "Usayd (a student present)",
     "أم كلثوم": "Umm Kulthum",
@@ -52,6 +55,9 @@
     "الوليد بن المغيرة": "al-Walid ibn al-Mughirah",
     "انس": "Anas",
     "بدر": "Badr",
+    "براء": "Bara' (a student present)",
+    "بشر": "Bishr (a student present)",
+    "بشير": "Bashir (a student present)",
     "بنو أسد": "Banu Asad",
     "بنو أمية": "Banu Umayyah",
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
@@ -65,9 +71,11 @@
     "رضوان": "Ridwan (a student present)",
     "رقية": "Ruqayyah",
     "رقية بنت رسول الله": "Ruqayyah, daughter of the Messenger of Allah ﷺ",
+    "زكريا": "Zakariyya",
     "زياد بن عبد الله البكائي": "Ziyad ibn 'Abdullah al-Bakka'i",
     "زيد": "Zayd",
     "زينب": "Zaynab",
+    "سعد": "Sa'd (a student present)",
     "سعد بن ابي وقاص": "Sa'd ibn Abi Waqqas",
     "سعد بن خولة": "Sa'd ibn Khawlah",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
@@ -78,8 +86,12 @@
     "عاصم بن عمر بن قتادة": "'Asim ibn 'Umar ibn Qatadah",
     "عامر بن فهيرة": "'Amir ibn Fuhayrah",
     "عبادة بن الصامت": "'Ubada ibn al-Samit",
+    "عبد الرحمن": "'Abd al-Rahman (a student present)",
+    "عبد الرحمن بن صخر": "'Abd al-Rahman ibn Sakhr",
     "عبد الرحمن بن عوف": "'Abd al-Rahman ibn 'Awf",
     "عبد السلام هارون": "'Abd al-Salam Harun",
+    "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
+    "عبد الله بن عمر": "'Abdullah ibn 'Umar",
     "عبد الله بن مسعود": "'Abdullah ibn Mas'ud",
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عثمان بن عفان": "'Uthman ibn 'Affan",
@@ -87,6 +99,7 @@
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
     "عمر": "'Umar",
     "عمر بن الخطاب": "'Umar ibn al-Khattab",
+    "عمرو": "'Amr (a student present)",
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
     "فاطمة بنت الخطاب": "Fatimah bint al-Khattab",
@@ -206,6 +219,10 @@
       "english": "Qur'anic exegesis",
       "translit": "tafsir"
     },
+    "التقوى": {
+      "english": "piety",
+      "translit": "taqwa"
+    },
     "التقييد": {
       "english": "the qualification (of an absolute wording)",
       "translit": "taqyid"
@@ -242,6 +259,14 @@
       "english": "the Sanctuary",
       "translit": "al-Haram"
     },
+    "الحمية": {
+      "english": "tribal zeal",
+      "translit": "hamiyyah"
+    },
+    "الحوض": {
+      "english": "the basin (al-Hawd)",
+      "translit": "al-Hawd"
+    },
     "الخسف": {
       "english": "the sinking",
       "translit": "al-khasf"
@@ -270,6 +295,10 @@
       "english": "al-Rawd al-Unuf (The Untrodden Meadow and the Quenching Spring: Explaining What the Narrative of the Sirah Contains and Comprises)",
       "translit": "al-Rawd al-Unuf wa-l-Mashra' al-Rawa fi Tafsir ma Ishtamala 'alayhi Hadith al-Sirah wa-Htawa"
     },
+    "الرياء": {
+      "english": "showing off",
+      "translit": "riya'"
+    },
     "الرِّبانية": {
       "english": "devotion to the Lord",
       "translit": "rabbaniyyah"
@@ -289,6 +318,10 @@
     "السنن الإلهية": {
       "english": "the divine norms — God's unchanging ways",
       "translit": "al-sunan al-ilahiyyah"
+    },
+    "السواك": {
+      "english": "the tooth-stick",
+      "translit": "miswak"
     },
     "السيرة": {
       "english": "the Prophetic biography",
@@ -350,6 +383,10 @@
       "english": "trials and tribulations",
       "translit": "fitan"
     },
+    "الفردوس": {
+      "english": "Paradise (al-Firdaws)",
+      "translit": "al-Firdaws"
+    },
     "الفقه": {
       "english": "fiqh",
       "translit": "fiqh"
@@ -373,6 +410,10 @@
     "المشركون": {
       "english": "the polytheists",
       "translit": "al-mushrikun"
+    },
+    "المصطفى": {
+      "english": "the Chosen One",
+      "translit": "al-Mustafa"
     },
     "المصلح": {
       "english": "the reformer",
@@ -421,6 +462,14 @@
     "الوسيلة": {
       "english": "the highest station",
       "translit": "al-wasilah"
+    },
+    "الولاء والبراء": {
+      "english": "loyalty and disavowal",
+      "translit": "al-wala' wa'l-bara'"
+    },
+    "باب الإخلاص والنية": {
+      "english": "the chapter on Sincerity and Intention",
+      "translit": "Bab al-Ikhlas wa'l-Niyyah"
     },
     "بذل القوة في حوادث سني النبوة": {
       "english": "Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah",
@@ -486,6 +535,10 @@
       "english": "Zad al-Ma'ad",
       "translit": "Zad al-Ma'ad"
     },
+    "سنن": {
+      "english": "the recommended practices",
+      "translit": "sunan"
+    },
     "سورة الأنفال": {
       "english": "Surat al-Anfal",
       "translit": "Surat al-Anfal"
@@ -546,6 +599,10 @@
       "english": "unknown narrators",
       "translit": "majahil"
     },
+    "مراقبة": {
+      "english": "vigilant awareness of Allah",
+      "translit": "muraqabah"
+    },
     "مسند": {
       "english": "with full chains of transmission (musnad)",
       "translit": "musnad"
@@ -557,6 +614,10 @@
     "مهاجر": {
       "english": "emigrant",
       "translit": "Muhajir"
+    },
+    "موضع الشاهد": {
+      "english": "the point of evidence",
+      "translit": "al-shahid"
     }
   },
   "works": {}
