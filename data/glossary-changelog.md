@@ -421,3 +421,32 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: الساحر → sahir, the sorcerer
 - names: كسرى → Chosroes
 - names: قيصر → Caesar
+
+## 2026-07-17 — riyad-08
+- terms: باب الصبر → Bab al-Sabr, the chapter on Patience
+- terms: مجاهدة النفس → mujahadat al-nafs, striving against the self (mujahadat al-nafs)
+- terms: الزهد → zuhd, asceticism (zuhd)
+- terms: الاستئذان → isti'dhan, seeking permission (to enter)
+- terms: انكار المنكر → inkar al-munkar, objecting to wrong
+- terms: الطاعون → al-Ta'un, plague
+- terms: حديث قدسي → hadith qudsi, sacred hadith (hadith qudsi)
+- names: عمواس → Amwas
+- names: بيت المقدس → Jerusalem (Bayt al-Maqdis)
+- terms: استدراج → istidraj, a gradual luring into ruin, disguised as favor
+- terms: شبهة → shubhah, a misgiving / specious doubt
+- terms: سجود الشكر → sujud al-shukr, the prostration of gratitude
+- names: الشيخ كشك → Shaykh Kishk
+- terms: تصحيح المعايير → tashih al-ma'ayir, correcting the standards
+- terms: الاستشراق → istishraq, Orientalism
+- terms: الكشافات → kashshafat, searchlights (kashshafat)
+- terms: الرقوب → raqub, one bereft of a child having gone before him (raqub)
+- names: عطاء بن أبي رباح → 'Ata' ibn Abi Rabah
+- terms: باب الريان → Bab al-Rayyan, the gate of al-Rayyan
+- names: عطاء → 'Ata
+- terms: احاديث الانبياء → Ahadith al-Anbiya', Hadiths of the Prophets
+- terms: استتابة المرتدين والمعاندين وقتالهم → Istitabat al-Murtaddin wal-Mu'anidin wa-Qitalihim, Dealing with Apostates and Obstinate Rebels, and Fighting Them
+- terms: البلاء → bala', trial
+- terms: المجاهدين → mujahidin, those who strive in Allah's cause
+- terms: اعتكاف → i'tikaf, retreat at the mosque (i'tikaf)
+- terms: سورة النازعات → al-Nazi'at, Surat al-Nazi'at
+- terms: سورة الأحقاف → al-Ahqaf, Surat al-Ahqaf

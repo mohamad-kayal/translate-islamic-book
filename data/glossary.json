@@ -59,6 +59,7 @@
     "الشافعي": "al-Shafi'i",
     "الشام": "al-Sham (Syria/the Levant)",
     "الشعبي": "al-Sha'bi",
+    "الشيخ كشك": "Shaykh Kishk",
     "الصحابة": "the Companions",
     "الصفا": "al-Safa",
     "الطائف": "Ta'if",
@@ -86,6 +87,7 @@
     "بنو أمية": "Banu Umayyah",
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
     "بني سلمة": "Banu Salamah",
+    "بيت المقدس": "Jerusalem (Bayt al-Maqdis)",
     "ثمود": "Thamud",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
     "جبريل": "Gabriel",
@@ -151,6 +153,8 @@
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عثمان بن عفان": "'Uthman ibn 'Affan",
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
+    "عطاء": "'Ata",
+    "عطاء بن أبي رباح": "'Ata' ibn Abi Rabah",
     "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
     "عمار": "'Ammar ibn Yasir",
@@ -158,6 +162,7 @@
     "عمر بن الخطاب": "'Umar ibn al-Khattab",
     "عمران بن الحصين الخزاعي": "'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)",
     "عمرو": "'Amr (a student present)",
+    "عمواس": "Amwas",
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
     "غسان": "Ghassan",
@@ -245,6 +250,10 @@
       "english": "independent juristic reasoning (ijtihad)",
       "translit": "ijtihad"
     },
+    "احاديث الانبياء": {
+      "english": "Hadiths of the Prophets",
+      "translit": "Ahadith al-Anbiya'"
+    },
     "احرام": {
       "english": "the pilgrim's garb",
       "translit": "ihram"
@@ -252,6 +261,14 @@
     "ازار": {
       "english": "the waist-wrap",
       "translit": "izar"
+    },
+    "استتابة المرتدين والمعاندين وقتالهم": {
+      "english": "Dealing with Apostates and Obstinate Rebels, and Fighting Them",
+      "translit": "Istitabat al-Murtaddin wal-Mu'anidin wa-Qitalihim"
+    },
+    "استدراج": {
+      "english": "a gradual luring into ruin, disguised as favor",
+      "translit": "istidraj"
     },
     "استقراء": {
       "english": "induction",
@@ -264,6 +281,10 @@
     "اشراط الساعة": {
       "english": "the portents of the Hour",
       "translit": "ashrat al-sa'ah"
+    },
+    "اعتكاف": {
+      "english": "retreat at the mosque (i'tikaf)",
+      "translit": "i'tikaf"
     },
     "الأحزاب": {
       "english": "the Confederates",
@@ -325,6 +346,14 @@
       "english": "the call to prayer",
       "translit": "adhan"
     },
+    "الاستئذان": {
+      "english": "seeking permission (to enter)",
+      "translit": "isti'dhan"
+    },
+    "الاستشراق": {
+      "english": "Orientalism",
+      "translit": "istishraq"
+    },
     "الاستغفار": {
       "english": "seeking forgiveness",
       "translit": "istighfar"
@@ -348,6 +377,10 @@
     "البعثة": {
       "english": "the prophetic mission",
       "translit": "bi'thah"
+    },
+    "البلاء": {
+      "english": "trial",
+      "translit": "bala'"
     },
     "البناء الفكري": {
       "english": "al-Bina' al-Fikri (educational program)",
@@ -537,6 +570,10 @@
       "english": "softening narrations",
       "translit": "raqa'iq"
     },
+    "الرقوب": {
+      "english": "one bereft of a child having gone before him (raqub)",
+      "translit": "raqub"
+    },
     "الروض الأنف": {
       "english": "al-Rawd al-Unuf",
       "translit": "al-Rawd al-Unuf"
@@ -564,6 +601,10 @@
     "الزنا": {
       "english": "unlawful sexual intercourse (zina)",
       "translit": "zina"
+    },
+    "الزهد": {
+      "english": "asceticism (zuhd)",
+      "translit": "zuhd"
     },
     "الساحر": {
       "english": "the sorcerer",
@@ -649,6 +690,10 @@
       "english": "precision",
       "translit": "dabt"
     },
+    "الطاعون": {
+      "english": "plague",
+      "translit": "al-Ta'un"
+    },
     "الطبقات": {
       "english": "al-Tabaqat (of Ibn Sa'd)",
       "translit": "al-Tabaqat"
@@ -733,6 +778,10 @@
       "english": "the Six Books",
       "translit": "al-kutub al-sittah"
     },
+    "الكشافات": {
+      "english": "searchlights (kashshafat)",
+      "translit": "kashshafat"
+    },
     "الكفارة": {
       "english": "expiation",
       "translit": "kaffarah"
@@ -748,6 +797,10 @@
     "الله المستعان": {
       "english": "Allah is the One whose help is sought",
       "translit": "Allah al-musta'an"
+    },
+    "المجاهدين": {
+      "english": "those who strive in Allah's cause",
+      "translit": "mujahidin"
     },
     "المستهزئون": {
       "english": "the mockers",
@@ -841,6 +894,10 @@
       "english": "certainty",
       "translit": "yaqin"
     },
+    "انكار المنكر": {
+      "english": "objecting to wrong",
+      "translit": "inkar al-munkar"
+    },
     "باب الإخلاص": {
       "english": "the chapter on Sincerity",
       "translit": "Bab al-Ikhlas"
@@ -852,6 +909,14 @@
     "باب التوبة": {
       "english": "the chapter on Repentance",
       "translit": "Bab al-Tawbah"
+    },
+    "باب الريان": {
+      "english": "the gate of al-Rayyan",
+      "translit": "Bab al-Rayyan"
+    },
+    "باب الصبر": {
+      "english": "the chapter on Patience",
+      "translit": "Bab al-Sabr"
     },
     "بدر": {
       "english": "Badr",
@@ -880,6 +945,10 @@
     "تابعي": {
       "english": "Successor",
       "translit": "tabi'i"
+    },
+    "تصحيح المعايير": {
+      "english": "correcting the standards",
+      "translit": "tashih al-ma'ayir"
     },
     "تفسير الطبري": {
       "english": "the Tafsir of al-Tabari",
@@ -924,6 +993,10 @@
     "حدثنا": {
       "english": "'he narrated to us' (hadith transmission formula)",
       "translit": "haddathana"
+    },
+    "حديث قدسي": {
+      "english": "sacred hadith (hadith qudsi)",
+      "translit": "hadith qudsi"
     },
     "حلقات الهم والحزن": {
       "english": "the episodes on Worry and Grief (the speaker's earlier series)",
@@ -973,9 +1046,17 @@
       "english": "Zad al-Ma'ad",
       "translit": "Zad al-Ma'ad"
     },
+    "سجود الشكر": {
+      "english": "the prostration of gratitude",
+      "translit": "sujud al-shukr"
+    },
     "سنن": {
       "english": "the recommended practices",
       "translit": "sunan"
+    },
+    "سورة الأحقاف": {
+      "english": "Surat al-Ahqaf",
+      "translit": "al-Ahqaf"
     },
     "سورة الأنفال": {
       "english": "Surat al-Anfal",
@@ -997,6 +1078,10 @@
       "english": "Surat al-Qasas",
       "translit": "Surat al-Qasas"
     },
+    "سورة النازعات": {
+      "english": "Surat al-Nazi'at",
+      "translit": "al-Nazi'at"
+    },
     "سورة يوسف": {
       "english": "Surah Yusuf",
       "translit": "Surat Yusuf"
@@ -1016,6 +1101,10 @@
     "سيرة رسول الله": {
       "english": "The Biography of the Messenger of Allah ﷺ",
       "translit": "Sirat Rasul Allah"
+    },
+    "شبهة": {
+      "english": "a misgiving / specious doubt",
+      "translit": "shubhah"
     },
     "طول الامل": {
       "english": "prolonged false hope",
@@ -1088,6 +1177,10 @@
     "مجاهدة": {
       "english": "striving (against the self)",
       "translit": "mujahadah"
+    },
+    "مجاهدة النفس": {
+      "english": "striving against the self (mujahadat al-nafs)",
+      "translit": "mujahadat al-nafs"
     },
     "مجاهيل": {
       "english": "unknown narrators",
