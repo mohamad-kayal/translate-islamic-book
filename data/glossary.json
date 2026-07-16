@@ -15,10 +15,14 @@
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
     "أبو قتادة": "Abu Qatadah",
+    "أبو مالك الحارث بن عاصم الأشعري": "Abu Malik al-Harith ibn 'Asim al-Ash'ari",
     "أبو موسى الأشعري": "Abu Musa al-Ash'ari",
     "أبو هريرة": "Abu Hurayrah",
+    "أبو يحيى صهيب بن سنان": "Abu Yahya Suhayb ibn Sinan",
+    "أبي بن كعب": "Ubay ibn Ka'b",
     "أحد": "Uhud",
     "أحمد": "Ahmad (a student present)",
+    "أسامة بن زيد بن حارثة": "Usamah ibn Zayd ibn Harithah",
     "أسيد": "Usayd (a student present)",
     "أم كلثوم": "Umm Kulthum",
     "إبراهيم": "Ibrahim",
@@ -28,6 +32,7 @@
     "ابن القيم": "Ibn al-Qayyim",
     "ابن تيمية": "Ibn Taymiyyah",
     "ابن حزم": "Ibn Hazm",
+    "ابن رجب": "Imam Ibn Rajab",
     "ابن سعد": "Ibn Sa'd",
     "ابن عاشور": "Ibn 'Ashur",
     "ابن كثير": "Ibn Kathir",
@@ -54,6 +59,7 @@
     "الشعبي": "al-Sha'bi",
     "الصحابة": "the Companions",
     "الصفا": "al-Safa",
+    "الطائف": "Ta'if",
     "الطبري": "al-Tabari",
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
@@ -71,11 +77,13 @@
     "براء": "Bara' (a student present)",
     "بشر": "Bishr (a student present)",
     "بشير": "Bashir (a student present)",
+    "بلال": "Bilal",
     "بنو أسد": "Banu Asad",
     "بنو أمية": "Banu Umayyah",
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
     "بني سلمة": "Banu Salamah",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
+    "جبريل": "Gabriel",
     "جليبيب": "Julaibib",
     "جهينة": "Juhaynah",
     "حسام عبد الله حمشو": "Husam 'Abdullah Hamshu",
@@ -95,10 +103,12 @@
     "زكريا": "Zakariyya",
     "زياد بن عبد الله البكائي": "Ziyad ibn 'Abdullah al-Bakka'i",
     "زيد": "Zayd",
+    "زيد بن ثابت": "Zayd ibn Thabit",
     "زينب": "Zaynab",
     "سعد": "Sa'd (a student present)",
     "سعد بن ابي وقاص": "Sa'd ibn Abi Waqqas",
     "سعد بن خولة": "Sa'd ibn Khawlah",
+    "سعد بن عبادة": "Sa'd ibn 'Ubada",
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
@@ -135,6 +145,7 @@
     "غسان": "Ghassan",
     "فاطمة بنت الخطاب": "Fatimah bint al-Khattab",
     "فرعون": "Pharaoh (Fir'awn)",
+    "قارون": "Qarun",
     "قريش": "Quraysh",
     "قصي": "Qusayy",
     "قيس بن أبي حازم": "Qays ibn Abi Hazim",
@@ -164,6 +175,14 @@
     "أبجديات الثقافة": {
       "english": "The ABCs of Culture",
       "translit": "Abjadiyyat al-Thaqafah"
+    },
+    "أذكار الصباح": {
+      "english": "the morning remembrances",
+      "translit": "adhkar al-sabah"
+    },
+    "أذكار النوم": {
+      "english": "the remembrances of sleep",
+      "translit": "adhkar al-nawm"
     },
     "أصول الفقه": {
       "english": "the principles of jurisprudence",
@@ -257,9 +276,17 @@
       "english": "the ruler (imam)",
       "translit": "imam"
     },
+    "الإنابة": {
+      "english": "turning back to Allah",
+      "translit": "inabah"
+    },
     "الاحتساب": {
       "english": "the seeking of reward (ihtisab)",
       "translit": "ihtisab"
+    },
+    "الاذان": {
+      "english": "the call to prayer",
+      "translit": "adhan"
     },
     "الاستغفار": {
       "english": "seeking forgiveness",
@@ -304,6 +331,18 @@
     "التجديد": {
       "english": "renewal",
       "translit": "tajdid"
+    },
+    "التحلية": {
+      "english": "adorning the soul with virtue",
+      "translit": "tahliyah"
+    },
+    "التحميد": {
+      "english": "praising Allah",
+      "translit": "tahmid"
+    },
+    "التخلية": {
+      "english": "emptying the soul of vice",
+      "translit": "takhliyah"
     },
     "التزكية": {
       "english": "purification of the soul",
@@ -525,6 +564,10 @@
       "english": "associating partners with Allah",
       "translit": "shirk"
     },
+    "الشكر": {
+      "english": "gratitude",
+      "translit": "shukr"
+    },
     "الشمائل": {
       "english": "the noble qualities (shama'il)",
       "translit": "shama'il"
@@ -545,6 +588,10 @@
       "english": "the divine attributes",
       "translit": "sifat"
     },
+    "الضبط": {
+      "english": "precision",
+      "translit": "dabt"
+    },
     "الطبقات": {
       "english": "al-Tabaqat (of Ibn Sa'd)",
       "translit": "al-Tabaqat"
@@ -556,6 +603,10 @@
     "العبودية": {
       "english": "servitude to God",
       "translit": "ubudiyyah"
+    },
+    "العجب": {
+      "english": "wonder",
+      "translit": "'ajab"
     },
     "العشرة المبشرون بالجنة": {
       "english": "the ten given glad tidings of Paradise",
@@ -589,6 +640,10 @@
       "english": "Paradise (al-Firdaws)",
       "translit": "al-Firdaws"
     },
+    "الفطرة": {
+      "english": "the natural disposition",
+      "translit": "fitrah"
+    },
     "الفقه": {
       "english": "fiqh",
       "translit": "fiqh"
@@ -596,6 +651,10 @@
     "الفواطم والعواتك": {
       "english": "the Fatimahs and the 'Awatik",
       "translit": "al-Fawatim wa-l-'Awatik"
+    },
+    "القدر": {
+      "english": "divine decree (al-Qadar)",
+      "translit": "al-Qadar"
     },
     "القدوة الحسنة": {
       "english": "the good example",
@@ -705,6 +764,10 @@
       "english": "loyalty and disavowal",
       "translit": "al-wala' wa'l-bara'"
     },
+    "اليقين": {
+      "english": "certainty",
+      "translit": "yaqin"
+    },
     "باب الإخلاص والنية": {
       "english": "the chapter on Sincerity and Intention",
       "translit": "Bab al-Ikhlas wa'l-Niyyah"
@@ -760,6 +823,10 @@
     "ثوب": {
       "english": "garment",
       "translit": "thawb"
+    },
+    "جامع العلوم والحكم": {
+      "english": "The Compendium of Knowledge and Wisdom",
+      "translit": "Jami' al-'Ulum wal-Hikam"
     },
     "حادثة الفيل": {
       "english": "the incident of the Elephant",
@@ -817,6 +884,14 @@
       "english": "Surat al-Anfal",
       "translit": "Surat al-Anfal"
     },
+    "سورة التحريم": {
+      "english": "Surat al-Tahrim",
+      "translit": "Surat al-Tahrim"
+    },
+    "سورة الحديد": {
+      "english": "Surat al-Hadid",
+      "translit": "Surat al-Hadid"
+    },
     "سورة القصص": {
       "english": "Surat al-Qasas",
       "translit": "Surat al-Qasas"
@@ -824,6 +899,10 @@
     "سورة يوسف": {
       "english": "Surah Yusuf",
       "translit": "Surat Yusuf"
+    },
+    "سيد الاستغفار": {
+      "english": "the master formula of seeking forgiveness",
+      "translit": "Sayyid al-Istighfar"
     },
     "سيرة ابن إسحاق": {
       "english": "the sirah of Ibn Ishaq",
@@ -896,6 +975,10 @@
     "متفق عليه": {
       "english": "agreed upon (related by both Bukhari and Muslim)",
       "translit": "muttafaqun 'alayh"
+    },
+    "مجاهدة": {
+      "english": "striving (against the self)",
+      "translit": "mujahadah"
     },
     "مجاهيل": {
       "english": "unknown narrators",

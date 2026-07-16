@@ -342,3 +342,34 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: الغرور → al-Gharur, the Deceiver
 - terms: التكليف → taklif, the religious obligation
 - names: عكرمة بن أبي جهل → 'Ikrimah ibn Abi Jahl
+
+## 2026-07-17 — riyad-06
+- terms: اليقين → yaqin, certainty
+- terms: الإنابة → inabah, turning back to Allah
+- names: أبو مالك الحارث بن عاصم الأشعري → Abu Malik al-Harith ibn 'Asim al-Ash'ari
+- names: ابن رجب → Imam Ibn Rajab
+- terms: جامع العلوم والحكم → Jami' al-'Ulum wal-Hikam, The Compendium of Knowledge and Wisdom
+- terms: الفطرة → fitrah, the natural disposition
+- terms: الضبط → dabt, precision
+- terms: التحميد → tahmid, praising Allah
+- terms: الاذان → adhan, the call to prayer
+- terms: التخلية → takhliyah, emptying the soul of vice
+- terms: التحلية → tahliyah, adorning the soul with virtue
+- terms: سورة الحديد → Surat al-Hadid, Surat al-Hadid
+- terms: سورة التحريم → Surat al-Tahrim, Surat al-Tahrim
+- terms: مجاهدة → mujahadah, striving (against the self)
+- names: أبو يحيى صهيب بن سنان → Abu Yahya Suhayb ibn Sinan
+- terms: الشكر → shukr, gratitude
+- names: قارون → Qarun
+- terms: سيد الاستغفار → Sayyid al-Istighfar, the master formula of seeking forgiveness
+- terms: أذكار النوم → adhkar al-nawm, the remembrances of sleep
+- terms: أذكار الصباح → adhkar al-sabah, the morning remembrances
+- terms: العجب → 'ajab, wonder
+- names: بلال → Bilal
+- names: الطائف → Ta'if
+- names: جبريل → Gabriel
+- names: أسامة بن زيد بن حارثة → Usamah ibn Zayd ibn Harithah
+- names: سعد بن عبادة → Sa'd ibn 'Ubada
+- names: أبي بن كعب → Ubay ibn Ka'b
+- names: زيد بن ثابت → Zayd ibn Thabit
+- terms: القدر → al-Qadar, divine decree (al-Qadar)
