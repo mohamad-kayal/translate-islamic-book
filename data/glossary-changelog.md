@@ -373,3 +373,28 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: أبي بن كعب → Ubay ibn Ka'b
 - names: زيد بن ثابت → Zayd ibn Thabit
 - terms: القدر → al-Qadar, divine decree (al-Qadar)
+
+## 2026-07-17 — riyad-07
+- terms: باب الإخلاص → Bab al-Ikhlas, the chapter on Sincerity
+- terms: قصة الغلام والساحر → Qissat al-Ghulam wa-l-Sahir, the story of the boy and the sorcerer
+- terms: النحو والصرف → nahw and sarf, grammar and morphology
+- names: الفاتحة → al-Fatihah
+- names: صهيب → Suhaib
+- terms: الكهنة → kahin, soothsayers
+- terms: كرامة → karamah, a miracle granted to a righteous person (karamah)
+- terms: دعاء → dua, supplication (dua)
+- names: خباب → Khabbab ibn al-Aratt
+- terms: الراهب → rahib, the monk (rahib)
+- names: سورة النساء → Surat al-Nisa
+- names: سورة آل عمران → Surat Aal 'Imran
+- names: عاد → 'Ad
+- names: ثمود → Thamud
+- names: سورة البقرة → Surat al-Baqarah
+- names: الخطابي → al-Khattabi
+- terms: الأدب → adab, manners
+- names: الإمام مسلم → Imam Muslim
+- names: سورة سبأ → Surat Saba
+- names: سورة الأعراف → Surat al-A'raf
+- names: سورة غافر → Surat Ghafir
+- names: هامان → Haman
+- terms: العافية → al-'afiyah, well-being

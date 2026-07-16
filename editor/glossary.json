@@ -39,6 +39,7 @@
     "ابن هشام": "Ibn Hisham",
     "الأنصار": "the Ansar",
     "الإمام أحمد": "Imam Ahmad",
+    "الإمام مسلم": "Imam Muslim",
     "الاغر ابن يسار المزني": "al-Aghurr ibn Yasar al-Muzani",
     "الامام البخاري": "Imam al-Bukhari",
     "البخاري": "al-Bukhari",
@@ -46,6 +47,7 @@
     "الحبشة": "Abyssinia",
     "الخزرج": "the Khazraj",
     "الخضر": "al-Khidr",
+    "الخطابي": "al-Khattabi",
     "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
     "الخندق": "the Trench (al-Khandaq)",
     "الزبير بن العوام": "al-Zubayr ibn al-'Awwam",
@@ -63,6 +65,7 @@
     "الطبري": "al-Tabari",
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
+    "الفاتحة": "al-Fatihah",
     "الكعبة": "the Ka'bah",
     "المخزومية": "the Makhzumi woman",
     "المدينة": "Madinah",
@@ -82,6 +85,7 @@
     "بنو أمية": "Banu Umayyah",
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
     "بني سلمة": "Banu Salamah",
+    "ثمود": "Thamud",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
     "جبريل": "Gabriel",
     "جليبيب": "Julaibib",
@@ -92,6 +96,7 @@
     "حمزة": "Hamzah (a student present)",
     "حواء": "Hawwa' (Eve)",
     "خالد بن الوليد": "Khalid ibn al-Walid",
+    "خباب": "Khabbab ibn al-Aratt",
     "خديجة": "Khadijah",
     "خيبر": "Khaybar",
     "دار الأرقم": "Dar al-Arqam",
@@ -112,13 +117,21 @@
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
+    "سورة آل عمران": "Surat Aal 'Imran",
     "سورة الأحزاب": "Surat al-Ahzab",
+    "سورة الأعراف": "Surat al-A'raf",
     "سورة الأنعام": "Surat al-An'am",
+    "سورة البقرة": "Surat al-Baqarah",
     "سورة التوبة": "Surat al-Tawbah",
     "سورة المؤمنون": "Surat al-Mu'minun",
+    "سورة النساء": "Surat al-Nisa",
+    "سورة سبأ": "Surat Saba",
+    "سورة غافر": "Surat Ghafir",
     "صفوان بن عسال": "Safwan ibn 'Assal",
+    "صهيب": "Suhaib",
     "طلحة بن عبيد الله": "Talhah ibn 'Ubaydillah",
     "عائشة": "Aisha",
+    "عاد": "'Ad",
     "عاصم بن عمر بن قتادة": "'Asim ibn 'Umar ibn Qatadah",
     "عامر بن فهيرة": "'Amir ibn Fuhayrah",
     "عبادة بن الصامت": "'Ubada ibn al-Samit",
@@ -164,6 +177,7 @@
     "مكة": "Makkah",
     "موسى": "Musa",
     "نوح": "Nuh",
+    "هامان": "Haman",
     "هلال بن أمية الواقفي": "Hilal ibn Umayyah al-Waqifi",
     "هلال بن اميه": "Hilal ibn Umayyah",
     "هود": "Hud",
@@ -239,6 +253,10 @@
     "الأحزاب": {
       "english": "the Confederates",
       "translit": "al-Ahzab"
+    },
+    "الأدب": {
+      "english": "manners",
+      "translit": "adab"
     },
     "الأسانيد": {
       "english": "chains of transmission",
@@ -468,6 +486,10 @@
       "english": "the Rafidah (Shia)",
       "translit": "al-Rafidah"
     },
+    "الراهب": {
+      "english": "the monk (rahib)",
+      "translit": "rahib"
+    },
     "الربا": {
       "english": "usury (riba)",
       "translit": "riba"
@@ -600,6 +622,10 @@
       "english": "al-Tabaqat al-Kubra",
       "translit": "al-Tabaqat al-Kubra"
     },
+    "العافية": {
+      "english": "well-being",
+      "translit": "al-'afiyah"
+    },
     "العبودية": {
       "english": "servitude to God",
       "translit": "ubudiyyah"
@@ -672,6 +698,10 @@
       "english": "expiation",
       "translit": "kaffarah"
     },
+    "الكهنة": {
+      "english": "soothsayers",
+      "translit": "kahin"
+    },
     "الله اكبر": {
       "english": "Allahu Akbar (God is greatest)",
       "translit": "Allahu Akbar"
@@ -724,6 +754,10 @@
       "english": "stopped at the Companion (mawquf)",
       "translit": "mawquf"
     },
+    "النحو والصرف": {
+      "english": "grammar and morphology",
+      "translit": "nahw and sarf"
+    },
     "النية": {
       "english": "intention",
       "translit": "niyyah"
@@ -767,6 +801,10 @@
     "اليقين": {
       "english": "certainty",
       "translit": "yaqin"
+    },
+    "باب الإخلاص": {
+      "english": "the chapter on Sincerity",
+      "translit": "Bab al-Ikhlas"
     },
     "باب الإخلاص والنية": {
       "english": "the chapter on Sincerity and Intention",
@@ -860,6 +898,10 @@
       "english": "a caller to Islam",
       "translit": "da'iyah"
     },
+    "دعاء": {
+      "english": "supplication (dua)",
+      "translit": "dua"
+    },
     "دلائل النبوة": {
       "english": "the proofs of prophethood",
       "translit": "dala'il al-nubuwwah"
@@ -948,6 +990,10 @@
       "english": "Ghayth al-Sari",
       "translit": "Ghayth al-Sari"
     },
+    "قصة الغلام والساحر": {
+      "english": "the story of the boy and the sorcerer",
+      "translit": "Qissat al-Ghulam wa-l-Sahir"
+    },
     "قصة الغلام والساحر والراهب": {
       "english": "the story of the boy, the sorcerer, and the monk",
       "translit": "qissat al-ghulam wa'l-sahir wa'l-rahib"
@@ -967,6 +1013,10 @@
     "كرامات": {
       "english": "wondrous deeds (karamat)",
       "translit": "karamat"
+    },
+    "كرامة": {
+      "english": "a miracle granted to a righteous person (karamah)",
+      "translit": "karamah"
     },
     "لذة الايمان": {
       "english": "the sweetness of faith",
