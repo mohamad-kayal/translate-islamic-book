@@ -398,3 +398,26 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: سورة غافر → Surat Ghafir
 - names: هامان → Haman
 - terms: العافية → al-'afiyah, well-being
+
+## 2026-07-17 — riyad-09
+- terms: العلم الشرعي → al-'ilm al-shar'i, sacred knowledge
+- terms: أعمال القلوب → a'mal al-qulub, the deeds of the hearts
+- terms: أنوار السنة المحمدية → Anwar al-Sunnah al-Muhammadiyyah, The Lights of the Muhammadan Sunnah
+- terms: وعك → wa'k, fever (wa'k)
+- terms: تكفير السيئات → takfir al-sayyi'at, the expiation of sins
+- terms: سورة الضحى → Surat al-Duha, Surat al-Duha
+- terms: حلقات الهم والحزن → Halaqat al-Hamm wa-l-Huzn, the episodes on Worry and Grief (the speaker's earlier series)
+- names: ضماد → Damad
+- terms: رباعية → ruba'iyyah, incisor tooth
+- terms: الريح → al-rih, the affliction (spirit possession)
+- terms: بدر → Badr, Badr
+- terms: الاعراب → al-A'rab, the Bedouins (al-A'rab)
+- terms: الابتلاء → ibtila', trial
+- names: النسائي → al-Nasa'i
+- names: صنعاء → Sana'a
+- names: حضرموت → Hadramawt
+- names: عمار → 'Ammar ibn Yasir
+- terms: الخارجي → Khariji, the Kharijite
+- terms: الساحر → sahir, the sorcerer
+- names: كسرى → Chosroes
+- names: قيصر → Caesar

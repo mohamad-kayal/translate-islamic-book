@@ -71,6 +71,7 @@
     "المدينة": "Madinah",
     "المهدي": "al-Mahdi",
     "النبي": "the Prophet ﷺ",
+    "النسائي": "al-Nasa'i",
     "النهروان": "Nahrawan",
     "النووي": "Imam al-Nawawi",
     "الواقدي": "al-Waqidi",
@@ -92,6 +93,7 @@
     "جهينة": "Juhaynah",
     "حسام عبد الله حمشو": "Husam 'Abdullah Hamshu",
     "حسان": "Hassan",
+    "حضرموت": "Hadramawt",
     "حفصة": "Hafsah",
     "حمزة": "Hamzah (a student present)",
     "حواء": "Hawwa' (Eve)",
@@ -128,7 +130,9 @@
     "سورة سبأ": "Surat Saba",
     "سورة غافر": "Surat Ghafir",
     "صفوان بن عسال": "Safwan ibn 'Assal",
+    "صنعاء": "Sana'a",
     "صهيب": "Suhaib",
+    "ضماد": "Damad",
     "طلحة بن عبيد الله": "Talhah ibn 'Ubaydillah",
     "عائشة": "Aisha",
     "عاد": "'Ad",
@@ -149,6 +153,7 @@
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
     "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
+    "عمار": "'Ammar ibn Yasir",
     "عمر": "'Umar",
     "عمر بن الخطاب": "'Umar ibn al-Khattab",
     "عمران بن الحصين الخزاعي": "'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)",
@@ -162,6 +167,8 @@
     "قريش": "Quraysh",
     "قصي": "Qusayy",
     "قيس بن أبي حازم": "Qays ibn Abi Hazim",
+    "قيصر": "Caesar",
+    "كسرى": "Chosroes",
     "كعب بن مالك": "Ka'b ibn Malik",
     "مؤيد": "Mu'ayyad (a student present)",
     "محمد": "Muhammad",
@@ -202,6 +209,10 @@
       "english": "the principles of jurisprudence",
       "translit": "usul al-fiqh"
     },
+    "أعمال القلوب": {
+      "english": "the deeds of the hearts",
+      "translit": "a'mal al-qulub"
+    },
     "أم المؤمنين": {
       "english": "the Mother of the Believers",
       "translit": "Umm al-Mu'minin"
@@ -209,6 +220,10 @@
     "أنوار الأنبياء": {
       "english": "The Lights of the Prophets",
       "translit": "Anwar al-Anbiya"
+    },
+    "أنوار السنة المحمدية": {
+      "english": "The Lights of the Muhammadan Sunnah",
+      "translit": "Anwar al-Sunnah al-Muhammadiyyah"
     },
     "أهواء": {
       "english": "base desires (ahwa')",
@@ -298,6 +313,10 @@
       "english": "turning back to Allah",
       "translit": "inabah"
     },
+    "الابتلاء": {
+      "english": "trial",
+      "translit": "ibtila'"
+    },
     "الاحتساب": {
       "english": "the seeking of reward (ihtisab)",
       "translit": "ihtisab"
@@ -317,6 +336,10 @@
     "الاستهداء بالسنة": {
       "english": "Guided by the Sunnah",
       "translit": "al-Istihda' bi-l-Sunnah"
+    },
+    "الاعراب": {
+      "english": "the Bedouins (al-A'rab)",
+      "translit": "al-A'rab"
     },
     "البداية والنهاية": {
       "english": "al-Bidayah wa-l-Nihayah",
@@ -466,6 +489,10 @@
       "english": "the basin (al-Hawd)",
       "translit": "al-Hawd"
     },
+    "الخارجي": {
+      "english": "the Kharijite",
+      "translit": "Khariji"
+    },
     "الخسف": {
       "english": "the sinking",
       "translit": "al-khasf"
@@ -522,6 +549,10 @@
       "english": "showing off",
       "translit": "riya'"
     },
+    "الريح": {
+      "english": "the affliction (spirit possession)",
+      "translit": "al-rih"
+    },
     "الرِّبانية": {
       "english": "devotion to the Lord",
       "translit": "rabbaniyyah"
@@ -533,6 +564,10 @@
     "الزنا": {
       "english": "unlawful sexual intercourse (zina)",
       "translit": "zina"
+    },
+    "الساحر": {
+      "english": "the sorcerer",
+      "translit": "sahir"
     },
     "السبع الموبقات": {
       "english": "the seven destructive sins",
@@ -641,6 +676,10 @@
     "العشره المشهود لهم بالجنه": {
       "english": "the ten given the glad tidings of Paradise",
       "translit": "al-'Asharah al-Mubashsharah bi'l-Jannah"
+    },
+    "العلم الشرعي": {
+      "english": "sacred knowledge",
+      "translit": "al-'ilm al-shar'i"
     },
     "الغرور": {
       "english": "the Deceiver",
@@ -814,6 +853,10 @@
       "english": "the chapter on Repentance",
       "translit": "Bab al-Tawbah"
     },
+    "بدر": {
+      "english": "Badr",
+      "translit": "Badr"
+    },
     "بذل القوة في حوادث سني النبوة": {
       "english": "Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah",
       "translit": "Badhl al-Quwwah fi Hawadith Sini al-Nubuwwah"
@@ -845,6 +888,10 @@
     "تقرير": {
       "english": "tacit approval",
       "translit": "taqrir"
+    },
+    "تكفير السيئات": {
+      "english": "the expiation of sins",
+      "translit": "takfir al-sayyi'at"
     },
     "تهذيب": {
       "english": "refinement",
@@ -878,6 +925,10 @@
       "english": "'he narrated to us' (hadith transmission formula)",
       "translit": "haddathana"
     },
+    "حلقات الهم والحزن": {
+      "english": "the episodes on Worry and Grief (the speaker's earlier series)",
+      "translit": "Halaqat al-Hamm wa-l-Huzn"
+    },
     "خليل الرحمن": {
       "english": "the intimate friend of the Most Merciful",
       "translit": "Khalil al-Rahman"
@@ -906,6 +957,10 @@
       "english": "the proofs of prophethood",
       "translit": "dala'il al-nubuwwah"
     },
+    "رباعية": {
+      "english": "incisor tooth",
+      "translit": "ruba'iyyah"
+    },
     "رداء": {
       "english": "the upper wrap",
       "translit": "rida'"
@@ -933,6 +988,10 @@
     "سورة الحديد": {
       "english": "Surat al-Hadid",
       "translit": "Surat al-Hadid"
+    },
+    "سورة الضحى": {
+      "english": "Surat al-Duha",
+      "translit": "Surat al-Duha"
     },
     "سورة القصص": {
       "english": "Surat al-Qasas",
@@ -1073,6 +1132,10 @@
     "نسبة": {
       "english": "a proportional application (nisbah)",
       "translit": "nisbah"
+    },
+    "وعك": {
+      "english": "fever (wa'k)",
+      "translit": "wa'k"
     }
   },
   "works": {}
