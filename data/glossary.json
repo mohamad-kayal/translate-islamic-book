@@ -8,16 +8,20 @@
     "أبو بكر": "Abu Bakr",
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
+    "أبو حاتم الرازي": "Abu Hatim al-Razi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو حمزة": "Abu Hamzah",
     "أبو خالد حكيم بن حزام": "Abu Khalid Hakim ibn Hizam",
     "أبو خيثمة الأنصاري": "Abu Khaythamah al-Ansari",
     "أبو داود": "Abu Dawud",
+    "أبو ذر": "Abu Dharr",
+    "أبو ذر جندب بن جنادة": "Abu Dharr Jundab ibn Junadah",
     "أبو سعيد الخدري": "Abu Sa'id al-Khudri",
     "أبو سفيان": "Abu Sufyan",
     "أبو سفيان صخر بن حرب": "Abu Sufyan Sakhr ibn Harb",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
     "أبو طلحة": "Abu Talha",
+    "أبو عامر الأشعري": "Abu 'Amir al-Ash'ari",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
     "أبو قتادة": "Abu Qatadah",
     "أبو كبشة الأنماري": "Abu Kabshah al-Anmari",
@@ -35,6 +39,7 @@
     "أم سليم": "Umm Sulaym",
     "أم عطية": "Umm 'Atiyyah",
     "أم كلثوم": "Umm Kulthum",
+    "أوطاس": "Awtas",
     "إبراهيم": "Ibrahim",
     "إدريس": "Idris",
     "إسماعيل": "Isma'il",
@@ -58,8 +63,11 @@
     "الاغر ابن يسار المزني": "al-Aghurr ibn Yasar al-Muzani",
     "الامام البخاري": "Imam al-Bukhari",
     "البخاري": "al-Bukhari",
+    "البصرة": "Basra",
     "الترمذي": "al-Tirmidhi",
+    "الحاكم": "Imam al-Hakim",
     "الحبشة": "Abyssinia",
+    "الحجاج": "al-Hajjaj",
     "الحر بن قيس": "al-Hurr ibn Qays",
     "الخزرج": "the Khazraj",
     "الخضر": "al-Khidr",
@@ -76,6 +84,7 @@
     "الشافعي": "al-Shafi'i",
     "الشام": "al-Sham (Syria/the Levant)",
     "الشعبي": "al-Sha'bi",
+    "الشيخ طارق عوض الله": "Shaykh Tariq 'Awad Allah",
     "الشيخ كشك": "Shaykh Kishk",
     "الصحابة": "the Companions",
     "الصفا": "al-Safa",
@@ -122,6 +131,7 @@
     "حضرموت": "Hadramawt",
     "حفصة": "Hafsah",
     "حمزة": "Hamzah (a student present)",
+    "حنش الصنعاني": "Hanash al-San'ani",
     "حنين": "Hunayn",
     "حواء": "Hawwa' (Eve)",
     "خالد بن الوليد": "Khalid ibn al-Walid",
@@ -180,9 +190,11 @@
     "عبد الله بن أم مكتوم": "'Abdullah ibn Umm Maktum",
     "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
     "عبد الله بن عمر": "'Abdullah ibn 'Umar",
+    "عبد الله بن قيس": "'Abdullah ibn Qais (i.e. Abu Musa al-Ash'ari)",
     "عبد الله بن كعب بن مالك": "'Abdullah ibn Ka'b ibn Malik",
     "عبد الله بن مسعود": "'Abdullah ibn Mas'ud",
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
+    "عبد بن حميد": "'Abd ibn Humayd",
     "عثمان بن عفان": "'Uthman ibn 'Affan",
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
     "عطاء": "'Ata",
@@ -216,6 +228,7 @@
     "محمد بن إسحاق المطلبي": "Muhammad ibn Ishaq al-Muttalibi",
     "محمد بن عمرو بن علقمة": "Muhammad ibn 'Amr ibn 'Alqamah (a narrator in the hadith's chain)",
     "محمد هاشم بن عبد الغفور السندي الحنفي": "Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi",
+    "محمود بن غيلان": "Mahmud ibn Ghaylan",
     "مرارة بن الربيع العمري": "Murarah ibn al-Rabi' al-'Amri",
     "مسلم بن الحجاج": "Muslim ibn al-Hajjaj",
     "مصعب بن سعد": "Mus'ab ibn Sa'd (a narrator in the hadith's chain)",
@@ -226,6 +239,8 @@
     "معن بن يزيد بن الأخنس": "Ma'n ibn Yazid ibn al-Akhnas",
     "مكة": "Makkah",
     "موسى": "Musa",
+    "ميمون بن أبي شبيب": "Maymun ibn Abi Shabib",
+    "ميمونة": "Maymunah",
     "نوح": "Nuh",
     "هامان": "Haman",
     "هرقل": "Heraclius",
@@ -450,6 +465,10 @@
       "english": "al-Bidayah wa-l-Nihayah",
       "translit": "al-Bidayah wa-l-Nihayah"
     },
+    "البر": {
+      "english": "righteousness",
+      "translit": "birr"
+    },
     "البطش": {
       "english": "tyranny (al-batsh)",
       "translit": "al-batsh"
@@ -618,6 +637,10 @@
       "english": "master hadith scholars",
       "translit": "huffaz"
     },
+    "الحلم": {
+      "english": "forbearance",
+      "translit": "hilm"
+    },
     "الحمد": {
       "english": "praise",
       "translit": "hamd"
@@ -633,6 +656,10 @@
     "الحوض": {
       "english": "the basin (al-Hawd)",
       "translit": "al-Hawd"
+    },
+    "الحياء": {
+      "english": "shyness",
+      "translit": "haya'"
     },
     "الخارجي": {
       "english": "the Kharijite",
@@ -818,6 +845,10 @@
       "english": "martyrdom (shahadah)",
       "translit": "shahadah"
     },
+    "الشيخين": {
+      "english": "the two Shaykhs (Bukhari and Muslim)",
+      "translit": "al-Shaykhayn"
+    },
     "الشيطان": {
       "english": "Satan",
       "translit": "Shaytan"
@@ -837,6 +868,10 @@
     "الصفات": {
       "english": "the divine attributes",
       "translit": "sifat"
+    },
+    "الصنعة الإسنادية": {
+      "english": "hadith criticism",
+      "translit": "al-sina'ah al-isnadiyyah"
     },
     "الضبط": {
       "english": "precision",
@@ -906,6 +941,10 @@
       "english": "the unseen (ghayb)",
       "translit": "ghayb"
     },
+    "الغيرة": {
+      "english": "jealous protectiveness",
+      "translit": "ghaira"
+    },
     "الفتح": {
       "english": "the conquest (of Makkah)",
       "translit": "al-Fath"
@@ -934,6 +973,10 @@
       "english": "the Fatimahs and the 'Awatik",
       "translit": "al-Fawatim wa-l-'Awatik"
     },
+    "القبلة": {
+      "english": "the qiblah",
+      "translit": "qiblah"
+    },
     "القدر": {
       "english": "divine decree (al-Qadar)",
       "translit": "al-Qadar"
@@ -949,6 +992,10 @@
     "القراء": {
       "english": "the Qurra' (reciters of the Qur'an)",
       "translit": "al-Qurra'"
+    },
+    "الكتاب": {
+      "english": "the Book (the Qur'an)",
+      "translit": "al-Kitab"
     },
     "الكتب الستة": {
       "english": "the Six Books",
@@ -1094,6 +1141,14 @@
       "english": "the highest station",
       "translit": "al-wasilah"
     },
+    "الوصيه الصغرى": {
+      "english": "the Lesser Testament",
+      "translit": "al-Wasiyyah al-Sughra"
+    },
+    "الوضوء": {
+      "english": "ritual ablution (wudu)",
+      "translit": "wudu"
+    },
     "الولاء والبراء": {
       "english": "loyalty and disavowal",
       "translit": "al-wala' wa'l-bara'"
@@ -1209,6 +1264,10 @@
     "توفيق": {
       "english": "enabling success",
       "translit": "tawfiq"
+    },
+    "ثقة": {
+      "english": "trustworthy",
+      "translit": "thiqah"
     },
     "ثوب": {
       "english": "garment",
@@ -1390,6 +1449,10 @@
       "english": "The Biography of the Messenger of Allah ﷺ",
       "translit": "Sirat Rasul Allah"
     },
+    "شاذ": {
+      "english": "anomalous",
+      "translit": "shadh"
+    },
     "شبهة": {
       "english": "a misgiving / specious doubt",
       "translit": "shubhah"
@@ -1413,6 +1476,10 @@
     "صحيح مسلم": {
       "english": "Sahih Muslim",
       "translit": "Sahih Muslim"
+    },
+    "صدوق": {
+      "english": "truthful",
+      "translit": "saduq"
     },
     "صديق": {
       "english": "one utterly truthful",

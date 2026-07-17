@@ -583,3 +583,33 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: عكا → Acre
 - names: أبو خالد حكيم بن حزام → Abu Khalid Hakim ibn Hizam
 - terms: الخيار → khiyar, the option to cancel the sale (khiyar)
+
+## 2026-07-17 — riyad-14
+- names: أبو ذر جندب بن جنادة → Abu Dharr Jundab ibn Junadah
+- terms: ثقة → thiqah, trustworthy
+- terms: صدوق → saduq, truthful
+- terms: شاذ → shadh, anomalous
+- terms: الصنعة الإسنادية → al-sina'ah al-isnadiyyah, hadith criticism
+- names: أبو ذر → Abu Dharr
+- names: ميمون بن أبي شبيب → Maymun ibn Abi Shabib
+- names: أبو حاتم الرازي → Abu Hatim al-Razi
+- names: محمود بن غيلان → Mahmud ibn Ghaylan
+- names: الحاكم → Imam al-Hakim
+- names: الشيخ طارق عوض الله → Shaykh Tariq 'Awad Allah
+- terms: الشيخين → al-Shaykhayn, the two Shaykhs (Bukhari and Muslim)
+- terms: البر → birr, righteousness
+- terms: الحلم → hilm, forbearance
+- terms: الوصيه الصغرى → al-Wasiyyah al-Sughra, the Lesser Testament
+- names: حنش الصنعاني → Hanash al-San'ani
+- names: عبد بن حميد → 'Abd ibn Humayd
+- names: ميمونة → Maymunah
+- terms: الكتاب → al-Kitab, the Book (the Qur'an)
+- names: أبو عامر الأشعري → Abu 'Amir al-Ash'ari
+- names: أوطاس → Awtas
+- names: البصرة → Basra
+- names: الحجاج → al-Hajjaj
+- names: عبد الله بن قيس → 'Abdullah ibn Qais (i.e. Abu Musa al-Ash'ari)
+- terms: الوضوء → wudu, ritual ablution (wudu)
+- terms: القبلة → qiblah, the qiblah
+- terms: الغيرة → ghaira, jealous protectiveness
+- terms: الحياء → haya', shyness
