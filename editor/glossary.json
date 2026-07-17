@@ -4,6 +4,7 @@
     "آمنة بنت وهب": "Aminah bint Wahb",
     "أبو أمامة": "Abu Umamah",
     "أبو أمامة صدي بن عجلان الباهلي": "Abu Umamah Sudayy ibn 'Ajlan al-Bahili",
+    "أبو أيوب": "Abu Ayyub",
     "أبو القاسم": "Abu al-Qasim",
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
     "أبو برزة الأسلمي": "Abu Barzah al-Aslami",
@@ -30,6 +31,7 @@
     "أبو طلحة": "Abu Talha",
     "أبو عامر الأشعري": "Abu 'Amir al-Ash'ari",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
+    "أبو عمر": "Abu 'Umar (a student present)",
     "أبو قتادة": "Abu Qatadah",
     "أبو كبشة الأنماري": "Abu Kabshah al-Anmari",
     "أبو مالك الحارث بن عاصم الأشعري": "Abu Malik al-Harith ibn 'Asim al-Ash'ari",
@@ -147,8 +149,11 @@
     "ثابت": "Thabit (a narrator in the hadith's chain)",
     "ثابت بن اقرم": "Thabit ibn Aqram",
     "ثمود": "Thamud",
+    "ثوبان": "Thawban",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
     "جبريل": "Gabriel",
+    "جبير بن مطعم": "Jubayr ibn Mut'im",
+    "جرير بن عبد الله البجلي": "Jarir ibn 'Abdullah al-Bajali",
     "جليبيب": "Julaibib",
     "جهينة": "Juhaynah",
     "حذيفة": "Hudhayfah",
@@ -187,6 +192,8 @@
     "سعد بن عبادة": "Sa'd ibn 'Ubada",
     "سعيد بن المسيب": "Sa'id ibn al-Musayyab",
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
+    "سفيان بن عبد الله": "Sufyan ibn 'Abdullah (Abu 'Amr / Abu 'Amrah) al-Thaqafi",
+    "سفيان بن عبد الله الثقفي": "Sufyan ibn 'Abdullah al-Thaqafi (RA)",
     "سلع": "Sal'",
     "سليم بن عامر": "Sulaym ibn 'Amir",
     "سليمان بن صرد": "Sulayman ibn Sarad",
@@ -205,6 +212,7 @@
     "سورة يونس": "Surat Yunus",
     "شداد بن اوس": "Shaddad ibn Aws (kunyah Abu Ya'la)",
     "صفوان بن عسال": "Safwan ibn 'Assal",
+    "صفين": "Siffin",
     "صلاح الدين": "Salah al-Din (Saladin)",
     "صنعاء": "Sana'a",
     "صهيب": "Suhaib",
@@ -225,6 +233,7 @@
     "عبد الرحمن بن صخر": "'Abd al-Rahman ibn Sakhr",
     "عبد الرحمن بن عوف": "'Abd al-Rahman ibn 'Awf",
     "عبد السلام هارون": "'Abd al-Salam Harun",
+    "عبد الله ابن بسر": "'Abdullah ibn Busr",
     "عبد الله بن أبي أوفى": "'Abdullah ibn Abi Awfa",
     "عبد الله بن أم مكتوم": "'Abdullah ibn Umm Maktum",
     "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
@@ -261,6 +270,7 @@
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
     "غسان": "Ghassan",
+    "فاطمة": "Fatimah, daughter of the Prophet ﷺ (distinct from Fatimah bint al-Khattab)",
     "فاطمة بنت الخطاب": "Fatimah bint al-Khattab",
     "فرعون": "Pharaoh (Fir'awn)",
     "قارون": "Qarun",
@@ -325,6 +335,10 @@
     "أذكار النوم": {
       "english": "the remembrances of sleep",
       "translit": "adhkar al-nawm"
+    },
+    "أركان الإسلام": {
+      "english": "the pillars of Islam",
+      "translit": "arkan al-Islam"
     },
     "أسلوب نبوي": {
       "english": "a Prophetic method",
@@ -430,6 +444,10 @@
       "english": "etiquette",
       "translit": "adab"
     },
+    "الأثر": {
+      "english": "a report (athar)",
+      "translit": "athar"
+    },
     "الأثرة": {
       "english": "selfishness (al-'athara)",
       "translit": "al-'athara"
@@ -461,6 +479,14 @@
     "الأنساب": {
       "english": "genealogies (ansab)",
       "translit": "ansab"
+    },
+    "الأيام البيضاء": {
+      "english": "the White Days",
+      "translit": "al-ayyam al-bid"
+    },
+    "الإتقان": {
+      "english": "precision, thoroughness",
+      "translit": "itqan"
     },
     "الإحسان": {
       "english": "excellence in worship",
@@ -926,6 +952,10 @@
       "english": "prostration",
       "translit": "sujud"
     },
+    "السداد": {
+      "english": "uprightness and precision (in following the right course)",
+      "translit": "sadad"
+    },
     "السرايا": {
       "english": "raiding parties",
       "translit": "saraya"
@@ -1262,6 +1292,10 @@
       "english": "the exegetes",
       "translit": "mufassirun"
     },
+    "المقاربة": {
+      "english": "the just, moderate course — without excess or falling short",
+      "translit": "muqarabah"
+    },
     "المقاصد": {
       "english": "the higher objectives (of the Sharia)",
       "translit": "maqasid"
@@ -1345,6 +1379,10 @@
     "الورع": {
       "english": "scrupulousness",
       "translit": "wara'"
+    },
+    "الوسواس": {
+      "english": "intrusive whispers",
+      "translit": "waswas"
     },
     "الوسيلة": {
       "english": "the highest station",
@@ -1514,6 +1552,10 @@
       "english": "The Compendium of Knowledge and Wisdom",
       "translit": "Jami' al-'Ulum wal-Hikam"
     },
+    "جوامع الكلم": {
+      "english": "comprehensive words",
+      "translit": "jawami' al-kalim"
+    },
     "جيد": {
       "english": "jayyid (good, serviceable as evidence)",
       "translit": "jayyid"
@@ -1581,6 +1623,10 @@
     "خائنة الأعين": {
       "english": "the treachery of the eyes",
       "translit": "kha'inat al-a'yun"
+    },
+    "خشوع": {
+      "english": "humility (reverent attentiveness in prayer)",
+      "translit": "khushu'"
     },
     "خطبة": {
       "english": "sermon (khutbah)",
@@ -1858,6 +1904,10 @@
       "english": "the night prayer (qiyam al-layl)",
       "translit": "qiyam al-layl"
     },
+    "كتاب الاستقامة": {
+      "english": "The Book of Uprightness",
+      "translit": "Kitab al-Istiqamah"
+    },
     "كتاب الدعوات": {
       "english": "the Book of Supplications",
       "translit": "Kitab al-Da'awat"
@@ -2005,6 +2055,10 @@
     "نسبة": {
       "english": "a proportional application (nisbah)",
       "translit": "nisbah"
+    },
+    "وصية": {
+      "english": "instruction",
+      "translit": "wasiyyah"
     },
     "وعك": {
       "english": "fever (wa'k)",

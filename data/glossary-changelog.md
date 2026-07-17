@@ -750,3 +750,26 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: عبد المطلب → 'Abd al-Muttalib (the Prophet's ﷺ grandfather)
 - terms: المتوكل → al-Mutawakkil, Al-Mutawakkil (he who relies fully upon Allah) — a name given to the Prophet ﷺ in the earlier scriptures
 - names: عبد الله بن عمرو بن العاص → 'Abdullah ibn 'Amr ibn al-'As
+
+## 2026-07-17 — riyad-20
+- terms: كتاب الاستقامة → Kitab al-Istiqamah, The Book of Uprightness
+- names: سفيان بن عبد الله → Sufyan ibn 'Abdullah (Abu 'Amr / Abu 'Amrah) al-Thaqafi
+- names: جرير بن عبد الله البجلي → Jarir ibn 'Abdullah al-Bajali
+- names: فاطمة → Fatimah, daughter of the Prophet ﷺ (distinct from Fatimah bint al-Khattab)
+- terms: وصية → wasiyyah, instruction
+- names: صفين → Siffin
+- names: سفيان بن عبد الله الثقفي → Sufyan ibn 'Abdullah al-Thaqafi (RA)
+- names: عبد الله ابن بسر → 'Abdullah ibn Busr
+- names: أبو أيوب → Abu Ayyub
+- terms: الأيام البيضاء → al-ayyam al-bid, the White Days
+- terms: أركان الإسلام → arkan al-Islam, the pillars of Islam
+- terms: الوسواس → waswas, intrusive whispers
+- terms: الأثر → athar, a report (athar)
+- names: أبو عمر → Abu 'Umar (a student present)
+- names: جبير بن مطعم → Jubayr ibn Mut'im
+- terms: المقاربة → muqarabah, the just, moderate course — without excess or falling short
+- terms: السداد → sadad, uprightness and precision (in following the right course)
+- terms: جوامع الكلم → jawami' al-kalim, comprehensive words
+- names: ثوبان → Thawban
+- terms: الإتقان → itqan, precision, thoroughness
+- terms: خشوع → khushu', humility (reverent attentiveness in prayer)
