@@ -613,3 +613,41 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: القبلة → qiblah, the qiblah
 - terms: الغيرة → ghaira, jealous protectiveness
 - terms: الحياء → haya', shyness
+
+## 2026-07-17 — riyad-15
+- terms: أولياء → awliya, His close allies (awliya)
+- terms: الضحى → Duha, the forenoon (Duha)
+- terms: الجحود → juhud, denial (of Allah's blessing)
+- terms: أوراد → awrad, devotional litanies
+- names: شداد بن اوس → Shaddad ibn Aws (kunyah Abu Ya'la)
+- names: ضمرة → Damrah (a narrator in the hadith's chain)
+- names: أبو بكر بن أبي مريم → Abu Bakr ibn Abi Maryam (a narrator in the hadith's chain; distinct from Abu Bakr al-Siddiq)
+- terms: متروك → matruk, matruk (discarded — a graver grade of weakness than da'if)
+- terms: تعليل → ta'lil, identifying hidden defects ('ilal) in a hadith's transmission
+- names: ابن عدي → Ibn 'Adi
+- names: ميمون بن مهران → Maymun ibn Mihran
+- terms: صالح → salih, acceptable (salih)
+- terms: محاسبة النفس → muhasabah, holding oneself to account
+- terms: الفقه السلوكي → al-fiqh al-suluki, the fiqh of conduct
+- terms: السلف الصالح → al-salaf al-salih, the righteous predecessors
+- names: علي زين العابدين → 'Ali Zayn al-'Abidin ibn al-Husayn ibn 'Ali ibn Abi Talib
+- names: الدارقطني → al-Daraqutni
+- names: الإمام مالك → Imam Malik
+- terms: الموطأ → al-Muwatta, al-Muwatta
+- terms: متصل → mawsul, a connected chain (mawsul)
+- terms: مرسل → mursal, a hadith with a broken chain (missing the link to a Companion)
+- terms: التحري → taharri, diligence in verification
+- terms: طبقة → tabaqah, tier (of narrators)
+- names: سعيد بن المسيب → Sa'id ibn al-Musayyab
+- names: إبراهيم النخعي → Ibrahim al-Nakha'i
+- terms: حسن الإسلام → husn al-islam, the excellence of one's Islam
+- terms: فضول الكلام → fudul al-kalam, excess talk
+- terms: جامع الحكم → Jami' al-'Ulum wal-Hikam, The Compendium of Knowledge and Wisdom
+- terms: الاذكار → dhikr, remembrance
+- terms: مضاعفة الحسنات → muda'afat al-hasanat, the multiplication of good deeds
+- names: داوود الاودي → Dawud al-Awdi (a narrator in the hadith's chain)
+- names: الاشعث بن قيس → al-Ash'ath ibn Qays (a narrator in the hadith's chain)
+- names: علي بن المديني → 'Ali ibn al-Madini
+- names: الذهبي → al-Dhahabi
+- names: ابن القطان → Ibn al-Qattan
+- names: عبد الرحمن المسلي → 'Abd al-Rahman al-Musli (a narrator in the hadith's chain; nisba spelling uncertain from ASR)

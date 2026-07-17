@@ -50,3 +50,4 @@ coined, series facts, and how the room behaves.
 - `riyad-13` — باب المراقبة part 1 (Watchfulness of God (Bab al-Muraqabah)).
 - `riyad-12` — باب الصدق (Truthfulness (Bab al-Sidq)).
 - `riyad-14` — باب المراقبة part 2 (Watchfulness of God (Bab al-Muraqabah)).
+- `riyad-15` — باب المراقبة part 3 (Watchfulness of God (Bab al-Muraqabah)).

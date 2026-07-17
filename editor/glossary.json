@@ -7,6 +7,7 @@
     "أبو برزة الأسلمي": "Abu Barzah al-Aslami",
     "أبو بكر": "Abu Bakr",
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
+    "أبو بكر بن أبي مريم": "Abu Bakr ibn Abi Maryam (a narrator in the hadith's chain; distinct from Abu Bakr al-Siddiq)",
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
     "أبو حاتم الرازي": "Abu Hatim al-Razi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
@@ -41,9 +42,11 @@
     "أم كلثوم": "Umm Kulthum",
     "أوطاس": "Awtas",
     "إبراهيم": "Ibrahim",
+    "إبراهيم النخعي": "Ibrahim al-Nakha'i",
     "إدريس": "Idris",
     "إسماعيل": "Isma'il",
     "ابن إسحاق": "Ibn Ishaq",
+    "ابن القطان": "Ibn al-Qattan",
     "ابن القيم": "Ibn al-Qayyim",
     "ابن المبارك": "Ibn al-Mubarak",
     "ابن تيمية": "Ibn Taymiyyah",
@@ -52,6 +55,7 @@
     "ابن رجب": "Imam Ibn Rajab",
     "ابن سعد": "Ibn Sa'd",
     "ابن عاشور": "Ibn 'Ashur",
+    "ابن عدي": "Ibn 'Adi",
     "ابن عيينة": "Ibn 'Uyaynah",
     "ابن كثير": "Ibn Kathir",
     "ابن هشام": "Ibn Hisham",
@@ -59,7 +63,9 @@
     "الأقرع بن حابس": "Aqra' ibn Habis",
     "الأنصار": "the Ansar",
     "الإمام أحمد": "Imam Ahmad",
+    "الإمام مالك": "Imam Malik",
     "الإمام مسلم": "Imam Muslim",
+    "الاشعث بن قيس": "al-Ash'ath ibn Qays (a narrator in the hadith's chain)",
     "الاغر ابن يسار المزني": "al-Aghurr ibn Yasar al-Muzani",
     "الامام البخاري": "Imam al-Bukhari",
     "البخاري": "al-Bukhari",
@@ -74,6 +80,8 @@
     "الخطابي": "al-Khattabi",
     "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
     "الخندق": "the Trench (al-Khandaq)",
+    "الدارقطني": "al-Daraqutni",
+    "الذهبي": "al-Dhahabi",
     "الروم": "the Byzantines (al-Rum)",
     "الزبير بن العوام": "al-Zubayr ibn al-'Awwam",
     "الزرقاني": "al-Zurqani",
@@ -139,6 +147,7 @@
     "خديجة": "Khadijah",
     "خيبر": "Khaybar",
     "دار الأرقم": "Dar al-Arqam",
+    "داوود الاودي": "Dawud al-Awdi (a narrator in the hadith's chain)",
     "رسول الله": "the Messenger of Allah",
     "رضوان": "Ridwan (a student present)",
     "رقية": "Ruqayyah",
@@ -153,6 +162,7 @@
     "سعد بن ابي وقاص": "Sa'd ibn Abi Waqqas",
     "سعد بن خولة": "Sa'd ibn Khawlah",
     "سعد بن عبادة": "Sa'd ibn 'Ubada",
+    "سعيد بن المسيب": "Sa'id ibn al-Musayyab",
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
     "سليمان بن صرد": "Sulayman ibn Sarad",
@@ -169,11 +179,13 @@
     "سورة سبأ": "Surat Saba",
     "سورة غافر": "Surat Ghafir",
     "سورة يونس": "Surat Yunus",
+    "شداد بن اوس": "Shaddad ibn Aws (kunyah Abu Ya'la)",
     "صفوان بن عسال": "Safwan ibn 'Assal",
     "صلاح الدين": "Salah al-Din (Saladin)",
     "صنعاء": "Sana'a",
     "صهيب": "Suhaib",
     "ضماد": "Damad",
+    "ضمرة": "Damrah (a narrator in the hadith's chain)",
     "طلحة بن عبيد الله": "Talhah ibn 'Ubaydillah",
     "عائشة": "Aisha",
     "عاد": "'Ad",
@@ -183,6 +195,7 @@
     "عبادة بن الصامت": "'Ubada ibn al-Samit",
     "عباس بن مرداس": "'Abbas b. Mirdas",
     "عبد الرحمن": "'Abd al-Rahman (a student present)",
+    "عبد الرحمن المسلي": "'Abd al-Rahman al-Musli (a narrator in the hadith's chain; nisba spelling uncertain from ASR)",
     "عبد الرحمن بن صخر": "'Abd al-Rahman ibn Sakhr",
     "عبد الرحمن بن عوف": "'Abd al-Rahman ibn 'Awf",
     "عبد السلام هارون": "'Abd al-Salam Harun",
@@ -202,6 +215,8 @@
     "عكا": "Acre",
     "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
+    "علي بن المديني": "'Ali ibn al-Madini",
+    "علي زين العابدين": "'Ali Zayn al-'Abidin ibn al-Husayn ibn 'Ali ibn Abi Talib",
     "عمار": "'Ammar ibn Yasir",
     "عمر": "'Umar",
     "عمر بن الخطاب": "'Umar ibn al-Khattab",
@@ -240,6 +255,7 @@
     "مكة": "Makkah",
     "موسى": "Musa",
     "ميمون بن أبي شبيب": "Maymun ibn Abi Shabib",
+    "ميمون بن مهران": "Maymun ibn Mihran",
     "ميمونة": "Maymunah",
     "نوح": "Nuh",
     "هامان": "Haman",
@@ -292,6 +308,14 @@
     "أهواء": {
       "english": "base desires (ahwa')",
       "translit": "ahwa'"
+    },
+    "أوراد": {
+      "english": "devotional litanies",
+      "translit": "awrad"
+    },
+    "أولياء": {
+      "english": "His close allies (awliya)",
+      "translit": "awliya"
     },
     "إحسان الظن": {
       "english": "thinking well of others (husn al-zann)",
@@ -429,6 +453,10 @@
       "english": "the call to prayer",
       "translit": "adhan"
     },
+    "الاذكار": {
+      "english": "remembrance",
+      "translit": "dhikr"
+    },
     "الاستئذان": {
       "english": "seeking permission (to enter)",
       "translit": "isti'dhan"
@@ -508,6 +536,10 @@
     "التجديد": {
       "english": "renewal",
       "translit": "tajdid"
+    },
+    "التحري": {
+      "english": "diligence in verification",
+      "translit": "taharri"
     },
     "التحلية": {
       "english": "adorning the soul with virtue",
@@ -600,6 +632,10 @@
     "الجاهليه": {
       "english": "the pre-Islamic era (Jahiliyyah)",
       "translit": "Jahiliyyah"
+    },
+    "الجحود": {
+      "english": "denial (of Allah's blessing)",
+      "translit": "juhud"
     },
     "الجمع بين الصحيحين": {
       "english": "Combining the Two Sahihs",
@@ -777,6 +813,10 @@
       "english": "serenity",
       "translit": "sakinah"
     },
+    "السلف الصالح": {
+      "english": "the righteous predecessors",
+      "translit": "al-salaf al-salih"
+    },
     "السمع والطاعة": {
       "english": "hearing and obeying",
       "translit": "al-sam' wa'l-ta'ah"
@@ -877,6 +917,10 @@
       "english": "precision",
       "translit": "dabt"
     },
+    "الضحى": {
+      "english": "the forenoon (Duha)",
+      "translit": "Duha"
+    },
     "الطاعون": {
       "english": "plague",
       "translit": "al-Ta'un"
@@ -968,6 +1012,10 @@
     "الفقه": {
       "english": "fiqh",
       "translit": "fiqh"
+    },
+    "الفقه السلوكي": {
+      "english": "the fiqh of conduct",
+      "translit": "al-fiqh al-suluki"
     },
     "الفواطم والعواتك": {
       "english": "the Fatimahs and the 'Awatik",
@@ -1092,6 +1140,10 @@
     "المواهب اللدنية": {
       "english": "al-Mawahib (al-Zurqani's commentary on it)",
       "translit": "al-Mawahib al-Laduniyyah"
+    },
+    "الموطأ": {
+      "english": "al-Muwatta",
+      "translit": "al-Muwatta"
     },
     "الموقوف": {
       "english": "stopped at the Companion (mawquf)",
@@ -1241,6 +1293,10 @@
       "english": "correcting the standards",
       "translit": "tashih al-ma'ayir"
     },
+    "تعليل": {
+      "english": "identifying hidden defects ('ilal) in a hadith's transmission",
+      "translit": "ta'lil"
+    },
     "تفسير الطبري": {
       "english": "the Tafsir of al-Tabari",
       "translit": "Tafsir al-Tabari"
@@ -1273,6 +1329,10 @@
       "english": "garment",
       "translit": "thawb"
     },
+    "جامع الحكم": {
+      "english": "The Compendium of Knowledge and Wisdom",
+      "translit": "Jami' al-'Ulum wal-Hikam"
+    },
     "جامع العلوم والحكم": {
       "english": "The Compendium of Knowledge and Wisdom",
       "translit": "Jami' al-'Ulum wal-Hikam"
@@ -1304,6 +1364,10 @@
     "حسن": {
       "english": "hasan (a sound but not the highest-grade hadith)",
       "translit": "hasan"
+    },
+    "حسن الإسلام": {
+      "english": "the excellence of one's Islam",
+      "translit": "husn al-islam"
     },
     "حسن الخلق": {
       "english": "good character",
@@ -1465,6 +1529,10 @@
       "english": "his commentary on al-Tirmidhi",
       "translit": "Sharh al-Tirmidhi"
     },
+    "صالح": {
+      "english": "acceptable (salih)",
+      "translit": "salih"
+    },
     "صحيح": {
       "english": "sahih (rigorously authentic)",
       "translit": "sahih"
@@ -1488,6 +1556,10 @@
     "ضعيف": {
       "english": "da'if (weak)",
       "translit": "da'if"
+    },
+    "طبقة": {
+      "english": "tier (of narrators)",
+      "translit": "tabaqah"
     },
     "طروق": {
       "english": "arriving home unannounced",
@@ -1536,6 +1608,10 @@
     "فتنة": {
       "english": "discord (fitnah)",
       "translit": "fitnah"
+    },
+    "فضول الكلام": {
+      "english": "excess talk",
+      "translit": "fudul al-kalam"
     },
     "قصة الغلام والساحر": {
       "english": "the story of the boy and the sorcerer",
@@ -1589,6 +1665,14 @@
       "english": "the sweetness of faith",
       "translit": "ladhdhat al-iman"
     },
+    "متروك": {
+      "english": "matruk (discarded — a graver grade of weakness than da'if)",
+      "translit": "matruk"
+    },
+    "متصل": {
+      "english": "a connected chain (mawsul)",
+      "translit": "mawsul"
+    },
     "متفق عليه": {
       "english": "agreed upon (related by both Bukhari and Muslim)",
       "translit": "muttafaqun 'alayh"
@@ -1609,6 +1693,10 @@
       "english": "unknown narrators",
       "translit": "majahil"
     },
+    "محاسبة النفس": {
+      "english": "holding oneself to account",
+      "translit": "muhasabah"
+    },
     "مدارج السالكين": {
       "english": "Stations of the Wayfarers",
       "translit": "Madarij al-Salikin"
@@ -1617,6 +1705,10 @@
       "english": "vigilant awareness of Allah",
       "translit": "muraqabah"
     },
+    "مرسل": {
+      "english": "a hadith with a broken chain (missing the link to a Companion)",
+      "translit": "mursal"
+    },
     "مسند": {
       "english": "with full chains of transmission (musnad)",
       "translit": "musnad"
@@ -1624,6 +1716,10 @@
     "مشهد": {
       "english": "a witnessed occasion",
       "translit": "mashhad (pl. mashahid)"
+    },
+    "مضاعفة الحسنات": {
+      "english": "the multiplication of good deeds",
+      "translit": "muda'afat al-hasanat"
     },
     "معية": {
       "english": "God's providence for the believers",
