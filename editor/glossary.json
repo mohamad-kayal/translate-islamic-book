@@ -53,6 +53,7 @@
     "البخاري": "al-Bukhari",
     "الترمذي": "al-Tirmidhi",
     "الحبشة": "Abyssinia",
+    "الحر بن قيس": "al-Hurr ibn Qays",
     "الخزرج": "the Khazraj",
     "الخضر": "al-Khidr",
     "الخطابي": "al-Khattabi",
@@ -81,6 +82,7 @@
     "المهدي": "al-Mahdi",
     "النبي": "the Prophet ﷺ",
     "النسائي": "al-Nasa'i",
+    "النعمان بن مقرن": "al-Nu'man ibn Muqrin",
     "النهروان": "Nahrawan",
     "النووي": "Imam al-Nawawi",
     "الواقدي": "al-Waqidi",
@@ -158,6 +160,7 @@
     "عبد الرحمن بن صخر": "'Abd al-Rahman ibn Sakhr",
     "عبد الرحمن بن عوف": "'Abd al-Rahman ibn 'Awf",
     "عبد السلام هارون": "'Abd al-Salam Harun",
+    "عبد الله بن أبي أوفى": "'Abdullah ibn Abi Awfa",
     "عبد الله بن أم مكتوم": "'Abdullah ibn Umm Maktum",
     "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
     "عبد الله بن عمر": "'Abdullah ibn 'Umar",
@@ -193,6 +196,7 @@
     "محمد": "Muhammad",
     "محمد بن إسحاق": "Muhammad ibn Ishaq",
     "محمد بن إسحاق المطلبي": "Muhammad ibn Ishaq al-Muttalibi",
+    "محمد بن عمرو بن علقمة": "Muhammad ibn 'Amr ibn 'Alqamah (a narrator in the hadith's chain)",
     "محمد هاشم بن عبد الغفور السندي الحنفي": "Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi",
     "مرارة بن الربيع العمري": "Murarah ibn al-Rabi' al-'Amri",
     "مسلم بن الحجاج": "Muslim ibn al-Hajjaj",
@@ -225,6 +229,10 @@
     "أذكار النوم": {
       "english": "the remembrances of sleep",
       "translit": "adhkar al-nawm"
+    },
+    "أصول التفسير": {
+      "english": "the principles of tafsir",
+      "translit": "usul al-tafsir"
     },
     "أصول الفقه": {
       "english": "the principles of jurisprudence",
@@ -302,6 +310,10 @@
       "english": "retreat at the mosque (i'tikaf)",
       "translit": "i'tikaf"
     },
+    "الأثرة": {
+      "english": "selfishness (al-'athara)",
+      "translit": "al-'athara"
+    },
     "الأحزاب": {
       "english": "the Confederates",
       "translit": "al-Ahzab"
@@ -326,6 +338,10 @@
       "english": "genealogies (ansab)",
       "translit": "ansab"
     },
+    "الإحسان": {
+      "english": "excellence in worship",
+      "translit": "ihsan"
+    },
     "الإخلاص": {
       "english": "sincerity",
       "translit": "ikhlas"
@@ -346,9 +362,17 @@
       "english": "the ruler (imam)",
       "translit": "imam"
     },
+    "الإمامة": {
+      "english": "the role of leadership (imamah)",
+      "translit": "imamah"
+    },
     "الإنابة": {
       "english": "turning back to Allah",
       "translit": "inabah"
+    },
+    "الإيمان": {
+      "english": "faith",
+      "translit": "iman"
     },
     "الابتلاء": {
       "english": "trial",
@@ -370,6 +394,10 @@
       "english": "Orientalism",
       "translit": "istishraq"
     },
+    "الاستغاثة": {
+      "english": "crying out for help",
+      "translit": "istighathah"
+    },
     "الاستغفار": {
       "english": "seeking forgiveness",
       "translit": "istighfar"
@@ -386,9 +414,17 @@
       "english": "the Bedouins (al-A'rab)",
       "translit": "al-A'rab"
     },
+    "الافتقار": {
+      "english": "utter need (of Allah)",
+      "translit": "iftiqar"
+    },
     "البداية والنهاية": {
       "english": "al-Bidayah wa-l-Nihayah",
       "translit": "al-Bidayah wa-l-Nihayah"
+    },
+    "البطش": {
+      "english": "tyranny (al-batsh)",
+      "translit": "al-batsh"
     },
     "البعثة": {
       "english": "the prophetic mission",
@@ -450,6 +486,10 @@
       "english": "saying 'Subhan Allah'",
       "translit": "tasbih"
     },
+    "التعطيل": {
+      "english": "dissuasion (from the deed)",
+      "translit": "ta'til"
+    },
     "التعظيم": {
       "english": "magnifying Him",
       "translit": "ta'zim"
@@ -505,6 +545,10 @@
     "التوكل": {
       "english": "reliance",
       "translit": "tawakkul"
+    },
+    "الثغور": {
+      "english": "the frontier outposts",
+      "translit": "al-thughur"
     },
     "الجهاد": {
       "english": "jihad",
@@ -646,6 +690,10 @@
       "english": "raiding parties",
       "translit": "saraya"
     },
+    "السمع والطاعة": {
+      "english": "hearing and obeying",
+      "translit": "al-sam' wa'l-ta'ah"
+    },
     "السنة": {
       "english": "the Sunnah",
       "translit": "al-sunnah"
@@ -690,6 +738,10 @@
       "english": "associating partners with Allah",
       "translit": "shirk"
     },
+    "الشريعة": {
+      "english": "the Shari'ah (Islamic law)",
+      "translit": "Shari'ah"
+    },
     "الشكر": {
       "english": "gratitude",
       "translit": "shukr"
@@ -697,6 +749,10 @@
     "الشمائل": {
       "english": "the noble qualities (shama'il)",
       "translit": "shama'il"
+    },
+    "الشهادة": {
+      "english": "martyrdom (shahadah)",
+      "translit": "shahadah"
     },
     "الشيطان": {
       "english": "Satan",
@@ -709,6 +765,10 @@
     "الصحيحين": {
       "english": "the two Sahihs",
       "translit": "al-Sahihayn"
+    },
+    "الصدق": {
+      "english": "truthfulness",
+      "translit": "sidq"
     },
     "الصفات": {
       "english": "the divine attributes",
@@ -730,6 +790,10 @@
       "english": "al-Tabaqat al-Kubra",
       "translit": "al-Tabaqat al-Kubra"
     },
+    "الظلم": {
+      "english": "injustice (dhulm)",
+      "translit": "dhulm"
+    },
     "العافية": {
       "english": "well-being",
       "translit": "al-'afiyah"
@@ -749,6 +813,10 @@
     "العشره المشهود لهم بالجنه": {
       "english": "the ten given the glad tidings of Paradise",
       "translit": "al-'Asharah al-Mubashsharah bi'l-Jannah"
+    },
+    "العقيدة": {
+      "english": "creed",
+      "translit": "'aqidah"
     },
     "العلم الشرعي": {
       "english": "sacred knowledge",
@@ -773,6 +841,10 @@
     "الفتن": {
       "english": "trials and tribulations",
       "translit": "fitan"
+    },
+    "الفتوحات": {
+      "english": "the conquests (futuhat)",
+      "translit": "al-Futuhat"
     },
     "الفردوس": {
       "english": "Paradise (al-Firdaws)",
@@ -802,6 +874,10 @@
       "english": "false accusation of zina (qadhf)",
       "translit": "qadhf"
     },
+    "القراء": {
+      "english": "the Qurra' (reciters of the Qur'an)",
+      "translit": "al-Qurra'"
+    },
     "الكتب الستة": {
       "english": "the Six Books",
       "translit": "al-kutub al-sittah"
@@ -830,9 +906,17 @@
       "english": "those whose hearts were to be reconciled",
       "translit": "al-mu'allafah qulubuhum"
     },
+    "المتأخرين": {
+      "english": "the later hadith scholars",
+      "translit": "al-muta'akhkhirin"
+    },
     "المجاهدين": {
       "english": "those who strive in Allah's cause",
       "translit": "mujahidin"
+    },
+    "المذهب": {
+      "english": "school of law",
+      "translit": "madhhab"
     },
     "المستهزئون": {
       "english": "the mockers",
@@ -869,6 +953,10 @@
     "المقام المحمود": {
       "english": "the praised station",
       "translit": "maqam mahmud"
+    },
+    "المنع": {
+      "english": "withholding (al-man')",
+      "translit": "al-man'"
     },
     "الموافقات": {
       "english": "al-Muwafaqat",
@@ -930,6 +1018,10 @@
       "english": "certainty",
       "translit": "yaqin"
     },
+    "انقطاع": {
+      "english": "a discontinuity in the isnad (inqita')",
+      "translit": "inqita'"
+    },
     "انكار المنكر": {
       "english": "objecting to wrong",
       "translit": "inkar al-munkar"
@@ -982,6 +1074,10 @@
       "english": "Successor",
       "translit": "tabi'i"
     },
+    "تساهل": {
+      "english": "leniency (tasahul)",
+      "translit": "tasahul"
+    },
     "تصحيح المعايير": {
       "english": "correcting the standards",
       "translit": "tashih al-ma'ayir"
@@ -1018,6 +1114,10 @@
       "english": "The Compendium of Knowledge and Wisdom",
       "translit": "Jami' al-'Ulum wal-Hikam"
     },
+    "جيد": {
+      "english": "jayyid (good, serviceable as evidence)",
+      "translit": "jayyid"
+    },
     "حادثة الفيل": {
       "english": "the incident of the Elephant",
       "translit": "hadithat al-fil"
@@ -1037,6 +1137,10 @@
     "حديث قدسي": {
       "english": "sacred hadith (hadith qudsi)",
       "translit": "hadith qudsi"
+    },
+    "حسن": {
+      "english": "hasan (a sound but not the highest-grade hadith)",
+      "translit": "hasan"
     },
     "حسن الخلق": {
       "english": "good character",
@@ -1166,6 +1270,22 @@
       "english": "a misgiving / specious doubt",
       "translit": "shubhah"
     },
+    "شذوذ": {
+      "english": "irregularity (shudhudh)",
+      "translit": "shudhudh"
+    },
+    "شرح الترمذي": {
+      "english": "his commentary on al-Tirmidhi",
+      "translit": "Sharh al-Tirmidhi"
+    },
+    "صحيح": {
+      "english": "sahih (rigorously authentic)",
+      "translit": "sahih"
+    },
+    "ضعيف": {
+      "english": "da'if (weak)",
+      "translit": "da'if"
+    },
     "طروق": {
       "english": "arriving home unannounced",
       "translit": "tarq"
@@ -1181,6 +1301,14 @@
     "عام الحزن": {
       "english": "the Year of Sorrow",
       "translit": "'am al-huzn"
+    },
+    "عدل": {
+      "english": "an upright narrator ('adl)",
+      "translit": "'adl"
+    },
+    "علة": {
+      "english": "a hidden defect ('illah)",
+      "translit": "'illah"
     },
     "علم العلل": {
       "english": "the science of hidden defects ('ilal)",
@@ -1201,6 +1329,10 @@
     "غيث الساري": {
       "english": "Ghayth al-Sari",
       "translit": "Ghayth al-Sari"
+    },
+    "فتنة": {
+      "english": "discord (fitnah)",
+      "translit": "fitnah"
     },
     "قصة الغلام والساحر": {
       "english": "the story of the boy and the sorcerer",
@@ -1237,6 +1369,10 @@
     "كظم الغيظ": {
       "english": "suppressing anger (kazm al-ghayz)",
       "translit": "kazm al-ghayz"
+    },
+    "لا إفراط ولا تفريط": {
+      "english": "neither excess nor negligence",
+      "translit": "la ifrat wa la tafrit"
     },
     "لذة الايمان": {
       "english": "the sweetness of faith",
@@ -1281,6 +1417,14 @@
     "مقاصد الدين": {
       "english": "the objectives of the religion",
       "translit": "maqasid al-din"
+    },
+    "منقطع": {
+      "english": "disconnected (munqati')",
+      "translit": "munqati'"
+    },
+    "منهاج النبوة": {
+      "english": "the way of Prophethood",
+      "translit": "minhaj al-nubuwwah"
     },
     "منهج": {
       "english": "methodology (manhaj)",

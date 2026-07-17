@@ -46,3 +46,4 @@ coined, series facts, and how the room behaves.
 - `riyad-09` — باب الصبر part 4 (Patience (Bab al-Sabr)).
 - `riyad-08` — باب الصبر part 3 (Patience (Bab al-Sabr)).
 - `riyad-10` — باب الصبر part 5 (Patience (Bab al-Sabr)).
+- `riyad-11` — باب الصبر part 6 (Patience (Bab al-Sabr)).

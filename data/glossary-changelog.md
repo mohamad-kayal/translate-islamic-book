@@ -483,3 +483,44 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: معاذ بن أنس → Mu'adh ibn Anas
 - terms: قهر الرجال → qahr al-rijal, being overpowered by men (qahr al-rijal)
 - names: بشر بن البراء بن معرور → Bishr ibn al-Bara' ibn Ma'rur
+
+## 2026-07-17 — riyad-11
+- terms: الصدق → sidq, truthfulness
+- terms: العقيدة → 'aqidah, creed
+- terms: أصول التفسير → usul al-tafsir, the principles of tafsir
+- terms: الإحسان → ihsan, excellence in worship
+- terms: الإيمان → iman, faith
+- terms: المذهب → madhhab, school of law
+- terms: حسن → hasan, hasan (a sound but not the highest-grade hadith)
+- terms: صحيح → sahih, sahih (rigorously authentic)
+- terms: جيد → jayyid, jayyid (good, serviceable as evidence)
+- terms: ضعيف → da'if, da'if (weak)
+- terms: انقطاع → inqita', a discontinuity in the isnad (inqita')
+- terms: منقطع → munqati', disconnected (munqati')
+- terms: علة → 'illah, a hidden defect ('illah)
+- terms: شذوذ → shudhudh, irregularity (shudhudh)
+- terms: عدل → 'adl, an upright narrator ('adl)
+- terms: تساهل → tasahul, leniency (tasahul)
+- names: محمد بن عمرو بن علقمة → Muhammad ibn 'Amr ibn 'Alqamah (a narrator in the hadith's chain)
+- terms: المتأخرين → al-muta'akhkhirin, the later hadith scholars
+- terms: شرح الترمذي → Sharh al-Tirmidhi, his commentary on al-Tirmidhi
+- names: الحر بن قيس → al-Hurr ibn Qays
+- terms: القراء → al-Qurra', the Qurra' (reciters of the Qur'an)
+- terms: منهاج النبوة → minhaj al-nubuwwah, the way of Prophethood
+- terms: الشريعة → Shari'ah, the Shari'ah (Islamic law)
+- terms: الإمامة → imamah, the role of leadership (imamah)
+- terms: الظلم → dhulm, injustice (dhulm)
+- terms: البطش → al-batsh, tyranny (al-batsh)
+- terms: الأثرة → al-'athara, selfishness (al-'athara)
+- terms: المنع → al-man', withholding (al-man')
+- terms: السمع والطاعة → al-sam' wa'l-ta'ah, hearing and obeying
+- terms: لا إفراط ولا تفريط → la ifrat wa la tafrit, neither excess nor negligence
+- terms: فتنة → fitnah, discord (fitnah)
+- names: عبد الله بن أبي أوفى → 'Abdullah ibn Abi Awfa
+- names: النعمان بن مقرن → al-Nu'man ibn Muqrin
+- terms: الشهادة → shahadah, martyrdom (shahadah)
+- terms: الفتوحات → al-Futuhat, the conquests (futuhat)
+- terms: الثغور → al-thughur, the frontier outposts
+- terms: التعطيل → ta'til, dissuasion (from the deed)
+- terms: الافتقار → iftiqar, utter need (of Allah)
+- terms: الاستغاثة → istighathah, crying out for help
