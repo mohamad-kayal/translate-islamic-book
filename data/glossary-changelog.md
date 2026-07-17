@@ -667,3 +667,37 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: سليم بن عامر → Sulaym ibn 'Amir
 - terms: حجة الوداع → , the Farewell Hajj
 - terms: خطبة → khutbah, sermon (khutbah)
+
+## 2026-07-17 — riyad-17
+- terms: الاستشفاء → istishfa', spiritual healing
+- terms: العلاقة بين أعمال القلوب → al-'Alaqah bayna A'mal al-Qulub, The Relationship Between the Deeds of the Hearts
+- terms: باب اليقين والتوكل → Bab al-Yaqin wa'l-Tawakkul, the chapter on Certainty and Reliance on God
+- terms: حسن الظن → husn al-zann, having a good opinion of Allah
+- terms: سوء الظن → su' al-zann, having an ill opinion of Allah
+- names: عكاشة بن محصن → 'Ukkashah ibn Mihsan
+- terms: عرض الأمم → 'ard al-umam, the Presentation of the Nations ('ard al-umam)
+- terms: الإسراء → al-Isra', the Night Journey (al-Isra')
+- terms: الحشر → al-hashr, the Gathering
+- terms: يسترقون → yastarquna, seek ruqya (spiritual/Qur'anic healing) from others
+- terms: يكتوون → yaktawun, cauterize themselves
+- terms: يتطيرون → yatatayyarun, take bad omens
+- terms: يرقون → yarquna, perform ruqya (for others)
+- terms: الشراح → al-shurrah, the commentators (exegetes)
+- terms: الخاص → khass, the specific
+- terms: العام → 'amm, the general
+- terms: الكي → kayy, cautery
+- terms: التداوي → tadawi, medical treatment
+- terms: الرقية → ruqya, ruqya (spiritual/Qur'anic healing)
+- terms: حصر → hasr, a strict restriction
+- names: أبو خالد → Abu Khalid (a student present)
+- terms: السبعين الفا → al-sab'un alfan, the seventy thousand (70,000)
+- names: ابن حجر → Ibn Hajar
+- names: عتبة بن عبد → 'Utbah ibn 'Abd
+- names: ابن حبان → Ibn Hibban
+- names: الطبراني → al-Tabarani
+- names: أبو أمامة → Abu Umamah
+- names: إسماعيل بن عياش → Isma'il ibn 'Ayyash
+- names: محمد بن زياد الألهاني → Muhammad ibn Ziyad al-Alhani
+- names: عكاش ابن محصن → 'Ukkashah ibn Mihsan
+- names: ثابت بن اقرم → Thabit ibn Aqram
+- names: طليحه الاسدي → Tulayhah al-Asadi

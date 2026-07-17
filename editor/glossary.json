@@ -2,6 +2,7 @@
   "names": {
     "آدم": "Adam",
     "آمنة بنت وهب": "Aminah bint Wahb",
+    "أبو أمامة": "Abu Umamah",
     "أبو أمامة صدي بن عجلان الباهلي": "Abu Umamah Sudayy ibn 'Ajlan al-Bahili",
     "أبو القاسم": "Abu al-Qasim",
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
@@ -13,6 +14,7 @@
     "أبو حاتم الرازي": "Abu Hatim al-Razi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو حمزة": "Abu Hamzah",
+    "أبو خالد": "Abu Khalid (a student present)",
     "أبو خالد حكيم بن حزام": "Abu Khalid Hakim ibn Hizam",
     "أبو خيثمة الأنصاري": "Abu Khaythamah al-Ansari",
     "أبو داود": "Abu Dawud",
@@ -47,12 +49,15 @@
     "إبراهيم النخعي": "Ibrahim al-Nakha'i",
     "إدريس": "Idris",
     "إسماعيل": "Isma'il",
+    "إسماعيل بن عياش": "Isma'il ibn 'Ayyash",
     "ابن إسحاق": "Ibn Ishaq",
     "ابن القطان": "Ibn al-Qattan",
     "ابن القيم": "Ibn al-Qayyim",
     "ابن المبارك": "Ibn al-Mubarak",
     "ابن تيمية": "Ibn Taymiyyah",
     "ابن جرير": "Ibn Jarir (i.e., al-Tabari)",
+    "ابن حبان": "Ibn Hibban",
+    "ابن حجر": "Ibn Hajar",
     "ابن حزم": "Ibn Hazm",
     "ابن رجب": "Imam Ibn Rajab",
     "ابن سعد": "Ibn Sa'd",
@@ -99,6 +104,7 @@
     "الصحابة": "the Companions",
     "الصفا": "al-Safa",
     "الطائف": "Ta'if",
+    "الطبراني": "al-Tabarani",
     "الطبري": "al-Tabari",
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
@@ -130,6 +136,7 @@
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
     "بني سلمة": "Banu Salamah",
     "بيت المقدس": "Jerusalem (Bayt al-Maqdis)",
+    "ثابت بن اقرم": "Thabit ibn Aqram",
     "ثمود": "Thamud",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
     "جبريل": "Gabriel",
@@ -192,6 +199,7 @@
     "ضماد": "Damad",
     "ضمرة": "Damrah (a narrator in the hadith's chain)",
     "طلحة بن عبيد الله": "Talhah ibn 'Ubaydillah",
+    "طليحه الاسدي": "Tulayhah al-Asadi",
     "عائشة": "Aisha",
     "عاد": "'Ad",
     "عاصم": "'Asim (a narrator in the hadith's chain)",
@@ -213,11 +221,14 @@
     "عبد الله بن مسعود": "'Abdullah ibn Mas'ud",
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عبد بن حميد": "'Abd ibn Humayd",
+    "عتبة بن عبد": "'Utbah ibn 'Abd",
     "عثمان بن عفان": "'Uthman ibn 'Affan",
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
     "عطاء": "'Ata",
     "عطاء بن أبي رباح": "'Ata' ibn Abi Rabah",
     "عكا": "Acre",
+    "عكاش ابن محصن": "'Ukkashah ibn Mihsan",
+    "عكاشة بن محصن": "'Ukkashah ibn Mihsan",
     "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
     "علي بن المديني": "'Ali ibn al-Madini",
@@ -246,6 +257,7 @@
     "محمد": "Muhammad",
     "محمد بن إسحاق": "Muhammad ibn Ishaq",
     "محمد بن إسحاق المطلبي": "Muhammad ibn Ishaq al-Muttalibi",
+    "محمد بن زياد الألهاني": "Muhammad ibn Ziyad al-Alhani",
     "محمد بن عمرو بن علقمة": "Muhammad ibn 'Amr ibn 'Alqamah (a narrator in the hadith's chain)",
     "محمد هاشم بن عبد الغفور السندي الحنفي": "Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi",
     "محمود بن غيلان": "Mahmud ibn Ghaylan",
@@ -427,6 +439,10 @@
       "english": "the precursor signs of prophethood",
       "translit": "irhasat"
     },
+    "الإسراء": {
+      "english": "the Night Journey (al-Isra')",
+      "translit": "al-Isra'"
+    },
     "الإسراء والمعراج": {
       "english": "the Isra' and Mi'raj (the Night Journey and Ascension)",
       "translit": "al-Isra' wal-Mi'raj"
@@ -478,6 +494,10 @@
     "الاستشراق": {
       "english": "Orientalism",
       "translit": "istishraq"
+    },
+    "الاستشفاء": {
+      "english": "spiritual healing",
+      "translit": "istishfa'"
     },
     "الاستغاثة": {
       "english": "crying out for help",
@@ -574,6 +594,10 @@
     "التخلية": {
       "english": "emptying the soul of vice",
       "translit": "takhliyah"
+    },
+    "التداوي": {
+      "english": "medical treatment",
+      "translit": "tadawi"
     },
     "التزكية": {
       "english": "purification of the soul",
@@ -687,6 +711,10 @@
       "english": "the Sanctuary",
       "translit": "al-Haram"
     },
+    "الحشر": {
+      "english": "the Gathering",
+      "translit": "al-hashr"
+    },
     "الحفاظ": {
       "english": "master hadith scholars",
       "translit": "huffaz"
@@ -718,6 +746,10 @@
     "الخارجي": {
       "english": "the Kharijite",
       "translit": "Khariji"
+    },
+    "الخاص": {
+      "english": "the specific",
+      "translit": "khass"
     },
     "الخسف": {
       "english": "the sinking",
@@ -779,6 +811,10 @@
       "english": "one bereft of a child having gone before him (raqub)",
       "translit": "raqub"
     },
+    "الرقية": {
+      "english": "ruqya (spiritual/Qur'anic healing)",
+      "translit": "ruqya"
+    },
     "الروض الأنف": {
       "english": "al-Rawd al-Unuf",
       "translit": "al-Rawd al-Unuf"
@@ -822,6 +858,10 @@
     "السبع الموبقات": {
       "english": "the seven destructive sins",
       "translit": "al-sab' al-mubiqat"
+    },
+    "السبعين الفا": {
+      "english": "the seventy thousand (70,000)",
+      "translit": "al-sab'un alfan"
     },
     "السرايا": {
       "english": "raiding parties",
@@ -878,6 +918,10 @@
     "الشبهات": {
       "english": "doubtful matters",
       "translit": "shubuhat"
+    },
+    "الشراح": {
+      "english": "the commentators (exegetes)",
+      "translit": "al-shurrah"
     },
     "الشرع": {
       "english": "the Shari'ah",
@@ -959,6 +1003,10 @@
       "english": "well-being",
       "translit": "al-'afiyah"
     },
+    "العام": {
+      "english": "the general",
+      "translit": "'amm"
+    },
     "العبودية": {
       "english": "servitude to God",
       "translit": "ubudiyyah"
@@ -978,6 +1026,10 @@
     "العقيدة": {
       "english": "creed",
       "translit": "'aqidah"
+    },
+    "العلاقة بين أعمال القلوب": {
+      "english": "The Relationship Between the Deeds of the Hearts",
+      "translit": "al-'Alaqah bayna A'mal al-Qulub"
     },
     "العلم الشرعي": {
       "english": "sacred knowledge",
@@ -1078,6 +1130,10 @@
     "الكهنة": {
       "english": "soothsayers",
       "translit": "kahin"
+    },
+    "الكي": {
+      "english": "cautery",
+      "translit": "kayy"
     },
     "الله اكبر": {
       "english": "Allahu Akbar (God is greatest)",
@@ -1275,6 +1331,10 @@
       "english": "the chapter on vigilant awareness of Allah",
       "translit": "Bab al-Muraqabah"
     },
+    "باب اليقين والتوكل": {
+      "english": "the chapter on Certainty and Reliance on God",
+      "translit": "Bab al-Yaqin wa'l-Tawakkul"
+    },
     "بدر": {
       "english": "Badr",
       "translit": "Badr"
@@ -1407,6 +1467,14 @@
       "english": "good character",
       "translit": "husn al-khuluq"
     },
+    "حسن الظن": {
+      "english": "having a good opinion of Allah",
+      "translit": "husn al-zann"
+    },
+    "حصر": {
+      "english": "a strict restriction",
+      "translit": "hasr"
+    },
     "حلقات الهم والحزن": {
       "english": "the episodes on Worry and Grief (the speaker's earlier series)",
       "translit": "Halaqat al-Hamm wa-l-Huzn"
@@ -1482,6 +1550,10 @@
     "سنن": {
       "english": "the recommended practices",
       "translit": "sunan"
+    },
+    "سوء الظن": {
+      "english": "having an ill opinion of Allah",
+      "translit": "su' al-zann"
     },
     "سورة الأحقاف": {
       "english": "Surat al-Ahqaf",
@@ -1618,6 +1690,10 @@
     "عدل": {
       "english": "an upright narrator ('adl)",
       "translit": "'adl"
+    },
+    "عرض الأمم": {
+      "english": "the Presentation of the Nations ('ard al-umam)",
+      "translit": "'ard al-umam"
     },
     "علة": {
       "english": "a hidden defect ('illah)",
@@ -1810,6 +1886,22 @@
     "وعك": {
       "english": "fever (wa'k)",
       "translit": "wa'k"
+    },
+    "يتطيرون": {
+      "english": "take bad omens",
+      "translit": "yatatayyarun"
+    },
+    "يرقون": {
+      "english": "perform ruqya (for others)",
+      "translit": "yarquna"
+    },
+    "يسترقون": {
+      "english": "seek ruqya (spiritual/Qur'anic healing) from others",
+      "translit": "yastarquna"
+    },
+    "يكتوون": {
+      "english": "cauterize themselves",
+      "translit": "yaktawun"
     }
   },
   "works": {}

@@ -52,3 +52,4 @@ coined, series facts, and how the room behaves.
 - `riyad-14` — باب المراقبة part 2 (Watchfulness of God (Bab al-Muraqabah)).
 - `riyad-15` — باب المراقبة part 3 (Watchfulness of God (Bab al-Muraqabah)).
 - `riyad-16` — باب التقوى (God-consciousness (Bab al-Taqwa)).
+- `riyad-17` — باب اليقين والتوكل part 1 (Certainty and Reliance on God (Bab al-Yaqin wa'l-Tawakkul)).
