@@ -524,3 +524,26 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: التعطيل → ta'til, dissuasion (from the deed)
 - terms: الافتقار → iftiqar, utter need (of Allah)
 - terms: الاستغاثة → istighathah, crying out for help
+
+## 2026-07-17 — riyad-13
+- terms: باب الصدق → Bab al-Sidq, the chapter on Truthfulness
+- terms: باب المراقبة → Bab al-Muraqabah, the chapter on vigilant awareness of Allah
+- terms: نجوى → najwa, private conversation
+- terms: خائنة الأعين → kha'inat al-a'yun, the treachery of the eyes
+- terms: تربية → tarbiyah, spiritual formation
+- names: سورة يونس → Surat Yunus
+- names: القرطبي → al-Qurtubi
+- terms: الجمع بين الصحيحين → al-Jam' bayn al-Sahihayn, Combining the Two Sahihs
+- terms: الإسلام → Islam, Islam
+- terms: الساعة → al-sa'ah, the Hour
+- terms: الأربعين النووية → al-Arba'in al-Nawawiyyah, al-Nawawi's Forty Hadith
+- terms: مقام → maqam, a station
+- terms: رغبة → raghbah, yearning
+- terms: رهبة → rahbah, dread
+- terms: مفاتح الغيب → Mafatih al-Ghayb, the Keys of the Unseen
+- names: حذيفة → Hudhayfah
+- terms: صحيح البخاري → Sahih al-Bukhari, Sahih al-Bukhari
+- terms: الدجال → al-Dajjal, the Antichrist
+- terms: الملاحم → al-Malahim, the Great Battles
+- terms: كتاب الفتن → Kitab al-Fitan, the Book of Trials and Tribulations
+- terms: صحيح مسلم → Sahih Muslim, Sahih Muslim

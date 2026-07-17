@@ -76,6 +76,7 @@
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
     "الفاتحة": "al-Fatihah",
+    "القرطبي": "al-Qurtubi",
     "الكعبة": "the Ka'bah",
     "المخزومية": "the Makhzumi woman",
     "المدينة": "Madinah",
@@ -104,6 +105,7 @@
     "جبريل": "Gabriel",
     "جليبيب": "Julaibib",
     "جهينة": "Juhaynah",
+    "حذيفة": "Hudhayfah",
     "حسام عبد الله حمشو": "Husam 'Abdullah Hamshu",
     "حسان": "Hassan",
     "حضرموت": "Hadramawt",
@@ -144,6 +146,7 @@
     "سورة النساء": "Surat al-Nisa",
     "سورة سبأ": "Surat Saba",
     "سورة غافر": "Surat Ghafir",
+    "سورة يونس": "Surat Yunus",
     "صفوان بن عسال": "Safwan ibn 'Assal",
     "صنعاء": "Sana'a",
     "صهيب": "Suhaib",
@@ -322,6 +325,10 @@
       "english": "manners",
       "translit": "adab"
     },
+    "الأربعين النووية": {
+      "english": "al-Nawawi's Forty Hadith",
+      "translit": "al-Arba'in al-Nawawiyyah"
+    },
     "الأسانيد": {
       "english": "chains of transmission",
       "translit": "isnad"
@@ -353,6 +360,10 @@
     "الإسراء والمعراج": {
       "english": "the Isra' and Mi'raj (the Night Journey and Ascension)",
       "translit": "al-Isra' wal-Mi'raj"
+    },
+    "الإسلام": {
+      "english": "Islam",
+      "translit": "Islam"
     },
     "الإصلاح": {
       "english": "reform",
@@ -550,6 +561,10 @@
       "english": "the frontier outposts",
       "translit": "al-thughur"
     },
+    "الجمع بين الصحيحين": {
+      "english": "Combining the Two Sahihs",
+      "translit": "al-Jam' bayn al-Sahihayn"
+    },
     "الجهاد": {
       "english": "jihad",
       "translit": "jihad"
@@ -605,6 +620,10 @@
     "الخوارج": {
       "english": "the Kharijites",
       "translit": "al-Khawarij"
+    },
+    "الدجال": {
+      "english": "the Antichrist",
+      "translit": "al-Dajjal"
     },
     "الدعوة": {
       "english": "calling to Allah",
@@ -681,6 +700,10 @@
     "الساحر": {
       "english": "the sorcerer",
       "translit": "sahir"
+    },
+    "الساعة": {
+      "english": "the Hour",
+      "translit": "al-sa'ah"
     },
     "السبع الموبقات": {
       "english": "the seven destructive sins",
@@ -954,6 +977,10 @@
       "english": "the praised station",
       "translit": "maqam mahmud"
     },
+    "الملاحم": {
+      "english": "the Great Battles",
+      "translit": "al-Malahim"
+    },
     "المنع": {
       "english": "withholding (al-man')",
       "translit": "al-man'"
@@ -1046,6 +1073,14 @@
       "english": "the chapter on Patience",
       "translit": "Bab al-Sabr"
     },
+    "باب الصدق": {
+      "english": "the chapter on Truthfulness",
+      "translit": "Bab al-Sidq"
+    },
+    "باب المراقبة": {
+      "english": "the chapter on vigilant awareness of Allah",
+      "translit": "Bab al-Muraqabah"
+    },
     "بدر": {
       "english": "Badr",
       "translit": "Badr"
@@ -1073,6 +1108,10 @@
     "تابعي": {
       "english": "Successor",
       "translit": "tabi'i"
+    },
+    "تربية": {
+      "english": "spiritual formation",
+      "translit": "tarbiyah"
     },
     "تساهل": {
       "english": "leniency (tasahul)",
@@ -1150,6 +1189,10 @@
       "english": "the episodes on Worry and Grief (the speaker's earlier series)",
       "translit": "Halaqat al-Hamm wa-l-Huzn"
     },
+    "خائنة الأعين": {
+      "english": "the treachery of the eyes",
+      "translit": "kha'inat al-a'yun"
+    },
     "خليل الرحمن": {
       "english": "the intimate friend of the Most Merciful",
       "translit": "Khalil al-Rahman"
@@ -1189,6 +1232,14 @@
     "رداء": {
       "english": "the upper wrap",
       "translit": "rida'"
+    },
+    "رغبة": {
+      "english": "yearning",
+      "translit": "raghbah"
+    },
+    "رهبة": {
+      "english": "dread",
+      "translit": "rahbah"
     },
     "رياض الصالحين": {
       "english": "The Gardens of the Righteous",
@@ -1282,6 +1333,14 @@
       "english": "sahih (rigorously authentic)",
       "translit": "sahih"
     },
+    "صحيح البخاري": {
+      "english": "Sahih al-Bukhari",
+      "translit": "Sahih al-Bukhari"
+    },
+    "صحيح مسلم": {
+      "english": "Sahih Muslim",
+      "translit": "Sahih Muslim"
+    },
     "ضعيف": {
       "english": "da'if (weak)",
       "translit": "da'if"
@@ -1358,6 +1417,10 @@
       "english": "the night prayer (qiyam al-layl)",
       "translit": "qiyam al-layl"
     },
+    "كتاب الفتن": {
+      "english": "the Book of Trials and Tribulations",
+      "translit": "Kitab al-Fitan"
+    },
     "كرامات": {
       "english": "wondrous deeds (karamat)",
       "translit": "karamat"
@@ -1414,9 +1477,17 @@
       "english": "God's providence for the believers",
       "translit": "ma'iyyah"
     },
+    "مفاتح الغيب": {
+      "english": "the Keys of the Unseen",
+      "translit": "Mafatih al-Ghayb"
+    },
     "مقاصد الدين": {
       "english": "the objectives of the religion",
       "translit": "maqasid al-din"
+    },
+    "مقام": {
+      "english": "a station",
+      "translit": "maqam"
     },
     "منقطع": {
       "english": "disconnected (munqati')",
@@ -1441,6 +1512,10 @@
     "موضع الشاهد": {
       "english": "the point of evidence",
       "translit": "al-shahid"
+    },
+    "نجوى": {
+      "english": "private conversation",
+      "translit": "najwa"
     },
     "نسبة": {
       "english": "a proportional application (nisbah)",

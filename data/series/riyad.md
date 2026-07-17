@@ -47,3 +47,4 @@ coined, series facts, and how the room behaves.
 - `riyad-08` — باب الصبر part 3 (Patience (Bab al-Sabr)).
 - `riyad-10` — باب الصبر part 5 (Patience (Bab al-Sabr)).
 - `riyad-11` — باب الصبر part 6 (Patience (Bab al-Sabr)).
+- `riyad-13` — باب المراقبة part 1 (Watchfulness of God (Bab al-Muraqabah)).
