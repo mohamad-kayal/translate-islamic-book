@@ -11,6 +11,7 @@
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
     "أبو بكر بن أبي مريم": "Abu Bakr ibn Abi Maryam (a narrator in the hadith's chain; distinct from Abu Bakr al-Siddiq)",
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
+    "أبو تميم الجيشاني": "Abu Tamim al-Jayshani",
     "أبو حاتم الرازي": "Abu Hatim al-Razi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو حمزة": "Abu Hamzah",
@@ -41,6 +42,7 @@
     "أسامة": "Usamah (a student present)",
     "أسامة بن زيد بن حارثة": "Usamah ibn Zayd ibn Harithah",
     "أسيد": "Usayd (a student present)",
+    "أم سلمة": "Umm Salamah",
     "أم سليم": "Umm Sulaym",
     "أم عطية": "Umm 'Atiyyah",
     "أم كلثوم": "Umm Kulthum",
@@ -55,6 +57,7 @@
     "ابن القيم": "Ibn al-Qayyim",
     "ابن المبارك": "Ibn al-Mubarak",
     "ابن تيمية": "Ibn Taymiyyah",
+    "ابن جريج": "Ibn Jurayj",
     "ابن جرير": "Ibn Jarir (i.e., al-Tabari)",
     "ابن حبان": "Ibn Hibban",
     "ابن حجر": "Ibn Hajar",
@@ -66,7 +69,9 @@
     "ابن عيينة": "Ibn 'Uyaynah",
     "ابن كثير": "Ibn Kathir",
     "ابن هشام": "Ibn Hisham",
+    "ابو داود الطيالسي": "Abu Dawud al-Tayalisi (a narrator in the hadith's chain; distinct from Abu Dawud, compiler of Sunan Abu Dawud)",
     "اسحاق بن راهويه": "Ishaq ibn Rahawayh",
+    "اسحاق بن عبد الله بن ابي طلحه": "Ishaq ibn 'Abdullah ibn Abi Talhah",
     "الأقرع بن حابس": "Aqra' ibn Habis",
     "الأنصار": "the Ansar",
     "الإمام أحمد": "Imam Ahmad",
@@ -76,6 +81,7 @@
     "الاغر ابن يسار المزني": "al-Aghurr ibn Yasar al-Muzani",
     "الامام البخاري": "Imam al-Bukhari",
     "البخاري": "al-Bukhari",
+    "البراء بن عازب": "al-Bara' ibn 'Azib (kunyah Abu 'Umarah)",
     "البصرة": "Basra",
     "الترمذي": "al-Tirmidhi",
     "الحاكم": "Imam al-Hakim",
@@ -99,6 +105,7 @@
     "الشافعي": "al-Shafi'i",
     "الشام": "al-Sham (Syria/the Levant)",
     "الشعبي": "al-Sha'bi",
+    "الشيخ الطريفي": "Shaykh al-Turayfi",
     "الشيخ طارق عوض الله": "Shaykh Tariq 'Awad Allah",
     "الشيخ كشك": "Shaykh Kishk",
     "الصحابة": "the Companions",
@@ -136,6 +143,7 @@
     "بنو إسرائيل": "the Children of Israel (Bani Isra'il)",
     "بني سلمة": "Banu Salamah",
     "بيت المقدس": "Jerusalem (Bayt al-Maqdis)",
+    "ثابت": "Thabit (a narrator in the hadith's chain)",
     "ثابت بن اقرم": "Thabit ibn Aqram",
     "ثمود": "Thamud",
     "جابر بن عبد الله": "Jabir ibn 'Abdullah",
@@ -147,10 +155,12 @@
     "حسان": "Hassan",
     "حضرموت": "Hadramawt",
     "حفصة": "Hafsah",
+    "حماد بن سلمة": "Hammad ibn Salamah (a narrator in the hadith's chain)",
     "حمزة": "Hamzah (a student present)",
     "حنش الصنعاني": "Hanash al-San'ani",
     "حنين": "Hunayn",
     "حواء": "Hawwa' (Eve)",
+    "خالد": "Khalid (a student present)",
     "خالد بن الوليد": "Khalid ibn al-Walid",
     "خباب": "Khabbab ibn al-Aratt",
     "خديجة": "Khadijah",
@@ -204,6 +214,7 @@
     "عاد": "'Ad",
     "عاصم": "'Asim (a narrator in the hadith's chain)",
     "عاصم بن عمر بن قتادة": "'Asim ibn 'Umar ibn Qatadah",
+    "عامر بن شراحيل": "'Amir ibn Shurahil (al-Sha'bi)",
     "عامر بن فهيرة": "'Amir ibn Fuhayrah",
     "عبادة بن الصامت": "'Ubada ibn al-Samit",
     "عباس بن مرداس": "'Abbas b. Mirdas",
@@ -215,10 +226,12 @@
     "عبد الله بن أبي أوفى": "'Abdullah ibn Abi Awfa",
     "عبد الله بن أم مكتوم": "'Abdullah ibn Umm Maktum",
     "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
+    "عبد الله بن عثمان بن عامر بن عمرو بن كعب بن سعد بن تيم بن مرة بن كعب بن لؤي بن غالب القرشي التيمي": "Abu Bakr al-Siddiq's full name/lineage",
     "عبد الله بن عمر": "'Abdullah ibn 'Umar",
     "عبد الله بن قيس": "'Abdullah ibn Qais (i.e. Abu Musa al-Ash'ari)",
     "عبد الله بن كعب بن مالك": "'Abdullah ibn Ka'b ibn Malik",
     "عبد الله بن مسعود": "'Abdullah ibn Mas'ud",
+    "عبد الله بن هبيرة": "'Abdullah ibn Hubayrah",
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عبد بن حميد": "'Abd ibn Humayd",
     "عتبة بن عبد": "'Utbah ibn 'Abd",
@@ -257,6 +270,7 @@
     "محمد": "Muhammad",
     "محمد بن إسحاق": "Muhammad ibn Ishaq",
     "محمد بن إسحاق المطلبي": "Muhammad ibn Ishaq al-Muttalibi",
+    "محمد بن بشار": "Muhammad ibn Bashshar (a narrator in the hadith's chain)",
     "محمد بن زياد الألهاني": "Muhammad ibn Ziyad al-Alhani",
     "محمد بن عمرو بن علقمة": "Muhammad ibn 'Amr ibn 'Alqamah (a narrator in the hadith's chain)",
     "محمد هاشم بن عبد الغفور السندي الحنفي": "Muhammad Hashim ibn 'Abd al-Ghafur al-Sindi al-Hanafi",
@@ -311,6 +325,10 @@
       "english": "the principles of jurisprudence",
       "translit": "usul al-fiqh"
     },
+    "أعلام النبوة": {
+      "english": "signs of prophethood",
+      "translit": "a'lam al-nubuwwah"
+    },
     "أعمال القلوب": {
       "english": "the deeds of the hearts",
       "translit": "a'mal al-qulub"
@@ -326,6 +344,10 @@
     "أنوار السنة المحمدية": {
       "english": "The Lights of the Muhammadan Sunnah",
       "translit": "Anwar al-Sunnah al-Muhammadiyyah"
+    },
+    "أهل السنة": {
+      "english": "the adherents of the Sunnah",
+      "translit": "Ahl al-Sunnah"
     },
     "أهواء": {
       "english": "base desires (ahwa')",
@@ -507,6 +529,10 @@
       "english": "seeking forgiveness",
       "translit": "istighfar"
     },
+    "الاستغناء": {
+      "english": "independence [from need of others]",
+      "translit": "istighna'"
+    },
     "الاستقامة": {
       "english": "uprightness",
       "translit": "istiqamah"
@@ -514,6 +540,10 @@
     "الاستهداء بالسنة": {
       "english": "Guided by the Sunnah",
       "translit": "al-Istihda' bi-l-Sunnah"
+    },
+    "الاعتبار": {
+      "english": "corroboration [using supporting narrations]",
+      "translit": "i'tibar"
     },
     "الاعراب": {
       "english": "the Bedouins (al-A'rab)",
@@ -607,6 +637,14 @@
       "english": "saying 'Subhan Allah'",
       "translit": "tasbih"
     },
+    "التصديق": {
+      "english": "affirmation",
+      "translit": "tasdiq"
+    },
+    "التصوف": {
+      "english": "Sufism",
+      "translit": "tasawwuf"
+    },
     "التعطيل": {
       "english": "dissuasion (from the deed)",
       "translit": "ta'til"
@@ -618,6 +656,10 @@
     "التفسير": {
       "english": "Qur'anic exegesis",
       "translit": "tafsir"
+    },
+    "التفويض": {
+      "english": "entrustment [of one's affairs to Allah]",
+      "translit": "tafwid"
     },
     "التقوى": {
       "english": "piety",
@@ -875,6 +917,10 @@
       "english": "the righteous predecessors",
       "translit": "al-salaf al-salih"
     },
+    "السلوك": {
+      "english": "spiritual conduct",
+      "translit": "suluk"
+    },
     "السمع والطاعة": {
       "english": "hearing and obeying",
       "translit": "al-sam' wa'l-ta'ah"
@@ -1034,6 +1080,10 @@
     "العلم الشرعي": {
       "english": "sacred knowledge",
       "translit": "al-'ilm al-shar'i"
+    },
+    "الغاسق اذا وقب": {
+      "english": "the darkened one as it darkens",
+      "translit": "al-ghasiq idha waqab"
     },
     "الغرور": {
       "english": "the Deceiver",
@@ -1227,6 +1277,10 @@
       "english": "stopped at the Companion (mawquf)",
       "translit": "mawquf"
     },
+    "النبوة": {
+      "english": "prophethood",
+      "translit": "nubuwwah"
+    },
     "النحو والصرف": {
       "english": "grammar and morphology",
       "translit": "nahw and sarf"
@@ -1363,6 +1417,10 @@
       "english": "Successor",
       "translit": "tabi'i"
     },
+    "تاريخ الفكر الغربي": {
+      "english": "The History of Western Thought",
+      "translit": "Tarikh al-Fikr al-Gharbi"
+    },
     "تحسين": {
       "english": "grading a hadith as good",
       "translit": "tahsin"
@@ -1386,6 +1444,10 @@
     "تعليل": {
       "english": "identifying hidden defects ('ilal) in a hadith's transmission",
       "translit": "ta'lil"
+    },
+    "تفريغ الحملة": {
+      "english": "freeing up [people] full-time for this work",
+      "translit": "tafrigh al-hamalah"
     },
     "تفسير الطبري": {
       "english": "the Tafsir of al-Tabari",
@@ -1474,6 +1536,14 @@
     "حصر": {
       "english": "a strict restriction",
       "translit": "hasr"
+    },
+    "حق التقوى": {
+      "english": "the true piety",
+      "translit": "haqq al-taqwa"
+    },
+    "حق التوكل": {
+      "english": "the true reliance",
+      "translit": "haqq al-tawakkul"
     },
     "حلقات الهم والحزن": {
       "english": "the episodes on Worry and Grief (the speaker's earlier series)",
@@ -1639,6 +1709,10 @@
       "english": "his commentary on al-Tirmidhi",
       "translit": "Sharh al-Tirmidhi"
     },
+    "شرعي": {
+      "english": "Shari'ah-based (shar'i)",
+      "translit": "shar'i"
+    },
     "صالح": {
       "english": "acceptable (salih)",
       "translit": "salih"
@@ -1751,6 +1825,10 @@
       "english": "the night prayer (qiyam al-layl)",
       "translit": "qiyam al-layl"
     },
+    "كتاب الدعوات": {
+      "english": "the Book of Supplications",
+      "translit": "Kitab al-Da'awat"
+    },
     "كتاب الفتن": {
       "english": "the Book of Trials and Tribulations",
       "translit": "Kitab al-Fitan"
@@ -1811,9 +1889,17 @@
       "english": "holding oneself to account",
       "translit": "muhasabah"
     },
+    "محبة": {
+      "english": "love",
+      "translit": "mahabbah"
+    },
     "مدارج السالكين": {
       "english": "Stations of the Wayfarers",
       "translit": "Madarij al-Salikin"
+    },
+    "مراسيل": {
+      "english": "mursal narrations (reports missing a link in the chain)",
+      "translit": "marasil"
     },
     "مراقبة": {
       "english": "vigilant awareness of Allah",
@@ -1866,6 +1952,10 @@
     "مهاجر": {
       "english": "emigrant",
       "translit": "Muhajir"
+    },
+    "موته صغرى": {
+      "english": "a minor death",
+      "translit": "mawtah sughra"
     },
     "موجبات الاستغفار": {
       "english": "the occasions for seeking forgiveness",

@@ -701,3 +701,38 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: عكاش ابن محصن → 'Ukkashah ibn Mihsan
 - names: ثابت بن اقرم → Thabit ibn Aqram
 - names: طليحه الاسدي → Tulayhah al-Asadi
+
+## 2026-07-17 — riyad-19
+- terms: السلوك → suluk, spiritual conduct
+- names: عبد الله بن هبيرة → 'Abdullah ibn Hubayrah
+- names: أبو تميم الجيشاني → Abu Tamim al-Jayshani
+- terms: حق التقوى → haqq al-taqwa, the true piety
+- terms: حق التوكل → haqq al-tawakkul, the true reliance
+- terms: التصديق → tasdiq, affirmation
+- terms: أهل السنة → Ahl al-Sunnah, the adherents of the Sunnah
+- terms: التفويض → tafwid, entrustment [of one's affairs to Allah]
+- terms: الاستغناء → istighna', independence [from need of others]
+- terms: محبة → mahabbah, love
+- terms: التصوف → tasawwuf, Sufism
+- names: البراء بن عازب → al-Bara' ibn 'Azib (kunyah Abu 'Umarah)
+- terms: الغاسق اذا وقب → al-ghasiq idha waqab, the darkened one as it darkens
+- terms: موته صغرى → mawtah sughra, a minor death
+- terms: تاريخ الفكر الغربي → Tarikh al-Fikr al-Gharbi, The History of Western Thought
+- terms: شرعي → shar'i, Shari'ah-based (shar'i)
+- terms: النبوة → nubuwwah, prophethood
+- terms: أعلام النبوة → a'lam al-nubuwwah, signs of prophethood
+- terms: كتاب الدعوات → Kitab al-Da'awat, the Book of Supplications
+- names: عبد الله بن عثمان بن عامر بن عمرو بن كعب بن سعد بن تيم بن مرة بن كعب بن لؤي بن غالب القرشي التيمي → Abu Bakr al-Siddiq's full name/lineage
+- names: أم سلمة → Umm Salamah
+- names: عامر بن شراحيل → 'Amir ibn Shurahil (al-Sha'bi)
+- terms: مراسيل → marasil, mursal narrations (reports missing a link in the chain)
+- terms: الاعتبار → i'tibar, corroboration [using supporting narrations]
+- names: الشيخ الطريفي → Shaykh al-Turayfi
+- names: ابن جريج → Ibn Jurayj
+- names: اسحاق بن عبد الله بن ابي طلحه → Ishaq ibn 'Abdullah ibn Abi Talhah
+- names: خالد → Khalid (a student present)
+- names: محمد بن بشار → Muhammad ibn Bashshar (a narrator in the hadith's chain)
+- names: ابو داود الطيالسي → Abu Dawud al-Tayalisi (a narrator in the hadith's chain; distinct from Abu Dawud, compiler of Sunan Abu Dawud)
+- names: حماد بن سلمة → Hammad ibn Salamah (a narrator in the hadith's chain)
+- names: ثابت → Thabit (a narrator in the hadith's chain)
+- terms: تفريغ الحملة → tafrigh al-hamalah, freeing up [people] full-time for this work
