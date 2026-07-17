@@ -10,20 +10,26 @@
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
     "أبو حذيفة بن عتبة": "Abu Hudhayfah ibn 'Utbah",
     "أبو حمزة": "Abu Hamzah",
+    "أبو خالد حكيم بن حزام": "Abu Khalid Hakim ibn Hizam",
     "أبو خيثمة الأنصاري": "Abu Khaythamah al-Ansari",
     "أبو داود": "Abu Dawud",
     "أبو سعيد الخدري": "Abu Sa'id al-Khudri",
+    "أبو سفيان": "Abu Sufyan",
+    "أبو سفيان صخر بن حرب": "Abu Sufyan Sakhr ibn Harb",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
     "أبو طلحة": "Abu Talha",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
     "أبو قتادة": "Abu Qatadah",
+    "أبو كبشة الأنماري": "Abu Kabshah al-Anmari",
     "أبو مالك الحارث بن عاصم الأشعري": "Abu Malik al-Harith ibn 'Asim al-Ash'ari",
+    "أبو محمد الحسن بن علي": "Abu Muhammad al-Hasan ibn 'Ali",
     "أبو موسى الأشعري": "Abu Musa al-Ash'ari",
     "أبو هريرة": "Abu Hurayrah",
     "أبو يحيى صهيب بن سنان": "Abu Yahya Suhayb ibn Sinan",
     "أبي بن كعب": "Ubay ibn Ka'b",
     "أحد": "Uhud",
     "أحمد": "Ahmad (a student present)",
+    "أسامة": "Usamah (a student present)",
     "أسامة بن زيد بن حارثة": "Usamah ibn Zayd ibn Harithah",
     "أسيد": "Usayd (a student present)",
     "أم سليم": "Umm Sulaym",
@@ -36,6 +42,7 @@
     "ابن القيم": "Ibn al-Qayyim",
     "ابن المبارك": "Ibn al-Mubarak",
     "ابن تيمية": "Ibn Taymiyyah",
+    "ابن جرير": "Ibn Jarir (i.e., al-Tabari)",
     "ابن حزم": "Ibn Hazm",
     "ابن رجب": "Imam Ibn Rajab",
     "ابن سعد": "Ibn Sa'd",
@@ -59,6 +66,7 @@
     "الخطابي": "al-Khattabi",
     "الخلفاء الراشدون": "the Rightly-Guided Caliphs",
     "الخندق": "the Trench (al-Khandaq)",
+    "الروم": "the Byzantines (al-Rum)",
     "الزبير بن العوام": "al-Zubayr ibn al-'Awwam",
     "الزرقاني": "al-Zurqani",
     "الزهري": "Imam al-Zuhri",
@@ -75,11 +83,14 @@
     "الطبري": "al-Tabari",
     "العاص بن وائل": "al-'As ibn Wa'il",
     "العقبة": "al-'Aqabah",
+    "العماد": "al-'Imad",
     "الفاتحة": "al-Fatihah",
     "القرطبي": "al-Qurtubi",
+    "القسطنطينية": "Constantinople",
     "الكعبة": "the Ka'bah",
     "المخزومية": "the Makhzumi woman",
     "المدينة": "Madinah",
+    "المسجد الاقصى": "al-Aqsa Mosque",
     "المهدي": "al-Mahdi",
     "النبي": "the Prophet ﷺ",
     "النسائي": "al-Nasa'i",
@@ -135,6 +146,7 @@
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
     "سليمان بن صرد": "Sulayman ibn Sarad",
+    "سهل بن حنيف": "Sahl ibn Hunayf",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
     "سورة آل عمران": "Surat Aal 'Imran",
     "سورة الأحزاب": "Surat al-Ahzab",
@@ -148,6 +160,7 @@
     "سورة غافر": "Surat Ghafir",
     "سورة يونس": "Surat Yunus",
     "صفوان بن عسال": "Safwan ibn 'Assal",
+    "صلاح الدين": "Salah al-Din (Saladin)",
     "صنعاء": "Sana'a",
     "صهيب": "Suhaib",
     "ضماد": "Damad",
@@ -174,6 +187,7 @@
     "عروة بن الزبير": "'Urwah ibn al-Zubayr",
     "عطاء": "'Ata",
     "عطاء بن أبي رباح": "'Ata' ibn Abi Rabah",
+    "عكا": "Acre",
     "عكرمة بن أبي جهل": "'Ikrimah ibn Abi Jahl",
     "علي بن أبي طالب": "'Ali ibn Abi Talib",
     "عمار": "'Ammar ibn Yasir",
@@ -182,6 +196,7 @@
     "عمران بن الحصين الخزاعي": "'Imran ibn al-Husayn al-Khuza'i (Abu Nujayd)",
     "عمرو": "'Amr (a student present)",
     "عمواس": "Amwas",
+    "عيسى": "Isa",
     "عيينة بن حصن": "'Uyaina",
     "غزة": "Gaza",
     "غزوة تبوك": "the expedition of Tabuk",
@@ -213,9 +228,11 @@
     "موسى": "Musa",
     "نوح": "Nuh",
     "هامان": "Haman",
+    "هرقل": "Heraclius",
     "هلال بن أمية الواقفي": "Hilal ibn Umayyah al-Waqifi",
     "هلال بن اميه": "Hilal ibn Umayyah",
     "هود": "Hud",
+    "يحيى بن زكريا": "Yahya ibn Zakariyya",
     "يزيد بن رومان": "Yazid ibn Ruman",
     "يوسف": "Yusuf"
   },
@@ -561,6 +578,10 @@
       "english": "the frontier outposts",
       "translit": "al-thughur"
     },
+    "الجاهليه": {
+      "english": "the pre-Islamic era (Jahiliyyah)",
+      "translit": "Jahiliyyah"
+    },
     "الجمع بين الصحيحين": {
       "english": "Combining the Two Sahihs",
       "translit": "al-Jam' bayn al-Sahihayn"
@@ -593,6 +614,10 @@
       "english": "the Sanctuary",
       "translit": "al-Haram"
     },
+    "الحفاظ": {
+      "english": "master hadith scholars",
+      "translit": "huffaz"
+    },
     "الحمد": {
       "english": "praise",
       "translit": "hamd"
@@ -617,9 +642,17 @@
       "english": "the sinking",
       "translit": "al-khasf"
     },
+    "الخشية": {
+      "english": "fearful awe of Allah",
+      "translit": "khashyah"
+    },
     "الخوارج": {
       "english": "the Kharijites",
       "translit": "al-Khawarij"
+    },
+    "الخيار": {
+      "english": "the option to cancel the sale (khiyar)",
+      "translit": "khiyar"
     },
     "الدجال": {
       "english": "the Antichrist",
@@ -713,6 +746,10 @@
       "english": "raiding parties",
       "translit": "saraya"
     },
+    "السكينة": {
+      "english": "serenity",
+      "translit": "sakinah"
+    },
     "السمع والطاعة": {
       "english": "hearing and obeying",
       "translit": "al-sam' wa'l-ta'ah"
@@ -752,6 +789,10 @@
     "الشاهد": {
       "english": "the point of citation (shahid)",
       "translit": "shahid"
+    },
+    "الشبهات": {
+      "english": "doubtful matters",
+      "translit": "shubuhat"
     },
     "الشرع": {
       "english": "the Shari'ah",
@@ -852,6 +893,14 @@
     "الغلو": {
       "english": "extremism",
       "translit": "ghuluww"
+    },
+    "الغلول": {
+      "english": "misappropriation (of war spoils)",
+      "translit": "ghulul"
+    },
+    "الغنائم": {
+      "english": "the spoils of war",
+      "translit": "ghana'im"
     },
     "الغيب": {
       "english": "the unseen (ghayb)",
@@ -985,6 +1034,10 @@
       "english": "withholding (al-man')",
       "translit": "al-man'"
     },
+    "المنهاج": {
+      "english": "al-Minhaj (Imam al-Nawawi's commentary on Sahih Muslim)",
+      "translit": "al-Minhaj"
+    },
     "الموافقات": {
       "english": "al-Muwafaqat",
       "translit": "al-Muwafaqat"
@@ -1032,6 +1085,10 @@
     "الوحي": {
       "english": "revelation",
       "translit": "wahy"
+    },
+    "الورع": {
+      "english": "scrupulousness",
+      "translit": "wara'"
     },
     "الوسيلة": {
       "english": "the highest station",
@@ -1109,6 +1166,10 @@
       "english": "Successor",
       "translit": "tabi'i"
     },
+    "تحسين": {
+      "english": "grading a hadith as good",
+      "translit": "tahsin"
+    },
     "تربية": {
       "english": "spiritual formation",
       "translit": "tarbiyah"
@@ -1116,6 +1177,10 @@
     "تساهل": {
       "english": "leniency (tasahul)",
       "translit": "tasahul"
+    },
+    "تصحيح": {
+      "english": "authenticating (grading a hadith sound)",
+      "translit": "tashih"
     },
     "تصحيح المعايير": {
       "english": "correcting the standards",
@@ -1277,6 +1342,10 @@
       "english": "Surat al-Hadid",
       "translit": "Surat al-Hadid"
     },
+    "سورة الحشر": {
+      "english": "Surat al-Hashr",
+      "translit": "Surat al-Hashr"
+    },
     "سورة الدخان": {
       "english": "Surat al-Dukhan",
       "translit": "Surat al-Dukhan"
@@ -1296,6 +1365,10 @@
     "سورة النازعات": {
       "english": "Surat al-Nazi'at",
       "translit": "al-Nazi'at"
+    },
+    "سورة محمد": {
+      "english": "Surat Muhammad (also called Surat al-Qital)",
+      "translit": "Surat Muhammad"
     },
     "سورة يوسف": {
       "english": "Surah Yusuf",
@@ -1340,6 +1413,10 @@
     "صحيح مسلم": {
       "english": "Sahih Muslim",
       "translit": "Sahih Muslim"
+    },
+    "صديق": {
+      "english": "one utterly truthful",
+      "translit": "siddiq"
     },
     "ضعيف": {
       "english": "da'if (weak)",
@@ -1421,6 +1498,10 @@
       "english": "the Book of Trials and Tribulations",
       "translit": "Kitab al-Fitan"
     },
+    "كتاب بدء الوحي": {
+      "english": "the Book of the Beginning of Revelation",
+      "translit": "Kitab Bad' al-Wahy"
+    },
     "كرامات": {
       "english": "wondrous deeds (karamat)",
       "translit": "karamat"
@@ -1444,6 +1525,10 @@
     "متفق عليه": {
       "english": "agreed upon (related by both Bukhari and Muslim)",
       "translit": "muttafaqun 'alayh"
+    },
+    "متون": {
+      "english": "hadith texts",
+      "translit": "mutun"
     },
     "مجاهدة": {
       "english": "striving (against the self)",

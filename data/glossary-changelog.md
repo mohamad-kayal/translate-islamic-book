@@ -547,3 +547,39 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - terms: الملاحم → al-Malahim, the Great Battles
 - terms: كتاب الفتن → Kitab al-Fitan, the Book of Trials and Tribulations
 - terms: صحيح مسلم → Sahih Muslim, Sahih Muslim
+
+## 2026-07-17 — riyad-12
+- terms: صديق → siddiq, one utterly truthful
+- terms: سورة محمد → Surat Muhammad, Surat Muhammad (also called Surat al-Qital)
+- terms: سورة الحشر → Surat al-Hashr, Surat al-Hashr
+- names: ابن جرير → Ibn Jarir (i.e., al-Tabari)
+- terms: الخشية → khashyah, fearful awe of Allah
+- names: عيسى → Isa
+- names: يحيى بن زكريا → Yahya ibn Zakariyya
+- names: المسجد الاقصى → al-Aqsa Mosque
+- names: أبو محمد الحسن بن علي → Abu Muhammad al-Hasan ibn 'Ali
+- terms: متون → mutun, hadith texts
+- terms: الحفاظ → huffaz, master hadith scholars
+- terms: تصحيح → tashih, authenticating (grading a hadith sound)
+- terms: تحسين → tahsin, grading a hadith as good
+- terms: السكينة → sakinah, serenity
+- terms: الشبهات → shubuhat, doubtful matters
+- terms: الورع → wara', scrupulousness
+- names: أبو سفيان صخر بن حرب → Abu Sufyan Sakhr ibn Harb
+- names: هرقل → Heraclius
+- names: القسطنطينية → Constantinople
+- names: الروم → the Byzantines (al-Rum)
+- terms: الجاهليه → Jahiliyyah, the pre-Islamic era (Jahiliyyah)
+- terms: كتاب بدء الوحي → Kitab Bad' al-Wahy, the Book of the Beginning of Revelation
+- names: سهل بن حنيف → Sahl ibn Hunayf
+- names: أسامة → Usamah (a student present)
+- names: أبو سفيان → Abu Sufyan
+- names: أبو كبشة الأنماري → Abu Kabshah al-Anmari
+- terms: المنهاج → al-Minhaj, al-Minhaj (Imam al-Nawawi's commentary on Sahih Muslim)
+- terms: الغنائم → ghana'im, the spoils of war
+- terms: الغلول → ghulul, misappropriation (of war spoils)
+- names: صلاح الدين → Salah al-Din (Saladin)
+- names: العماد → al-'Imad
+- names: عكا → Acre
+- names: أبو خالد حكيم بن حزام → Abu Khalid Hakim ibn Hizam
+- terms: الخيار → khiyar, the option to cancel the sale (khiyar)
