@@ -736,3 +736,17 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: حماد بن سلمة → Hammad ibn Salamah (a narrator in the hadith's chain)
 - names: ثابت → Thabit (a narrator in the hadith's chain)
 - terms: تفريغ الحملة → tafrigh al-hamalah, freeing up [people] full-time for this work
+
+## 2026-07-17 — riyad-18
+- terms: أدعية الأنبياء → Ad'iyat al-Anbiya', the Supplications of the Prophets
+- terms: أدعية النبي → Ad'iyat al-Nabi, the Supplications of the Prophet
+- terms: الركوع → ruku, bowing
+- terms: السجود → sujud, prostration
+- terms: حسبنا الله ونعم الوكيل → hasbuna Allahu wa ni'ma al-wakil, Sufficient for us is Allah, and He is the best Disposer of affairs
+- names: نجد → Najd
+- names: ذات الرقاع → Dhat al-Riqa'
+- names: أبو بكر الإسماعيلي → Abu Bakr al-Isma'ili
+- terms: قيام → qiyam, standing in devotion
+- names: عبد المطلب → 'Abd al-Muttalib (the Prophet's ﷺ grandfather)
+- terms: المتوكل → al-Mutawakkil, Al-Mutawakkil (he who relies fully upon Allah) — a name given to the Prophet ﷺ in the earlier scriptures
+- names: عبد الله بن عمرو بن العاص → 'Abdullah ibn 'Amr ibn al-'As

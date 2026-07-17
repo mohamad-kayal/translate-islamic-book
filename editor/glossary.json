@@ -8,6 +8,7 @@
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
     "أبو برزة الأسلمي": "Abu Barzah al-Aslami",
     "أبو بكر": "Abu Bakr",
+    "أبو بكر الإسماعيلي": "Abu Bakr al-Isma'ili",
     "أبو بكر الصديق": "Abu Bakr al-Siddiq",
     "أبو بكر بن أبي مريم": "Abu Bakr ibn Abi Maryam (a narrator in the hadith's chain; distinct from Abu Bakr al-Siddiq)",
     "أبو بكرة نفيع بن الحارث الثقفي": "Abu Bakrah Nufay' ibn al-Harith al-Thaqafi",
@@ -168,6 +169,7 @@
     "خيبر": "Khaybar",
     "دار الأرقم": "Dar al-Arqam",
     "داوود الاودي": "Dawud al-Awdi (a narrator in the hadith's chain)",
+    "ذات الرقاع": "Dhat al-Riqa'",
     "رسول الله": "the Messenger of Allah",
     "رضوان": "Ridwan (a student present)",
     "رقية": "Ruqayyah",
@@ -228,10 +230,12 @@
     "عبد الله بن عباس": "'Abdullah ibn 'Abbas",
     "عبد الله بن عثمان بن عامر بن عمرو بن كعب بن سعد بن تيم بن مرة بن كعب بن لؤي بن غالب القرشي التيمي": "Abu Bakr al-Siddiq's full name/lineage",
     "عبد الله بن عمر": "'Abdullah ibn 'Umar",
+    "عبد الله بن عمرو بن العاص": "'Abdullah ibn 'Amr ibn al-'As",
     "عبد الله بن قيس": "'Abdullah ibn Qais (i.e. Abu Musa al-Ash'ari)",
     "عبد الله بن كعب بن مالك": "'Abdullah ibn Ka'b ibn Malik",
     "عبد الله بن مسعود": "'Abdullah ibn Mas'ud",
     "عبد الله بن هبيرة": "'Abdullah ibn Hubayrah",
+    "عبد المطلب": "'Abd al-Muttalib (the Prophet's ﷺ grandfather)",
     "عبد الملك بن هشام المعافري": "'Abd al-Malik ibn Hisham al-Mu'afiri",
     "عبد بن حميد": "'Abd ibn Humayd",
     "عتبة بن عبد": "'Utbah ibn 'Abd",
@@ -289,6 +293,7 @@
     "ميمون بن أبي شبيب": "Maymun ibn Abi Shabib",
     "ميمون بن مهران": "Maymun ibn Mihran",
     "ميمونة": "Maymunah",
+    "نجد": "Najd",
     "نوح": "Nuh",
     "هامان": "Haman",
     "هرقل": "Heraclius",
@@ -304,6 +309,14 @@
     "أبجديات الثقافة": {
       "english": "The ABCs of Culture",
       "translit": "Abjadiyyat al-Thaqafah"
+    },
+    "أدعية الأنبياء": {
+      "english": "the Supplications of the Prophets",
+      "translit": "Ad'iyat al-Anbiya'"
+    },
+    "أدعية النبي": {
+      "english": "the Supplications of the Prophet",
+      "translit": "Ad'iyat al-Nabi"
     },
     "أذكار الصباح": {
       "english": "the morning remembrances",
@@ -439,7 +452,7 @@
     },
     "الأعرابي": {
       "english": "the Bedouin",
-      "translit": null
+      "translit": "al-a'rabi"
     },
     "الأمة": {
       "english": "ummah",
@@ -857,6 +870,10 @@
       "english": "ruqya (spiritual/Qur'anic healing)",
       "translit": "ruqya"
     },
+    "الركوع": {
+      "english": "bowing",
+      "translit": "ruku"
+    },
     "الروض الأنف": {
       "english": "al-Rawd al-Unuf",
       "translit": "al-Rawd al-Unuf"
@@ -904,6 +921,10 @@
     "السبعين الفا": {
       "english": "the seventy thousand (70,000)",
       "translit": "al-sab'un alfan"
+    },
+    "السجود": {
+      "english": "prostration",
+      "translit": "sujud"
     },
     "السرايا": {
       "english": "raiding parties",
@@ -1200,6 +1221,10 @@
     "المتأخرين": {
       "english": "the later hadith scholars",
       "translit": "al-muta'akhkhirin"
+    },
+    "المتوكل": {
+      "english": "Al-Mutawakkil (he who relies fully upon Allah) — a name given to the Prophet ﷺ in the earlier scriptures",
+      "translit": "al-Mutawakkil"
     },
     "المجاهدين": {
       "english": "those who strive in Allah's cause",
@@ -1517,6 +1542,10 @@
       "english": "sacred hadith (hadith qudsi)",
       "translit": "hadith qudsi"
     },
+    "حسبنا الله ونعم الوكيل": {
+      "english": "Sufficient for us is Allah, and He is the best Disposer of affairs",
+      "translit": "hasbuna Allahu wa ni'ma al-wakil"
+    },
     "حسن": {
       "english": "hasan (a sound but not the highest-grade hadith)",
       "translit": "hasan"
@@ -1820,6 +1849,10 @@
     "قهر الرجال": {
       "english": "being overpowered by men (qahr al-rijal)",
       "translit": "qahr al-rijal"
+    },
+    "قيام": {
+      "english": "standing in devotion",
+      "translit": "qiyam"
     },
     "قيام الليل": {
       "english": "the night prayer (qiyam al-layl)",
