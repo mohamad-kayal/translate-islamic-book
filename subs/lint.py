@@ -74,7 +74,7 @@ def lint_run(run_dir, master):
     english = " ".join(" ".join(c["lines"]) for c in cues).lower()
     for ar, val in (master.get("terms") or {}).items():
         if " %s " % fold(ar) in arabic_folded:
-            eng, translit = val.get("english", "").lower(), val.get("translit", "").lower()
+            eng, translit = (val.get("english") or "").lower(), (val.get("translit") or "").lower()
             if (eng and eng not in english) and (translit and translit not in english):
                 result["warnings"].append(
                     "glossary drift: %s spoken but neither %r nor %r appears in the English"

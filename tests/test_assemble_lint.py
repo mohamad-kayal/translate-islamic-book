@@ -136,3 +136,14 @@ def test_lint_run_glossary_drift(tmp_path):
               "names": {}, "works": {}}
     r = lint_run(run, master)  # Arabic contains العالمين but English says "the worlds"
     assert any("العالمين" in w for w in r["warnings"])
+
+
+def test_lint_run_tolerates_null_glossary_fields(tmp_path):
+    # a harvested term may carry a null english or translit; a spoken match must not crash lint
+    run = _make_run(tmp_path)
+    assemble(run)
+    master = {"style": "", "names": {}, "works": {},
+              "terms": {"العالمين": {"translit": None, "english": "all creation"},
+                        "الحمد": {"translit": "hamd", "english": None}}}
+    r = lint_run(run, master)  # both terms occur in the Arabic; must not raise
+    assert isinstance(r["problems"], list) and isinstance(r["warnings"], list)
