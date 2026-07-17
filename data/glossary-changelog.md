@@ -651,3 +651,19 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: الذهبي → al-Dhahabi
 - names: ابن القطان → Ibn al-Qattan
 - names: عبد الرحمن المسلي → 'Abd al-Rahman al-Musli (a narrator in the hadith's chain; nisba spelling uncertain from ASR)
+
+## 2026-07-17 — riyad-16
+- terms: باب التقوى → Bab al-Taqwa, the chapter on Piety
+- terms: الوقاية → wiqayah, protection
+- terms: المنافقون → munafiqun, the hypocrites
+- names: خليل → Khalil (a student present)
+- terms: أسلوب نبوي → uslub nabawi, a Prophetic method
+- terms: الآداب → adab, etiquette
+- terms: البصيرة → basirah, insight
+- names: أبو طريف عدي بن حاتم الطائي → Abu Tarif 'Adi ibn Hatim al-Ta'i
+- names: أبو أمامة صدي بن عجلان الباهلي → Abu Umamah Sudayy ibn 'Ajlan al-Bahili
+- names: زيد بن الحباب → Zayd ibn al-Hubab
+- names: معاوية بن صالح → Mu'awiyah ibn Salih
+- names: سليم بن عامر → Sulaym ibn 'Amir
+- terms: حجة الوداع → , the Farewell Hajj
+- terms: خطبة → khutbah, sermon (khutbah)

@@ -2,6 +2,7 @@
   "names": {
     "آدم": "Adam",
     "آمنة بنت وهب": "Aminah bint Wahb",
+    "أبو أمامة صدي بن عجلان الباهلي": "Abu Umamah Sudayy ibn 'Ajlan al-Bahili",
     "أبو القاسم": "Abu al-Qasim",
     "أبو القاسم السهيلي": "Abu al-Qasim al-Suhayli",
     "أبو برزة الأسلمي": "Abu Barzah al-Aslami",
@@ -21,6 +22,7 @@
     "أبو سفيان": "Abu Sufyan",
     "أبو سفيان صخر بن حرب": "Abu Sufyan Sakhr ibn Harb",
     "أبو سلمة بن عبد الأسد": "Abu Salamah ibn 'Abd al-Asad",
+    "أبو طريف عدي بن حاتم الطائي": "Abu Tarif 'Adi ibn Hatim al-Ta'i",
     "أبو طلحة": "Abu Talha",
     "أبو عامر الأشعري": "Abu 'Amir al-Ash'ari",
     "أبو عبيدة بن الجراح": "Abu 'Ubaydah ibn al-Jarrah",
@@ -145,6 +147,7 @@
     "خالد بن الوليد": "Khalid ibn al-Walid",
     "خباب": "Khabbab ibn al-Aratt",
     "خديجة": "Khadijah",
+    "خليل": "Khalil (a student present)",
     "خيبر": "Khaybar",
     "دار الأرقم": "Dar al-Arqam",
     "داوود الاودي": "Dawud al-Awdi (a narrator in the hadith's chain)",
@@ -156,6 +159,7 @@
     "زكريا": "Zakariyya",
     "زياد بن عبد الله البكائي": "Ziyad ibn 'Abdullah al-Bakka'i",
     "زيد": "Zayd",
+    "زيد بن الحباب": "Zayd ibn al-Hubab",
     "زيد بن ثابت": "Zayd ibn Thabit",
     "زينب": "Zaynab",
     "سعد": "Sa'd (a student present)",
@@ -165,6 +169,7 @@
     "سعيد بن المسيب": "Sa'id ibn al-Musayyab",
     "سفيان": "Sufyan (a narrator in the hadith's chain)",
     "سلع": "Sal'",
+    "سليم بن عامر": "Sulaym ibn 'Amir",
     "سليمان بن صرد": "Sulayman ibn Sarad",
     "سهل بن حنيف": "Sahl ibn Hunayf",
     "سهلة بنت سهيل": "Sahlah bint Suhayl",
@@ -251,6 +256,7 @@
     "معاذ": "Mu'adh",
     "معاذ بن أنس": "Mu'adh ibn Anas",
     "معاذ بن جبل": "Mu'adh ibn Jabal",
+    "معاوية بن صالح": "Mu'awiyah ibn Salih",
     "معن بن يزيد بن الأخنس": "Ma'n ibn Yazid ibn al-Akhnas",
     "مكة": "Makkah",
     "موسى": "Musa",
@@ -280,6 +286,10 @@
     "أذكار النوم": {
       "english": "the remembrances of sleep",
       "translit": "adhkar al-nawm"
+    },
+    "أسلوب نبوي": {
+      "english": "a Prophetic method",
+      "translit": "uslub nabawi"
     },
     "أصول التفسير": {
       "english": "the principles of tafsir",
@@ -368,6 +378,10 @@
     "اعتكاف": {
       "english": "retreat at the mosque (i'tikaf)",
       "translit": "i'tikaf"
+    },
+    "الآداب": {
+      "english": "etiquette",
+      "translit": "adab"
     },
     "الأثرة": {
       "english": "selfishness (al-'athara)",
@@ -496,6 +510,10 @@
     "البر": {
       "english": "righteousness",
       "translit": "birr"
+    },
+    "البصيرة": {
+      "english": "insight",
+      "translit": "basirah"
     },
     "البطش": {
       "english": "tyranny (al-batsh)",
@@ -1125,6 +1143,10 @@
       "english": "the Great Battles",
       "translit": "al-Malahim"
     },
+    "المنافقون": {
+      "english": "the hypocrites",
+      "translit": "munafiqun"
+    },
     "المنع": {
       "english": "withholding (al-man')",
       "translit": "al-man'"
@@ -1201,6 +1223,10 @@
       "english": "ritual ablution (wudu)",
       "translit": "wudu"
     },
+    "الوقاية": {
+      "english": "protection",
+      "translit": "wiqayah"
+    },
     "الولاء والبراء": {
       "english": "loyalty and disavowal",
       "translit": "al-wala' wa'l-bara'"
@@ -1224,6 +1250,10 @@
     "باب الإخلاص والنية": {
       "english": "the chapter on Sincerity and Intention",
       "translit": "Bab al-Ikhlas wa'l-Niyyah"
+    },
+    "باب التقوى": {
+      "english": "the chapter on Piety",
+      "translit": "Bab al-Taqwa"
     },
     "باب التوبة": {
       "english": "the chapter on Repentance",
@@ -1349,6 +1379,10 @@
       "english": "memorizer",
       "translit": "hafiz"
     },
+    "حجة الوداع": {
+      "english": "the Farewell Hajj",
+      "translit": ""
+    },
     "حدثنا": {
       "english": "'he narrated to us' (hadith transmission formula)",
       "translit": "haddathana"
@@ -1380,6 +1414,10 @@
     "خائنة الأعين": {
       "english": "the treachery of the eyes",
       "translit": "kha'inat al-a'yun"
+    },
+    "خطبة": {
+      "english": "sermon (khutbah)",
+      "translit": "khutbah"
     },
     "خليل الرحمن": {
       "english": "the intimate friend of the Most Merciful",
