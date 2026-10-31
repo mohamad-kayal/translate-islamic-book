@@ -20,6 +20,7 @@ data/*
 !data/glossary.json
 !data/glossary-seed-notes.md
 !data/glossary-changelog.md
+!data/glossary-conflicts.md
 !data/series/
 # ...as are the sign-off-gated dataset-English corrections, the download manifest,
 # and the surah-names snapshot (its source API is unpinnable, so the file is source).

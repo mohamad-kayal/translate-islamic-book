@@ -773,3 +773,195 @@ Seeded 2026-07-13 from translate-islamic-book master (terms + names; structure d
 - names: ثوبان → Thawban
 - terms: الإتقان → itqan, precision, thoroughness
 - terms: خشوع → khushu', humility (reverent attentiveness in prayer)
+
+## 2026-10-31 — merged from the 17 book runs
+- terms: الاقتداء → iqtida', following the example
+- terms: الأمر بالمعروف والنهي عن المنكر → al-amr bi'l-ma'ruf wa'l-nahy 'an al-munkar, enjoining good and forbidding evil
+- terms: المركزيات → markaziyyat, the core priorities
+- terms: المحكمات → muhkamat, the firmly-established principles
+- terms: الأمانة → amanah, trustworthiness
+- terms: الإحياء → ihya', revival
+- terms: الحكمة → al-hikmah, wisdom (in the Qur'an, understood as the Sunnah)
+- terms: الوعي → wa'y, awareness
+- terms: العزة → izzah, dignity
+- terms: العلم → ilm, knowledge
+- terms: العمل → amal, action
+- terms: القوة → quwwah, strength
+- terms: المصلحون → muslihun, reformers
+- terms: صناعة المصلحين → sina'at al-muslihin, the making of reformers
+- terms: الإصلاحي → islahi, reformative
+- terms: بوصلة → bawsala, compass
+- terms: الوجهة → wijhah, bearing (direction)
+- terms: مركزة المركزيات → markazat al-markaziyyat, prioritizing the core priorities
+- terms: الثغر → thaghr, the frontier
+- terms: واجب الوقت → wajib al-waqt, the duty of the hour
+- terms: مرجعية الوحي → marja'iyyat al-wahy, the authority of revelation
+- terms: اليأس والإحباط → al-ya's wa'l-ihbat, despair and discouragement
+- terms: الشعارات → shi'arat, slogans
+- terms: المآلات → ma'alat, outcomes / eventual consequences
+- terms: الصفة → sifah, trait
+- terms: الألوهية → uluhiyyah, divinity — Allah's exclusive right to be worshipped
+- terms: الربوبية → rububiyyah, lordship
+- terms: الكفر → kufr, disbelief
+- terms: النفاق → nifaq, hypocrisy
+- terms: الموالاة → muwalah, allegiance
+- terms: الصراط → al-Sirat, the Bridge over Hell
+- terms: الشفاعة → shafa'ah, intercession
+- terms: الإعجاز → i'jaz, inimitability (of the Qur'an)
+- terms: التواتر → tawatur, continuous mass-transmission
+- terms: المصحف → mushaf, the written codex of the Qur'an
+- terms: البرزخ → barzakh, the interspace between death and the resurrection
+- terms: الصاخة → al-Sakhkhah, the Deafening Blast (a name of the Resurrection)
+- terms: التمائم → tama'im, amulets
+- terms: الولاء → al-wala', loyalty and love for the sake of Allah
+- terms: البراء → al-bara', disavowal for the sake of Allah
+- terms: الملحمة الكبرى → al-malhamah al-kubra, the Great Battle
+- terms: الرباط → ribat, frontier garrisoning in the path of Allah
+- terms: الطائفة المنصورة → al-ta'ifah al-mansurah, the aided, victorious group that remains upon the truth
+- terms: الخلافة → khilafah, the caliphate upon the way of prophethood
+- terms: الباطنية → Batiniyyah, esoteric sectarians
+- terms: الأبدال → Abdal, the righteous substitutes
+- terms: العلل → 'ilal, subtle hidden defects
+- terms: فسطاط → fustat, encampment
+- terms: الجيل الصاعد → al-jil al-sa'id, the rising generation
+- terms: الهوية → al-hawiyyah, identity
+- terms: التفاهة → triviality, triviality
+- terms: الشهوات → shahawat, desires (appetites)
+- terms: القدوة → al-qudwah, the role model (exemplar)
+- terms: النخبة → al-nukhbah, the elite (vanguard)
+- terms: المنهجية العلمية → al-manhajiyyah al-'ilmiyyah, scholarly method
+- terms: التأصيل → al-ta'sil, grounding (a subject) in its foundations
+- terms: الثبات → al-thabat, steadfastness
+- terms: الهداية → al-hidayah, guidance
+- terms: العفاف → al-'afaf, chastity
+- terms: الفوضى المعرفية → al-fawda al-ma'rifiyyah, epistemic chaos
+- terms: السنة النبوية → al-Sunnah al-Nabawiyyah, the Prophetic Sunnah
+- terms: حجية السنة → hujjiyyat al-Sunnah, the authoritativeness (probative force) of the Sunnah
+- terms: الإشكال → al-ishkal, the objection (raised difficulty)
+- terms: القرآنيون → al-Qur'aniyyun, the Qur'anists (who reject the Sunnah as a source)
+- terms: خبر الواحد → khabar al-wahid, the solitary report (a single-chain hadith)
+- terms: خبر الآحاد → khabar al-ahad, solitary reports
+- terms: المتواتر → al-mutawatir, the mass-transmitted report
+- terms: علم الحديث → 'ilm al-hadith, the science of hadith
+- terms: الجرح والتعديل → al-jarh wa'l-ta'dil, critical impugning and validation of narrators
+- terms: الرواة → al-ruwat, the narrators
+- terms: التدوين → al-tadwin, the codification (writing-down) of the Sunnah
+- terms: العدالة → al-'adalah, the moral integrity (of a narrator)
+- terms: ضرورة دينية → darurah diniyyah, a matter known by necessity in the religion
+- terms: المعلول → ma'lul, a hadith carrying a hidden defect
+- terms: المتن → matn, the text (of a hadith, as distinct from its chain)
+- terms: الآحاد → al-ahad, solitary reports
+- terms: التعارض → al-ta'arud, apparent conflict (between texts)
+- terms: منكرو السنة → munkiru al-Sunnah, the deniers of the Sunnah
+- terms: الثوابت → al-thawabit, the constants (settled certainties of the religion)
+- terms: التصور → al-tasawwur, the (Islamic) conception/worldview
+- terms: المحكم → al-muhkam, the decisive, unambiguous text
+- terms: المتشابه → al-mutashabih, the ambiguous, multivalent text
+- terms: التسليم → al-taslim, submission (to the revealed command)
+- terms: الاختلاف → al-ikhtilaf, scholarly disagreement
+- terms: محاسن الإسلام → mahasin al-Islam, the beauties (excellences) of Islam
+- terms: الغاية من الوجود → al-ghayah min al-wujud, the purpose of existence
+- terms: العباقرة → al-'abaqirah, the prodigies (the master hadith critics)
+- terms: التعبد → al-ta'abbud, the act of devotional worship
+- terms: البراهين → al-barahin, the demonstrative proofs
+- terms: المصلحين → al-muslihin, the reformers
+- terms: المعالجة → al-mu'alajah, treatment (of the soul)
+- terms: غزوة أحد → ghazwat Uhud, the Battle of Uhud
+- terms: المقطع → al-maqta', the passage (of verses)
+- terms: مركزية الوحي → markaziyyat al-wahy, the centrality of revelation
+- terms: التلازم → al-talazum, entailment; a necessary connection between evidence and conclusion
+- terms: المغالطات → mughalatat, logical fallacies
+- terms: النبيذ → nabidh, nabidh (a non-intoxicating date or raisin infusion)
+- terms: الخمر → khamr, intoxicants; wine
+- terms: المرجعية → marja'iyyah, the authoritative frame of reference
+- terms: الأمر بالمعروف → al-amr bi'l-ma'ruf, enjoining what is right
+- terms: النهي عن المنكر → al-nahy 'an al-munkar, forbidding what is wrong
+- terms: الانتكاس → intikas, relapse / backsliding after uprightness
+- terms: المشككون → al-mushakkikun, those who cast doubt (on Islam); the skeptics
+- terms: الاستدلال → al-istidlal, reasoning; drawing an inference from evidence
+- terms: المدلول → al-madlul, the conclusion (that which the evidence is taken to indicate)
+- terms: المغالطة → al-mughalatah, a fallacy; a sophistical move
+- terms: رجل القش → rajul al-qashsh, the straw man (fallacy)
+- terms: الدعوى → al-da'wa, the bare claim
+- terms: السفسطة → al-safsatah, sophistry
+- terms: الضروريات → al-daruriyyat, self-evident necessary truths
+- terms: المناظرة → al-munazarah, formal scholarly disputation
+- terms: الإجماع → al-ijma', scholarly consensus
+- terms: الملحدون → al-mulhidun, the atheists
+- terms: الموجة التشكيكية → al-mawjah al-tashkikiyyah, the wave of doubt (the contemporary current of skepticism)
+- terms: اللادينيون → al-la-diniyyun, the non-religious (irreligionists)
+- terms: الإلحاد → al-ilhad, atheism
+- terms: التدافع → tadafu', the divine norm of mutual repulsion between truth and falsehood
+- terms: المداولة → mudawalah, the alternation of fortunes among people
+- terms: الاستخلاف → istikhlaf, succession — God's granting a people authority in the land
+- terms: الإهلاك → ihlak, divine destruction of a wrongdoing nation
+- terms: المترفون → mutrafun, the affluent who are corrupted by luxury
+- terms: الإفساد → ifsad, spreading corruption in the land
+- terms: الترف → taraf, corrupting luxury and affluence
+- terms: المفسدون → mufsidun, the corrupters, those who spread corruption
+- terms: الرويبضات → al-ruwaybidat, the trifling nobodies (pl. of al-ruwaybidah)
+- terms: الإمهال → imhal, God's granting of respite to the wrongdoers
+- terms: الإملاء → imla', God's granting of reprieve to the wrongdoers
+- terms: الاستبدال → istibdal, God's replacing of one people with another
+- terms: الاستضعاف → istid'af, being oppressed and rendered weak
+- terms: الفسق → fisq, dissoluteness, moral corruption
+- terms: الإجرام → ijram, criminality
+- terms: الزندقة → zandaqah, heresy / crypto-unbelief
+- terms: الغثائية → ghutha'iyyah, frothiness — the weak scum-like state of the ummah foretold in hadith
+- terms: الوهن → wahn, enervation — love of the world and hatred of death
+- terms: الرويبضة → al-ruwaybidah, the trifling nobody who presumes to speak on the affairs of the public
+- terms: صناعة المحاور → Sina'at al-Mahawir, Crafting the Axes
+- names: عثمان → Uthman
+- names: علي → Ali
+- names: هارون → Harun
+- names: إسحاق → Ishaq
+- names: يعقوب → Ya'qub
+- names: لوط → Lut
+- names: صالح → Salih
+- names: شعيب → Shu'ayb
+- names: أبو المنذر → Abu al-Mundhir
+- names: فريد الأنصاري → Farid al-Ansari
+- names: التحرير والتنوير → al-Tahrir wa'l-Tanwir (Ibn 'Ashur's Qur'an commentary)
+- names: تفسير السعدي → Tafsir al-Sa'di
+- names: الفطرية → al-Fitriyyah (Farid al-Ansari's work)
+- names: بلاد الشام → the lands of al-Sham
+- names: المسجد الحرام → al-Masjid al-Haram
+- names: الدجال → the Dajjal
+- names: المسيح الدجال → al-Masih al-Dajjal (the False Messiah)
+- names: عيسى ابن مريم → Isa ibn Maryam (Jesus, son of Mary)
+- names: يأجوج ومأجوج → Ya'juj wa Ma'juj (Gog and Magog)
+- names: دمشق → Damascus
+- names: دابق → Dabiq
+- names: الأعماق → al-A'maq
+- names: الغوطة → the Ghutah
+- names: ابن الجوزي → Ibn al-Jawzi
+- names: طلال → Talal
+- names: يحيى بن معين → Yahya ibn Ma'in
+- names: شعبة بن الحجاج → Shu'bah ibn al-Hajjaj
+- names: محمد بن سيرين → Muhammad ibn Sirin
+- names: عمر بن عبد العزيز → 'Umar ibn 'Abd al-'Aziz
+- names: أبو بكر بن حزم → Abu Bakr ibn Hazm
+- names: سعيد بن أبي عروبة → Sa'id ibn Abi 'Arubah
+- names: مصطفى السباعي → Mustafa al-Siba'i
+- names: حسين شواط → Husayn Shawat
+- names: أبو ريّة → Abu Rayyah
+- names: القرآنيون → the Qur'anists
+- names: أهل السنة → Ahl al-Sunnah
+- names: الزركشي → al-Zarkashi
+- names: العقيلي → al-'Uqayli
+- names: البزار → al-Bazzar
+- names: ابن منظور → Ibn Manzur
+- names: العجلوني → al-'Ajluni
+- names: برتراند رسل → Bertrand Russell
+- names: ورقة بن نوفل → Waraqah ibn Nawfal
+- names: بحيرا → Bahira (the monk)
+- names: العرنيون → the 'Uraniyyun (the men of 'Urayna)
+- names: المعلمي → al-Mu'allimi
+- names: أمية بن أبي الصلت → Umayyah ibn Abi al-Salt
+- names: عبد الله العجيري → Abdullah al-'Ajiri
+- names: عبد الكريم الدخين → Abdulkarim al-Dakhil
+- senses: عدل → justice (justice, in general use)
+- senses: سنن → the divine norms (God's ways in history and society (al-sunan al-ilahiyyah))
+- senses: الشبهات → specious arguments (creed and apologetics)
+- senses: السنة → a divine norm; God's unchanging way (a single divine law or pattern, singular of sunan)
+- senses: الاعتبار → taking a lesson / drawing an admonition (general use: drawing a lesson)
