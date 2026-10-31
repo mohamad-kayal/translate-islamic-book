@@ -283,7 +283,7 @@ if __name__ == "__main__":
     args = p.parse_args()
     gloss = None
     if args.glossary:
-        from scripts.glossary import load as _load_gloss
+        from retrieval.glossary import load as _load_gloss
         gloss = _load_gloss(args.glossary)
     meta = None
     if args.matter:

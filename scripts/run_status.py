@@ -1,9 +1,9 @@
 """Run state + usage gate for a translation run.
 
-    python -m scripts.run_status <book>/work [--gate] [--threshold 90]
+    python -m scripts.run_status <run>/work [--gate] [--threshold 90]
                                  [--snapshot PATH] [--now EPOCH]
 
-Prints chunk state (done/missing vs chunks.json). With --gate, also reads the statusline usage
+Prints unit state: a book's chunks (chunks.json) or a lecture's blocks (blocks.json). With --gate, also reads the statusline usage
 snapshot and prints a PROCEED/PAUSE verdict. The gate FAILS OPEN — a missing, malformed, or stale
 snapshot degrades to PROCEED with the reason stated; resumability is the net underneath. Exits 0
 in all cases except an unusable work dir (exit 2): verdicts are text for the orchestrator to
@@ -21,23 +21,37 @@ STALE_SECONDS = 900
 WINDOWS = (("five_hour", "session (5-hour)"), ("seven_day", "weekly"))
 
 
-def chunk_state(work_dir):
-    """Diff chunks.json against translated/chunk_NNNN.md.
+# plan file, unit name, translated-file pattern, first unit number
+_LAYOUTS = (("chunks.json", "chunk", "chunk_%04d.md", 1),
+            ("blocks.json", "block", "block_%03d.json", 0))
 
-    Returns {"total", "done", "missing"} (1-based chunk numbers), or {"not_chunked": True}
-    when chunks.json does not exist. A 0-byte chunk file counts as missing. The "size > 0 = done"
-    heuristic cannot detect a truncated/partial chunk file; acceptable because the translate step
-    saves the complete subagent result on arrival, not a partial stream."""
-    chunks_path = os.path.join(work_dir, "chunks.json")
-    if not os.path.exists(chunks_path):
+
+def _layout(work_dir):
+    for layout in _LAYOUTS:
+        if os.path.exists(os.path.join(work_dir, layout[0])):
+            return layout
+    return None
+
+
+def chunk_state(work_dir):
+    """Diff the run's plan against its translated/ files.
+
+    Returns {"total", "done", "missing"} (unit numbers: 1-based chunks, 0-based blocks), or
+    {"not_chunked": True} when no plan exists. A 0-byte file counts as missing. The
+    "size > 0 = done" heuristic cannot detect a truncated file; acceptable because translators
+    write the complete file before their final self-check."""
+    layout = _layout(work_dir)
+    if layout is None:
         return {"not_chunked": True}
-    with open(chunks_path) as f:
-        chunks = json.load(f)
+    plan, _, pattern, first = layout
+    with open(os.path.join(work_dir, plan)) as f:
+        data = json.load(f)
+    units = data["blocks"] if plan == "blocks.json" else data
     done, missing = [], []
-    for i in range(1, len(chunks) + 1):
-        path = os.path.join(work_dir, "translated", "chunk_%04d.md" % i)
+    for i in range(first, first + len(units)):
+        path = os.path.join(work_dir, "translated", pattern % i)
         (done if os.path.exists(path) and os.path.getsize(path) > 0 else missing).append(i)
-    return {"total": len(chunks), "done": done, "missing": missing}
+    return {"total": len(units), "done": done, "missing": missing}
 
 
 def gate_verdict(snapshot_path, threshold, now=None):
@@ -80,7 +94,7 @@ def gate_verdict(snapshot_path, threshold, now=None):
 def main():
     ap = argparse.ArgumentParser(
         description="Run state + usage gate for a translation run (see module docstring).")
-    ap.add_argument("work_dir", help="the run's work directory (contains chunks.json)")
+    ap.add_argument("work_dir", help="the run's work directory (contains chunks.json or blocks.json)")
     ap.add_argument("--gate", action="store_true", help="also print a PROCEED/PAUSE verdict")
     ap.add_argument("--threshold", type=float, default=90.0)
     ap.add_argument("--snapshot", default=DEFAULT_SNAPSHOT)
@@ -90,18 +104,20 @@ def main():
     if not os.path.isdir(args.work_dir):
         ap.exit(2, "run_status: work dir not found: %s\n" % args.work_dir)
 
+    layout = _layout(args.work_dir)
     try:
         state = chunk_state(args.work_dir)
-    except (json.JSONDecodeError, ValueError, OSError, TypeError):
-        ap.exit(2, "run_status: unreadable chunks.json in %s\n" % args.work_dir)
+    except (json.JSONDecodeError, ValueError, OSError, TypeError, KeyError):
+        ap.exit(2, "run_status: unreadable %s in %s\n" % (layout[0], args.work_dir))
     if state.get("not_chunked"):
-        print("not chunked yet — no chunks.json in %s; restart from step 1 (ingest)"
-              % args.work_dir)
+        print("not ingested yet — no chunks.json or blocks.json in %s; restart from step 1 "
+              "(ingest)" % args.work_dir)
     else:
-        print("chunks: %d total, %d done, %d missing"
-              % (state["total"], len(state["done"]), len(state["missing"])))
+        _, unit, pattern, _ = layout
+        print("%ss: %d total, %d done, %d missing"
+              % (unit, state["total"], len(state["done"]), len(state["missing"])))
         if state["missing"]:
-            print("missing: %s" % ", ".join("chunk_%04d" % i for i in state["missing"]))
+            print("missing: %s" % ", ".join(pattern.split(".")[0] % i for i in state["missing"]))
         print("state: %s" % json.dumps(state))
 
     if args.gate:

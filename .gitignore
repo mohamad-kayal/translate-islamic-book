@@ -24,3 +24,7 @@ data/*
 !data/english-fixes.json
 !data/MANIFEST.json
 !data/surah_names.json
+
+# Editor's auto-loaded local copies (derived from runs/ + data/)
+editor/*.en.srt
+editor/bilingual.md

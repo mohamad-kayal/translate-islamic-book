@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14161c">
+<title>SRT Review</title>
+<style>
+:root{
+  --bg: oklch(0.165 0.012 264);
+  --surface: oklch(0.215 0.013 264);
+  --surface-2: oklch(0.255 0.014 264);
+  --ar-surface: oklch(0.215 0.024 74);      /* warm manuscript surface */
+  --ar-ink: oklch(0.93 0.018 74);
+  --line: oklch(0.32 0.014 264);
+  --line-strong: oklch(0.42 0.016 264);
+  --ink: oklch(0.95 0.006 264);
+  --ink-2: oklch(0.80 0.012 264);
+  --muted: oklch(0.685 0.014 264);
+  --accent: oklch(0.66 0.16 276);
+  --accent-ink: oklch(0.98 0.01 276);
+  --accent-soft: oklch(0.66 0.16 276 / 0.16);
+  --good: oklch(0.74 0.15 152);
+  --warn: oklch(0.80 0.14 82);
+  --over: oklch(0.67 0.20 25);
+  --good-soft: oklch(0.74 0.15 152 / 0.16);
+  --warn-soft: oklch(0.80 0.14 82 / 0.18);
+  --over-soft: oklch(0.67 0.20 25 / 0.20);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --tap: 44px;
+  --shadow: 0 1px 2px oklch(0 0 0 / 0.4), 0 8px 24px oklch(0 0 0 / 0.28);
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --arabic: "SF Arabic", "Geeza Pro", "Noto Naskh Arabic", "Segoe UI", serif;
+  --z-sticky: 10; --z-panel: 40; --z-sheet: 50; --z-toast: 60;
+  color-scheme: dark;
+}
+:root[data-theme="light"]{
+  --bg: oklch(0.975 0.004 264);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.965 0.005 264);
+  --ar-surface: oklch(0.975 0.017 78);
+  --ar-ink: oklch(0.30 0.03 66);
+  --line: oklch(0.90 0.006 264);
+  --line-strong: oklch(0.83 0.008 264);
+  --ink: oklch(0.24 0.02 264);
+  --ink-2: oklch(0.38 0.018 264);
+  --muted: oklch(0.50 0.016 264);
+  --accent: oklch(0.55 0.17 276);
+  --accent-ink: oklch(0.99 0.01 276);
+  --accent-soft: oklch(0.55 0.17 276 / 0.12);
+  --good: oklch(0.56 0.14 152);
+  --warn: oklch(0.62 0.13 74);
+  --over: oklch(0.56 0.20 27);
+  --good-soft: oklch(0.56 0.14 152 / 0.13);
+  --warn-soft: oklch(0.62 0.13 74 / 0.16);
+  --over-soft: oklch(0.56 0.20 27 / 0.14);
+  --shadow: 0 1px 2px oklch(0 0 0 / 0.08), 0 8px 24px oklch(0 0 0 / 0.08);
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:16px; line-height:1.45; -webkit-text-size-adjust:100%;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.app{display:flex;flex-direction:column;height:100dvh}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  padding-top:max(10px,env(safe-area-inset-top));
+  background:var(--surface);border-bottom:1px solid var(--line);
+  position:relative;z-index:var(--z-sticky);
+}
+.brand{display:flex;align-items:center;gap:9px;margin-right:auto;min-width:0}
+.brand .mark{width:26px;height:26px;flex:none;border-radius:7px;
+  background:linear-gradient(150deg,var(--accent),oklch(0.6 0.15 320));
+  display:grid;place-items:center;color:var(--accent-ink);font-weight:700;font-size:13px}
+.brand .name{font-weight:640;font-size:15px;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .file{font-family:var(--mono);font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw}
+.brand .dot{width:6px;height:6px;border-radius:50%;background:var(--warn);flex:none;display:none}
+.brand.dirty .dot{display:block}
+.iconbtn{
+  width:var(--tap);height:var(--tap);flex:none;display:grid;place-items:center;
+  border-radius:var(--radius-sm);color:var(--ink-2);
+  transition:background .14s ease, color .14s ease;
+}
+.iconbtn:hover{background:var(--surface-2);color:var(--ink)}
+.iconbtn.on{background:var(--accent-soft);color:var(--accent)}
+.iconbtn svg{width:20px;height:20px;stroke-width:1.9;flex:none}
+.mlabel{display:none}
+.more-wrap{position:relative;display:flex}
+.btnMore{display:none}
+/* desktop: no overflow menu — secondary buttons flow inline in the bar */
+@media (min-width:700px){ .menu-group{display:contents} }
+/* mobile: collapse secondary buttons into a labelled dropdown */
+@media (max-width:699px){
+  .btnMore{display:grid}
+  .menu-group{
+    position:absolute;top:calc(100% + 8px);right:0;display:none;flex-direction:column;
+    min-width:210px;background:var(--surface-2);border:1px solid var(--line-strong);
+    border-radius:14px;padding:6px;gap:2px;box-shadow:var(--shadow);z-index:var(--z-sheet);
+  }
+  .menu-group.open{display:flex}
+  .menu-group .iconbtn{display:flex;align-items:center;justify-content:flex-start;width:100%;height:auto;min-height:46px;gap:13px;padding:0 14px;border-radius:9px}
+  .menu-group .iconbtn.on{background:var(--accent-soft)}
+  .menu-group .mlabel{display:block;font-size:15px;font-weight:500}
+}
+
+/* ---------- Search / find-replace ---------- */
+.finder{
+  display:none;flex-direction:column;gap:8px;padding:10px 12px;
+  background:var(--surface-2);border-bottom:1px solid var(--line);z-index:var(--z-sticky);
+}
+.finder.open{display:flex}
+.finder .row{display:flex;gap:8px;align-items:center}
+.field{
+  flex:1;min-width:0;display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  padding:0 10px;height:40px;
+}
+.field svg{width:16px;height:16px;color:var(--muted);flex:none}
+.field input{flex:1;min-width:0;background:none;border:none;color:var(--ink);font-size:15px;outline:none}
+.field input::placeholder{color:var(--muted)}
+.pill-btn{
+  height:40px;padding:0 14px;border-radius:var(--radius-sm);background:var(--surface);
+  border:1px solid var(--line-strong);color:var(--ink);font-size:14px;font-weight:560;white-space:nowrap;
+  transition:background .14s ease;
+}
+.pill-btn:hover{background:var(--surface-2)}
+.pill-btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.pill-btn.primary:hover{filter:brightness(1.06)}
+.finder .count{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;min-width:64px;text-align:right}
+
+/* ---------- Cue list ---------- */
+.list{flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:10px 12px 40vh}
+.cue{
+  content-visibility:auto;contain-intrinsic-size:auto 92px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:8px;box-shadow:var(--shadow);scroll-margin-top:12px;
+  transition:border-color .14s ease;
+}
+.cue.sel{border-color:var(--accent)}
+.cue.hit{border-color:var(--warn)}
+.cue-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:5px 8px;padding:8px 10px 6px}
+.idx{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:600}
+.time{
+  font-family:var(--mono);font-size:12px;color:var(--ink-2);
+  display:inline-flex;align-items:center;gap:5px;min-width:0;
+}
+.time .dur{color:var(--muted)}
+.time button{
+  font-family:var(--mono);font-size:12px;color:var(--ink-2);padding:3px 5px;border-radius:5px;
+  transition:background .12s ease,color .12s ease;
+}
+.time button:hover{background:var(--surface-2);color:var(--ink)}
+.time .arrow{color:var(--muted)}
+.badges{justify-self:end;display:flex;gap:5px}
+.badge{
+  font-family:var(--mono);font-size:10.5px;font-weight:650;letter-spacing:.01em;
+  padding:2px 6px;border-radius:999px;white-space:nowrap;
+}
+.badge.cps{color:var(--good);background:var(--good-soft)}
+.badge.cps.warn{color:var(--warn);background:var(--warn-soft)}
+.badge.cps.over{color:var(--over);background:var(--over-soft)}
+.badge.cpl{color:var(--muted);background:var(--surface-2)}
+.badge.cpl.over{color:var(--over);background:var(--over-soft)}
+.cue-body{padding:2px 10px 11px}
+.cue-text{
+  font-size:15.5px;line-height:1.5;color:var(--ink);white-space:pre-wrap;word-break:break-word;
+  min-height:24px;cursor:text;padding:3px 4px;border-radius:6px;
+}
+.cue-text:hover{background:var(--surface-2)}
+.cue-text mark{background:var(--accent-soft);color:var(--ink);border-radius:3px;padding:0 1px;
+  text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:2px}
+.cue.rtl .cue-text{direction:rtl;text-align:right;font-family:var(--arabic);font-size:19px;line-height:1.7}
+.cue-text.hl{background:var(--warn-soft)}
+
+/* edit mode */
+.cue.editing{border-color:var(--accent)}
+.cue-edit{padding:2px 10px 10px;display:none}
+.cue.editing .cue-edit{display:block}
+.cue.editing .cue-text{display:none}
+.cue-edit textarea{
+  width:100%;background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+  color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;padding:9px 10px;resize:none;
+  outline:none;
+}
+.cue-edit textarea:focus{border-color:var(--accent)}
+.cue.rtl .cue-edit textarea{direction:rtl;text-align:right;font-family:var(--arabic);font-size:19px}
+.edit-tools{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.edit-tools .spacer{margin-left:auto}
+.mini{
+  height:34px;padding:0 11px;border-radius:7px;font-size:13px;font-weight:560;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);transition:background .12s ease;
+}
+.mini:hover{background:var(--line);color:var(--ink)}
+.mini.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink)}
+.mini.flag.on{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.live-badges{display:flex;gap:5px;margin-right:2px}
+
+/* Arabic reference row (bilingual) */
+.cue-ar{
+  display:none;margin:0 10px 9px;padding:8px 11px;border-radius:var(--radius-sm);
+  background:var(--ar-surface);color:var(--ar-ink);direction:rtl;text-align:right;
+  font-family:var(--arabic);font-size:18px;line-height:1.75;
+}
+body.biling .cue-ar.has{display:block}
+.cue-ar .lbl{font-family:var(--mono);font-size:9.5px;color:var(--muted);direction:ltr;text-align:left;
+  display:block;margin-bottom:2px;letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- Empty state ---------- */
+.empty{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:32px;gap:6px;
+}
+.empty .glyph{width:60px;height:60px;color:var(--line-strong);margin-bottom:6px}
+.empty h2{margin:0;font-size:19px;font-weight:640;letter-spacing:-0.01em}
+.empty p{margin:0;color:var(--muted);max-width:34ch;font-size:14.5px}
+.empty .cta{margin-top:14px}
+.empty .hint{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:18px}
+.empty.drag{outline:2px dashed var(--accent);outline-offset:-14px;border-radius:20px;background:var(--accent-soft)}
+.btn{
+  height:46px;padding:0 20px;border-radius:var(--radius-sm);background:var(--accent);color:var(--accent-ink);
+  font-weight:620;font-size:15px;box-shadow:var(--shadow);transition:filter .14s ease, transform .1s ease;
+}
+.btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
+
+/* ---------- Bottom status ---------- */
+.statusbar{
+  display:flex;align-items:center;gap:10px;padding:7px 14px;
+  padding-bottom:max(7px,env(safe-area-inset-bottom));
+  background:var(--surface);border-top:1px solid var(--line);font-size:12px;color:var(--muted);
+  font-family:var(--mono);z-index:var(--z-sticky);
+}
+.statusbar .grow{margin-left:auto}
+.statusbar b{color:var(--ink-2);font-weight:650}
+.statusbar .over-n{color:var(--over);font-weight:650}
+.filter-btn{
+  display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;
+  color:var(--muted);padding:5px 9px;border-radius:999px;border:1px solid transparent;
+  transition:background .14s ease,border-color .14s ease,color .14s ease;
+}
+.filter-btn svg{width:13px;height:13px;stroke-width:2}
+.filter-btn:hover{background:var(--surface-2);color:var(--ink-2)}
+.filter-btn.on{background:var(--over-soft);border-color:var(--over);color:var(--over)}
+.filter-btn.on .over-n{color:var(--over)}
+.iconbtn.ready{position:relative}
+.iconbtn.ready::after{content:"";position:absolute;top:8px;right:8px;width:6px;height:6px;
+  border-radius:50%;background:var(--accent)}
+.allclear{text-align:center;padding:48px 24px;color:var(--muted)}
+.allclear p{margin:0 0 14px;font-size:15px}
+.allclear .mini{margin:0 auto}
+
+/* ---------- Glossary panel ---------- */
+.scrim{position:fixed;inset:0;background:oklch(0 0 0 / 0.5);opacity:0;pointer-events:none;
+  transition:opacity .2s ease;z-index:var(--z-panel)}
+.scrim.show{opacity:1;pointer-events:auto}
+.panel{
+  position:fixed;top:0;bottom:0;right:0;width:min(400px,86vw);background:var(--surface);
+  border-left:1px solid var(--line);z-index:var(--z-panel);transform:translateX(100%);
+  transition:transform .26s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;
+  box-shadow:-12px 0 40px oklch(0 0 0 / 0.3);
+}
+.panel.show{transform:none}
+.panel-head{display:flex;align-items:center;gap:8px;padding:14px 14px 10px;border-bottom:1px solid var(--line)}
+.panel-head h3{margin:0;font-size:15px;font-weight:640;margin-right:auto}
+.panel-body{flex:1;overflow-y:auto;padding:8px 14px 24px}
+.gload{display:flex;flex-direction:column;gap:8px;padding:14px 0}
+.gload p{margin:0;color:var(--muted);font-size:13px}
+.term{padding:10px 2px;border-bottom:1px solid var(--line)}
+.term .en{font-weight:600;font-size:14.5px}
+.term .ar{font-family:var(--arabic);font-size:18px;color:var(--ar-ink);direction:rtl;
+  background:var(--ar-surface);display:inline-block;padding:1px 8px;border-radius:6px;margin-top:3px}
+.term .tr{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:8px}
+.term .kind{font-family:var(--mono);font-size:10px;color:var(--muted);float:right;text-transform:uppercase;letter-spacing:.05em}
+.gsearch{margin-bottom:6px}
+
+/* time editor popover */
+.time-pop{
+  position:fixed;z-index:var(--z-sheet);background:var(--surface-2);border:1px solid var(--line-strong);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:12px;display:none;flex-direction:column;gap:10px;
+  width:min(320px,92vw);
+}
+.time-pop.show{display:flex}
+.time-pop h4{margin:0 0 2px;font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.time-row{display:flex;align-items:center;gap:6px}
+.time-row label{font-family:var(--mono);font-size:12px;color:var(--muted);width:26px}
+.time-row input{
+  flex:1;font-family:var(--mono);font-size:15px;background:var(--bg);border:1px solid var(--line-strong);
+  border-radius:7px;color:var(--ink);padding:7px 9px;outline:none;text-align:center;
+}
+.time-row input:focus{border-color:var(--accent)}
+.nudge{width:34px;height:36px;border-radius:7px;background:var(--surface);border:1px solid var(--line);
+  color:var(--ink-2);font-family:var(--mono);font-size:15px;flex:none}
+.nudge:hover{background:var(--line);color:var(--ink)}
+.time-pop .warn-txt{color:var(--over);font-size:12px;min-height:14px}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:calc(58px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:var(--surface-2);border:1px solid var(--line-strong);color:var(--ink);
+  padding:10px 16px;border-radius:999px;font-size:13.5px;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s cubic-bezier(.22,1,.36,1);z-index:var(--z-toast);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+@media (min-width:760px){
+  .list{padding:14px max(16px,calc((100vw - 860px)/2)) 40vh}
+  .brand .file{max-width:340px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand" id="brand">
+      <div class="mark">SRT</div>
+      <div style="min-width:0">
+        <div class="name" id="brandName">SRT Review</div>
+        <div class="file" id="brandFile" hidden></div>
+      </div>
+      <span class="dot" title="unsaved edits"></span>
+    </div>
+    <button class="iconbtn" id="btnUndo" title="Undo (⌘Z)" aria-label="Undo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
+    <button class="iconbtn" id="btnRedo" title="Redo (⌘⇧Z)" aria-label="Redo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h1"/></svg></button>
+    <button class="iconbtn" id="btnFind" title="Find / replace" aria-label="Find"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+    <div class="more-wrap">
+      <button class="iconbtn btnMore" id="btnMore" title="More actions" aria-label="More actions" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></button>
+      <div class="menu-group" id="menuGroup">
+        <button class="iconbtn" id="btnBiling" title="Bilingual view" aria-label="Bilingual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h7v14H4zM13 5h7v14h-7z"/></svg><span class="mlabel">Bilingual view</span></button>
+        <button class="iconbtn" id="btnGloss" title="Glossary" aria-label="Glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H18a2 2 0 0 1 2 2v13.5"/><path d="M6 4v16h13a1 1 0 0 0 1-1"/></svg><span class="mlabel">Glossary</span></button>
+        <button class="iconbtn" id="btnTheme" title="Toggle theme" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span class="mlabel">Toggle theme</span></button>
+        <button class="iconbtn" id="btnExport" title="Export .srt" aria-label="Export" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 21h14"/></svg><span class="mlabel">Export .srt</span></button>
+        <button class="iconbtn" id="btnOpen" title="Open file" aria-label="Open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="mlabel">Open file…</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="finder" id="finder">
+    <div class="row">
+      <div class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="findInput" placeholder="Find in cues…" autocomplete="off" spellcheck="false"></div>
+      <span class="count" id="findCount"></span>
+      <button class="pill-btn" id="findPrev" aria-label="Previous match">↑</button>
+      <button class="pill-btn" id="findNext" aria-label="Next match">↓</button>
+    </div>
+    <div class="row">
+      <div class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h10M4 17h16"/></svg>
+        <input id="replaceInput" placeholder="Replace with…" autocomplete="off" spellcheck="false"></div>
+      <button class="pill-btn" id="replaceOne">Replace</button>
+      <button class="pill-btn primary" id="replaceAll">All</button>
+    </div>
+  </div>
+
+  <main class="list" id="list" hidden></main>
+
+  <section class="empty" id="empty">
+    <svg class="glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/><path d="m14.5 15.5 2 2 3.5-3.5"/></svg>
+    <h2>Open a subtitle file</h2>
+    <p>Review and correct English subtitles from the translate-srt pipeline. Everything stays on this device.</p>
+    <button class="btn cta" id="openCta">Choose .srt / .vtt</button>
+    <div class="hint">or drop a file anywhere</div>
+  </section>
+
+  <footer class="statusbar" id="statusbar" hidden>
+    <span id="statCues"></span>
+    <span class="grow"></span>
+    <span id="statOver"></span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" aria-hidden="true">
+  <div class="panel-head">
+    <h3>Glossary</h3>
+    <button class="iconbtn" id="panelClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="panel-body" id="panelBody"></div>
+</aside>
+
+<div class="time-pop" id="timePop">
+  <div><h4>In</h4><div class="time-row"><label>t0</label>
+    <button class="nudge" data-t="0" data-d="-0.1">−</button>
+    <input id="tIn" inputmode="decimal" spellcheck="false">
+    <button class="nudge" data-t="0" data-d="0.1">+</button></div></div>
+  <div><h4>Out</h4><div class="time-row"><label>t1</label>
+    <button class="nudge" data-t="1" data-d="-0.1">−</button>
+    <input id="tOut" inputmode="decimal" spellcheck="false">
+    <button class="nudge" data-t="1" data-d="0.1">+</button></div></div>
+  <div class="warn-txt" id="timeWarn"></div>
+  <div class="edit-tools"><span class="spacer" style="margin-left:auto"></span>
+    <button class="mini" id="timeCancel">Cancel</button>
+    <button class="mini primary" id="timeApply">Apply</button></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileInput" accept=".srt,.vtt,text/plain" hidden>
+<input type="file" id="glossInput" accept=".json,application/json" hidden>
+<input type="file" id="bilingInput" accept=".srt,.vtt,.md,.txt,text/plain,text/markdown" hidden>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const CPS_MAX = 20, CPL_MAX = 42, LINE_MAX = 2, DUR_MIN = 0.8, DUR_MAX = 7;
+const ARABIC_RE = /[؀-ۿݐ-ݿࢠ-ࣿ]/;
+
+/* ---------- SRT / VTT parse + compose (mirrors subs/srt_io.py) ---------- */
+function parseTs(s){
+  const m = /(\d{1,2}):(\d{2}):(\d{2})[,.](\d{1,3})/.exec(s.trim());
+  if(!m) return null;
+  return (+m[1])*3600 + (+m[2])*60 + (+m[3]) + (+m[4].padEnd(3,"0"))/1000;
+}
+function fmtTs(sec){
+  sec = Math.max(0, sec);
+  const ms = Math.round(sec*1000);
+  const h = Math.floor(ms/3600000), mi = Math.floor(ms%3600000/60000),
+        s = Math.floor(ms%60000/1000), m3 = ms%1000;
+  const p=(n,w)=>String(n).padStart(w,"0");
+  return `${p(h,2)}:${p(mi,2)}:${p(s,2)},${p(m3,3)}`;
+}
+// compact label: drop zero hours (MM:SS), keep hours past 1h (H:MM:SS)
+function shortTs(sec){
+  const ms=Math.round(Math.max(0,sec)*1000);
+  const h=Math.floor(ms/3600000), mi=Math.floor(ms%3600000/60000), s=Math.floor(ms%60000/1000);
+  const p=n=>String(n).padStart(2,"0");
+  return h? `${h}:${p(mi)}:${p(s)}` : `${p(mi)}:${p(s)}`;
+}
+const ARROW = /(\d{1,2}:\d{2}:\d{2}[,.]\d{1,3})\s*-->\s*(\d{1,2}:\d{2}:\d{2}[,.]\d{1,3})/;
+function parseSubs(text){
+  text = text.replace(/^﻿/,"").replace(/\r\n?/g,"\n");
+  const isVtt = /^WEBVTT/.test(text.trimStart());
+  const blocks = text.split(/\n{2,}/).map(b=>b.trim()).filter(Boolean);
+  const cues=[]; let warn=0;
+  for(const b of blocks){
+    if(/^WEBVTT/.test(b) || /^(NOTE|STYLE|REGION)/.test(b)) continue;
+    const lines = b.split("\n");
+    let i=0;
+    if(/^\d+$/.test(lines[0].trim())) i=1;
+    if(i>=lines.length){warn++;continue;}
+    const m = ARROW.exec(lines[i]);
+    if(!m){warn++;continue;}
+    const t0=parseTs(m[1]), t1=parseTs(m[2]);
+    const body = lines.slice(i+1).join("\n").trim();
+    if(t0==null||t1==null||!body){warn++;continue;}
+    cues.push({t0,t1,text:body});
+  }
+  return {cues,warn};
+}
+function composeSrt(cues){
+  return cues.map((c,i)=>`${i+1}\n${fmtTs(c.t0)} --> ${fmtTs(c.t1)}\n${c.text}`).join("\n\n")+"\n";
+}
+
+/* ---------- metrics ---------- */
+const isRtl = t => ARABIC_RE.test(t);
+function cps(c){ const d=c.t1-c.t0; const n=c.text.replace(/\n/g,"").length; return d>0? n/d : Infinity; }
+function maxCpl(c){ return Math.max(0,...c.text.split("\n").map(l=>l.length)); }
+function overCps(c){ return cps(c) > CPS_MAX + 0.05; }
+function nearCps(c){ const v=cps(c); return v>CPS_MAX*0.9 && v<=CPS_MAX+0.05; }
+function badCue(c){
+  const d=c.t1-c.t0;
+  return overCps(c) || maxCpl(c)>CPL_MAX || c.text.split("\n").length>LINE_MAX
+      || d<=0 || d>DUR_MAX+1e-6;
+}
+
+/* ---------- app state ---------- */
+const state = {
+  cues:[], fileName:"", dirty:false, editing:-1, selected:-1,
+  glossary:null, glossIndex:[], biling:null, filterBad:false,
+  undo:[], redo:[], matches:[], matchPos:-1, dbKey:"",
+};
+const listEl = $("#list"), emptyEl = $("#empty"), statusEl = $("#statusbar");
+
+/* ---------- IndexedDB autosave ---------- */
+let db=null;
+const idb = {
+  open(){ return new Promise(res=>{
+    const r = indexedDB.open("srt-review",1);
+    r.onupgradeneeded = ()=> r.result.createObjectStore("sessions",{keyPath:"key"});
+    r.onsuccess = ()=>{ db=r.result; res(); };
+    r.onerror = ()=>res();
+  });},
+  put(rec){ if(!db) return; try{ db.transaction("sessions","readwrite").objectStore("sessions").put(rec); }catch(e){} },
+  get(key){ return new Promise(res=>{ if(!db) return res(null);
+    const r=db.transaction("sessions").objectStore("sessions").get(key); r.onsuccess=()=>res(r.result); r.onerror=()=>res(null); }); },
+  latest(){ return new Promise(res=>{ if(!db) return res(null);
+    const r=db.transaction("sessions").objectStore("sessions").getAll(); r.onsuccess=()=>{
+      const all=(r.result||[]).sort((a,b)=>b.at-a.at); res(all[0]||null); }; r.onerror=()=>res(null); }); },
+};
+let saveTimer=null;
+function scheduleSave(){
+  state.dirty=true; $("#brand").classList.add("dirty");
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    idb.put({key:state.dbKey, name:state.fileName, cues:state.cues, at:Date.now()});
+  },400);
+}
+
+/* ---------- undo / redo ---------- */
+function snapshot(){
+  state.undo.push(state.cues.map(c=>({...c})));
+  if(state.undo.length>120) state.undo.shift();
+  state.redo.length=0; updateUndoButtons();
+}
+function updateUndoButtons(){
+  $("#btnUndo").disabled = !state.undo.length;
+  $("#btnRedo").disabled = !state.redo.length;
+}
+function undo(){ if(!state.undo.length) return;
+  state.redo.push(state.cues.map(c=>({...c})));
+  state.cues = state.undo.pop(); afterMutate(); toast("Undone"); }
+function redo(){ if(!state.redo.length) return;
+  state.undo.push(state.cues.map(c=>({...c})));
+  state.cues = state.redo.pop(); afterMutate(); toast("Redone"); }
+function afterMutate(){ state.editing=-1; render(); scheduleSave(); updateUndoButtons(); }
+
+/* ---------- render ---------- */
+function cueBadges(c){
+  const v=cps(c), cls = overCps(c)?"over":(nearCps(c)?"warn":"");
+  const cpl=maxCpl(c), lines=c.text.split("\n").length;
+  const cplCls = (cpl>CPL_MAX||lines>LINE_MAX)?"over":"";
+  const cplTxt = lines>LINE_MAX ? `${lines} lines` : `${cpl} cpl`;
+  return `<span class="badge cps ${cls}">${isFinite(v)?v.toFixed(0):"∞"} cps</span>`+
+         `<span class="badge cpl ${cplCls}">${cplTxt}</span>`;
+}
+function esc(s){ return s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m])); }
+function highlightGloss(text){
+  let html = esc(text);
+  if(state.glossIndex.length){
+    for(const g of state.glossIndex){
+      html = html.replace(g.re, m=>`<mark title="${esc(g.tip)}">${m}</mark>`);
+    }
+  }
+  return html;
+}
+function makeCue(c, i){
+  const el = document.createElement("div");
+  el.className = "cue" + (isRtl(c.text)?" rtl":"") + (i===state.selected?" sel":"");
+  el.dataset.i = i;
+  const dur = (c.t1-c.t0);
+  el.innerHTML =
+    `<div class="cue-head">
+      <span class="idx">#${i+1}</span>
+      <span class="time"><button class="t-edit" data-i="${i}">${shortTs(c.t0)}<span class="arrow">→</span>${shortTs(c.t1)}</button>
+        <span class="dur">${dur.toFixed(1)}s</span></span>
+      <span class="badges">${cueBadges(c)}</span>
+    </div>
+    <div class="cue-ar${state.biling && arFor(c)?" has":""}"><span class="lbl">Arabic source</span>${esc(arFor(c)||"")}</div>
+    <div class="cue-body"><div class="cue-text" data-i="${i}">${highlightGloss(c.text)}</div></div>
+    <div class="cue-edit"></div>`;
+  return el;
+}
+function render(){
+  const has = state.cues.length>0;
+  listEl.hidden=!has; emptyEl.style.display=has?"none":"flex"; statusEl.hidden=!has;
+  $("#btnExport").disabled=!has;
+  if(!has) return;
+  const frag=document.createDocumentFragment();
+  let shown=0;
+  state.cues.forEach((c,i)=>{ if(state.filterBad && !badCue(c)) return; frag.appendChild(makeCue(c,i)); shown++; });
+  if(state.filterBad && shown===0){
+    const d=document.createElement("div"); d.className="allclear";
+    d.innerHTML=`<p>✓ Every cue is within reading-speed and line limits.</p>
+      <button class="mini" id="clearFilter">Show all cues</button>`;
+    frag.appendChild(d);
+  }
+  listEl.replaceChildren(frag);
+  const cf=$("#clearFilter"); if(cf) cf.onclick=()=>{ state.filterBad=false; render(); };
+  updateStatus();
+  if(state.matches.length) paintMatches();
+}
+function toggleFilter(){
+  const bad=state.cues.filter(badCue).length;
+  if(!bad) return;
+  state.filterBad=!state.filterBad; listEl.scrollTop=0; render();
+  toast(state.filterBad ? `Showing ${bad} cue${bad>1?"s":""} needing attention` : "Showing all cues");
+}
+function updateStatus(){
+  const bad = state.cues.filter(badCue).length;
+  $("#statCues").innerHTML = state.filterBad
+    ? `showing <b>${bad}</b> of ${state.cues.length}`
+    : `<b>${state.cues.length}</b> cues`;
+  const el=$("#statOver");
+  if(bad){
+    el.innerHTML = `<button class="filter-btn${state.filterBad?" on":""}" id="filterBtn" title="Filter to cues over the CPS / line limits">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg>
+      <span class="over-n">${bad}</span> need attention</button>`;
+    $("#filterBtn").onclick=toggleFilter;
+  } else {
+    el.innerHTML = state.cues.length ? `all within limits` : ``;
+    state.filterBad=false;
+  }
+}
+
+/* Arabic lookup for bilingual: nearest source sentence by time overlap */
+function arFor(c){
+  if(!state.biling) return null;
+  let best=null,bestOv=0;
+  for(const s of state.biling){
+    const ov = Math.min(c.t1,s.t1)-Math.max(c.t0,s.t0);
+    if(ov>bestOv){bestOv=ov;best=s;}
+  }
+  return bestOv>0 ? (best.ar||null) : null;
+}
+
+/* ---------- editing ---------- */
+function openEdit(i){
+  if(state.editing===i) return;
+  closeEdit();
+  state.editing=i; state.selected=i;
+  const el = listEl.querySelector(`.cue[data-i="${i}"]`);
+  if(!el) return;
+  el.classList.add("editing","sel");
+  const c=state.cues[i];
+  const wrap = el.querySelector(".cue-edit");
+  wrap.innerHTML =
+    `<textarea rows="2" spellcheck="true"></textarea>
+     <div class="edit-tools">
+       <span class="live-badges" id="liveBadges">${cueBadges(c)}</span>
+       <span class="spacer" style="margin-left:auto"></span>
+       <button class="mini" data-act="split">Split line</button>
+       <button class="mini" data-act="cancel">Cancel</button>
+       <button class="mini primary" data-act="save">Save</button>
+     </div>`;
+  const ta = wrap.querySelector("textarea");
+  ta.value = c.text;
+  autoGrow(ta);
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.addEventListener("input", ()=>{
+    autoGrow(ta);
+    const tmp={...c,text:ta.value};
+    wrap.querySelector("#liveBadges").innerHTML = cueBadges(tmp);
+  });
+  ta.addEventListener("keydown", e=>{
+    if(e.key==="Enter" && (e.metaKey||e.ctrlKey)){ e.preventDefault(); commitEdit(i, ta.value); }
+    if(e.key==="Escape"){ e.preventDefault(); closeEdit(); }
+  });
+  wrap.querySelector('[data-act="save"]').onclick=()=>commitEdit(i, ta.value);
+  wrap.querySelector('[data-act="cancel"]').onclick=()=>closeEdit();
+  wrap.querySelector('[data-act="split"]').onclick=()=>{ insertAtCursor(ta,"\n"); autoGrow(ta); ta.dispatchEvent(new Event("input")); };
+}
+function autoGrow(ta){ ta.style.height="auto"; ta.style.height=ta.scrollHeight+"px"; }
+function insertAtCursor(ta,txt){
+  const s=ta.selectionStart,e=ta.selectionEnd;
+  ta.value=ta.value.slice(0,s)+txt+ta.value.slice(e);
+  ta.selectionStart=ta.selectionEnd=s+txt.length; ta.focus();
+}
+function commitEdit(i,val){
+  val=val.replace(/\s+$/,"");
+  if(val!==state.cues[i].text){ snapshot(); state.cues[i].text=val; scheduleSave(); }
+  closeEdit(); renderCue(i);
+}
+function closeEdit(){
+  if(state.editing<0) return;
+  const i=state.editing; state.editing=-1;
+  const el=listEl.querySelector(`.cue[data-i="${i}"]`);
+  if(el){ el.classList.remove("editing"); el.querySelector(".cue-edit").innerHTML=""; }
+}
+function renderCue(i){
+  if(state.filterBad){ render(); return; }
+  const el=listEl.querySelector(`.cue[data-i="${i}"]`);
+  if(!el) return;
+  const fresh=makeCue(state.cues[i],i);
+  if(i===state.selected) fresh.classList.add("sel");
+  el.replaceWith(fresh);
+  updateStatus();
+}
+
+/* ---------- timing editor ---------- */
+let timeTarget=-1;
+function openTime(i, anchor){
+  timeTarget=i; const c=state.cues[i];
+  $("#tIn").value=c.t0.toFixed(3); $("#tOut").value=c.t1.toFixed(3);
+  validateTime();
+  const pop=$("#timePop"); pop.classList.add("show");
+  const r=anchor.getBoundingClientRect(), pr=pop.getBoundingClientRect();
+  let top=r.bottom+8, left=Math.min(r.left, innerWidth-pr.width-10);
+  if(top+pr.height>innerHeight-10) top=Math.max(10,r.top-pr.height-8);
+  pop.style.top=top+"px"; pop.style.left=Math.max(10,left)+"px";
+}
+function closeTime(){ $("#timePop").classList.remove("show"); timeTarget=-1; }
+function validateTime(){
+  const t0=parseFloat($("#tIn").value), t1=parseFloat($("#tOut").value);
+  const w=$("#timeWarn"); let msg="";
+  if(isNaN(t0)||isNaN(t1)) msg="Enter seconds, e.g. 12.500";
+  else if(t1<=t0) msg="Out must be after In";
+  else{
+    const c=state.cues[timeTarget];
+    const prev=state.cues[timeTarget-1], next=state.cues[timeTarget+1];
+    if(prev && t0<prev.t1-1e-3) msg=`Overlaps previous (ends ${prev.t1.toFixed(2)})`;
+    else if(next && t1>next.t0+1e-3) msg=`Overlaps next (starts ${next.t0.toFixed(2)})`;
+    else if(t1-t0>DUR_MAX) msg=`Long: ${(t1-t0).toFixed(1)}s (max ${DUR_MAX}s)`;
+  }
+  w.textContent=msg;
+  return !(isNaN(t0)||isNaN(t1)||t1<=t0);
+}
+
+/* ---------- glossary ---------- */
+function buildGlossIndex(g){
+  const idx=[];
+  const add=(en,tip)=>{ if(!en) return;
+    const esc=en.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    idx.push({re:new RegExp(`\\b${esc}\\b`,"gi"), tip}); };
+  for(const [ar,v] of Object.entries(g.terms||{})){
+    const en=v.english, tr=v.translit;
+    add(en, `${ar} — ${tr}`); if(tr) add(tr, `${ar} — ${en}`);
+  }
+  for(const [ar,v] of Object.entries(g.names||{})){
+    const en=typeof v==="string"?v:v.english; add(en, ar);
+  }
+  idx.sort((a,b)=>b.re.source.length-a.re.source.length);
+  state.glossIndex=idx.slice(0,400);
+}
+function renderGlossary(){
+  const body=$("#panelBody");
+  if(!state.glossary){
+    body.innerHTML=`<div class="gload"><p>Load the shared <b>glossary.json</b> to highlight agreed terms in the text and browse them here.</p>
+      <button class="btn" id="loadGloss" style="align-self:flex-start;height:40px">Load glossary.json</button></div>`;
+    $("#loadGloss").onclick=()=>$("#glossInput").click();
+    return;
+  }
+  const g=state.glossary;
+  const terms=Object.entries(g.terms||{}).map(([ar,v])=>({ar,en:v.english,tr:v.translit,kind:"term"}));
+  const names=Object.entries(g.names||{}).map(([ar,v])=>({ar,en:typeof v==="string"?v:v.english,tr:"",kind:"name"}));
+  const all=[...terms,...names];
+  body.innerHTML=
+    `<div class="field gsearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="gSearch" placeholder="Filter ${all.length} terms…" autocomplete="off"></div>
+     <div id="gList"></div>`;
+  const listDiv=$("#gList");
+  const draw=q=>{
+    q=q.trim().toLowerCase();
+    const rows=all.filter(t=>!q|| (t.en||"").toLowerCase().includes(q)||(t.tr||"").toLowerCase().includes(q)||t.ar.includes(q));
+    listDiv.innerHTML=rows.map(t=>
+      `<div class="term"><span class="kind">${t.kind}</span>
+        <div class="en">${esc(t.en||"")}${t.tr?`<span class="tr">${esc(t.tr)}</span>`:""}</div>
+        <div class="ar">${esc(t.ar)}</div></div>`).join("") || `<p style="color:var(--muted);padding:14px 2px">No match.</p>`;
+  };
+  draw("");
+  $("#gSearch").oninput=e=>draw(e.target.value);
+}
+
+/* ---------- bilingual source: pipeline bilingual.md OR a plain Arabic .srt/.vtt ---------- */
+function loadBilingualSource(name, text){
+  const looksSrt = /\.(srt|vtt)$/i.test(name) || /-->/.test(text.slice(0,600));
+  let src;
+  if(looksSrt){
+    const {cues}=parseSubs(text);
+    src = cues.map(c=>({t0:c.t0, t1:c.t1, ar:c.text.replace(/\n/g," ")}));
+  } else {
+    src = parseBilingual(text);
+  }
+  if(!src.length){ toast("No usable lines found in that source file"); return; }
+  state.biling = src;
+  document.body.classList.add("biling"); $("#btnBiling").classList.add("on","ready");
+  render();
+  toast(`Arabic source paired: ${src.length} lines`);
+}
+function parseBilingual(md){
+  // blocks: **[mm:ss]** \n <div dir="rtl">ARABIC</div> \n ENGLISH
+  const out=[]; const lines=md.split(/\r?\n/);
+  const toSec=t=>{ const p=t.split(":").map(Number); return p.length===3? p[0]*3600+p[1]*60+p[2] : p[0]*60+p[1]; };
+  for(let i=0;i<lines.length;i++){
+    const m=/^\*\*\[(\d{1,2}:\d{2}(?::\d{2})?)\]\*\*/.exec(lines[i]);
+    if(!m) continue;
+    const t0=toSec(m[1]);
+    let ar="";
+    for(let j=i+1;j<Math.min(i+4,lines.length);j++){
+      const am=/<div dir="rtl">([\s\S]*?)<\/div>/.exec(lines[j]);
+      if(am){ ar=am[1].trim(); break; }
+    }
+    out.push({t0,ar,t1:0});
+  }
+  for(let i=0;i<out.length;i++) out[i].t1 = out[i+1]? out[i+1].t0 : out[i].t0+8;
+  return out.filter(x=>x.ar);
+}
+
+/* ---------- search / find-replace ---------- */
+function runFind(){
+  const q=$("#findInput").value;
+  clearMatches();
+  if(!q){ $("#findCount").textContent=""; return; }
+  const ql=q.toLowerCase();
+  state.matches=[]; state.cues.forEach((c,i)=>{ if(c.text.toLowerCase().includes(ql)) state.matches.push(i); });
+  state.matchPos = state.matches.length?0:-1;
+  $("#findCount").textContent = state.matches.length? `${state.matchPos+1}/${state.matches.length}` : "0";
+  paintMatches();
+  if(state.matches.length) gotoMatch(0);
+}
+function paintMatches(){
+  listEl.querySelectorAll(".cue.hit").forEach(e=>e.classList.remove("hit"));
+  state.matches.forEach(i=>{ const el=listEl.querySelector(`.cue[data-i="${i}"]`); if(el) el.classList.add("hit"); });
+}
+function clearMatches(){ state.matches=[]; state.matchPos=-1; listEl.querySelectorAll(".cue.hit").forEach(e=>e.classList.remove("hit")); }
+function gotoMatch(pos){
+  if(!state.matches.length) return;
+  state.matchPos=(pos+state.matches.length)%state.matches.length;
+  const i=state.matches[state.matchPos];
+  $("#findCount").textContent=`${state.matchPos+1}/${state.matches.length}`;
+  const el=listEl.querySelector(`.cue[data-i="${i}"]`);
+  if(el){ el.scrollIntoView({block:"center",behavior:"smooth"}); flash(el); }
+}
+function flash(el){ const t=el.querySelector(".cue-text"); if(!t)return; t.classList.add("hl"); setTimeout(()=>t.classList.remove("hl"),700); }
+function replaceCurrent(){
+  const q=$("#findInput").value, r=$("#replaceInput").value;
+  if(!q||state.matchPos<0) return;
+  const i=state.matches[state.matchPos], c=state.cues[i];
+  const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"i");
+  if(re.test(c.text)){ snapshot(); c.text=c.text.replace(re,r); scheduleSave(); renderCue(i); }
+  runFind();
+}
+function replaceAllMatches(){
+  const q=$("#findInput").value, r=$("#replaceInput").value;
+  if(!q) return;
+  const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi");
+  let n=0; snapshot();
+  state.cues.forEach(c=>{ if(re.test(c.text)){ c.text=c.text.replace(re,r); n++; } });
+  if(n){ scheduleSave(); render(); toast(`Replaced in ${n} cue${n>1?"s":""}`); } else state.undo.pop();
+  runFind();
+}
+
+/* ---------- load ---------- */
+async function loadText(name, text){
+  const {cues,warn}=parseSubs(text);
+  if(!cues.length){ toast("No cues found in that file"); return; }
+  state.cues=cues; state.fileName=name; state.dbKey="file:"+name+":"+text.length;
+  state.undo.length=0; state.redo.length=0; state.dirty=false; state.editing=-1; state.selected=-1;
+  $("#brand").classList.remove("dirty"); updateUndoButtons();
+  $("#brandFile").textContent=name; $("#brandFile").hidden=false;
+  render();
+  const existing=await idb.get(state.dbKey);
+  if(existing && existing.cues && existing.cues.length===cues.length &&
+     JSON.stringify(existing.cues)!==JSON.stringify(cues)){
+    if(confirm("Restore your unsaved edits to this file from a previous session?")){
+      state.cues=existing.cues; render();
+    }
+  }
+  idb.put({key:state.dbKey,name,cues:state.cues,at:Date.now()});
+  toast(warn? `Loaded ${cues.length} cues (${warn} skipped)` : `Loaded ${cues.length} cues`);
+}
+function readFile(file, cb){ const r=new FileReader(); r.onload=()=>cb(r.result); r.readAsText(file,"utf-8"); }
+
+/* ---------- export ---------- */
+function exportSrt(){
+  const out=composeSrt(state.cues);
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a");
+  const base=(state.fileName||"subtitles").replace(/\.(srt|vtt)$/i,"");
+  a.href=URL.createObjectURL(blob); a.download=base+".edited.srt";
+  a.click(); URL.revokeObjectURL(a.href);
+  state.dirty=false; $("#brand").classList.remove("dirty");
+  toast("Exported "+a.download);
+}
+
+/* ---------- toast ---------- */
+let toastTimer=null;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),2200); }
+
+/* ---------- theme ---------- */
+function applyTheme(t){ document.documentElement.dataset.theme=t;
+  document.querySelector('meta[name=theme-color]').content = t==="light"?"#ffffff":"#14161c";
+  try{ localStorage.setItem("srt-theme",t); }catch(e){} }
+function initTheme(){ let t; try{ t=localStorage.getItem("srt-theme"); }catch(e){}
+  if(!t) t = matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"; applyTheme(t); }
+
+/* ---------- events ---------- */
+function panelOpen(){ $("#panel").classList.add("show"); $("#scrim").classList.add("show");
+  $("#panel").setAttribute("aria-hidden","false"); $("#btnGloss").classList.add("on"); renderGlossary(); }
+function panelClose(){ $("#panel").classList.remove("show"); $("#scrim").classList.remove("show");
+  $("#panel").setAttribute("aria-hidden","true"); $("#btnGloss").classList.remove("on"); }
+
+listEl.addEventListener("click", e=>{
+  const tEdit=e.target.closest(".t-edit");
+  if(tEdit){ openTime(+tEdit.dataset.i, tEdit); return; }
+  const txt=e.target.closest(".cue-text");
+  if(txt){ openEdit(+txt.dataset.i); return; }
+});
+// overflow menu (mobile)
+const menuGroup=$("#menuGroup"), btnMore=$("#btnMore");
+function closeMenu(){ menuGroup.classList.remove("open"); btnMore.classList.remove("on"); btnMore.setAttribute("aria-expanded","false"); }
+btnMore.onclick=e=>{ e.stopPropagation(); const open=menuGroup.classList.toggle("open");
+  btnMore.classList.toggle("on",open); btnMore.setAttribute("aria-expanded",open); };
+menuGroup.addEventListener("click",()=>closeMenu());  // any action closes the sheet
+document.addEventListener("click",e=>{ if(!e.target.closest(".more-wrap")) closeMenu(); });
+
+$("#btnOpen").onclick=$("#openCta").onclick=()=>$("#fileInput").click();
+$("#fileInput").onchange=e=>{ const f=e.target.files[0]; if(f) readFile(f,t=>loadText(f.name,t)); e.target.value=""; };
+$("#glossInput").onchange=e=>{ const f=e.target.files[0]; if(!f)return; readFile(f,t=>{
+  try{ state.glossary=JSON.parse(t); buildGlossIndex(state.glossary); render(); renderGlossary(); toast("Glossary loaded"); }
+  catch(err){ toast("Could not parse glossary JSON"); } }); e.target.value=""; };
+$("#bilingInput").onchange=e=>{ const f=e.target.files[0]; if(!f)return;
+  readFile(f,t=>loadBilingualSource(f.name,t)); e.target.value=""; };
+$("#btnExport").onclick=exportSrt;
+$("#btnTheme").onclick=()=>applyTheme(document.documentElement.dataset.theme==="light"?"dark":"light");
+$("#btnUndo").onclick=undo; $("#btnRedo").onclick=redo;
+$("#btnGloss").onclick=()=> $("#panel").classList.contains("show")?panelClose():panelOpen();
+$("#panelClose").onclick=panelClose; $("#scrim").onclick=panelClose;
+$("#btnBiling").onclick=()=>{
+  if(state.biling){
+    const on=document.body.classList.toggle("biling");
+    $("#btnBiling").classList.toggle("on",on); render();
+    toast(on ? "Arabic source shown under each cue" : "Arabic source hidden");
+  } else {
+    toast("Pick the Arabic .srt (or the run's bilingual.md) to pair as the source");
+    $("#bilingInput").click();
+  }
+};
+$("#btnFind").onclick=()=>{ const f=$("#finder"); f.classList.toggle("open");
+  $("#btnFind").classList.toggle("on",f.classList.contains("open"));
+  if(f.classList.contains("open")) $("#findInput").focus(); else clearMatches(); };
+let findDeb=null;
+$("#findInput").addEventListener("input",()=>{ clearTimeout(findDeb); findDeb=setTimeout(runFind,180); });
+$("#findInput").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); e.shiftKey?gotoMatch(state.matchPos-1):gotoMatch(state.matchPos+1); } });
+$("#findNext").onclick=()=>gotoMatch(state.matchPos+1);
+$("#findPrev").onclick=()=>gotoMatch(state.matchPos-1);
+$("#replaceOne").onclick=replaceCurrent; $("#replaceAll").onclick=replaceAllMatches;
+
+// time popover
+$("#timePop").addEventListener("click",e=>{
+  const n=e.target.closest(".nudge"); if(!n) return;
+  const inp = n.dataset.t==="0"?$("#tIn"):$("#tOut");
+  inp.value=(parseFloat(inp.value)+parseFloat(n.dataset.d)).toFixed(3); validateTime();
+});
+$("#tIn").oninput=$("#tOut").oninput=validateTime;
+$("#timeCancel").onclick=closeTime;
+$("#timeApply").onclick=()=>{
+  if(!validateTime()) return;
+  const t0=parseFloat($("#tIn").value), t1=parseFloat($("#tOut").value), c=state.cues[timeTarget];
+  if(t0!==c.t0||t1!==c.t1){ snapshot(); c.t0=t0; c.t1=t1; scheduleSave(); renderCue(timeTarget); }
+  closeTime();
+};
+document.addEventListener("click",e=>{ if(timeTarget>=0 && !e.target.closest("#timePop") && !e.target.closest(".t-edit")) closeTime(); });
+
+// keyboard shortcuts
+document.addEventListener("keydown",e=>{
+  const mod=e.metaKey||e.ctrlKey;
+  if(mod && e.key.toLowerCase()==="z"){ e.preventDefault(); e.shiftKey?redo():undo(); }
+  else if(mod && e.key.toLowerCase()==="s"){ e.preventDefault(); exportSrt(); }
+  else if(mod && e.key.toLowerCase()==="f"){ e.preventDefault(); $("#btnFind").click(); }
+});
+
+// drag & drop
+["dragover","dragenter"].forEach(ev=>document.addEventListener(ev,e=>{ e.preventDefault(); emptyEl.classList.add("drag"); }));
+["dragleave","drop"].forEach(ev=>document.addEventListener(ev,e=>{ e.preventDefault();
+  if(ev!=="drop"||!e.relatedTarget) emptyEl.classList.remove("drag"); }));
+document.addEventListener("drop",e=>{ e.preventDefault(); emptyEl.classList.remove("drag");
+  const f=e.dataTransfer.files[0]; if(!f) return;
+  if(/\.json$/i.test(f.name)) readFile(f,t=>{ try{state.glossary=JSON.parse(t);buildGlossIndex(state.glossary);render();renderGlossary();toast("Glossary loaded");}catch(x){toast("Bad JSON");} });
+  else if(/\.md$/i.test(f.name)) readFile(f,t=>{ state.biling=parseBilingual(t); if(state.biling.length){document.body.classList.add("biling");$("#btnBiling").classList.add("on");render();toast(`Bilingual: ${state.biling.length} lines`);} });
+  else readFile(f,t=>loadText(f.name,t));
+});
+
+window.addEventListener("beforeunload",e=>{ if(state.dirty){ e.preventDefault(); e.returnValue=""; } });
+
+// auto-load assets shipped next to the app (works when served/hosted; file:// falls back to manual)
+async function autoLoadAssets(){
+  try{
+    const r=await fetch("./glossary.json",{cache:"no-cache"});
+    if(r.ok){ state.glossary=await r.json(); buildGlossIndex(state.glossary); }
+  }catch(e){/* file:// or not present — load manually from the glossary panel */}
+  try{
+    const r=await fetch("./bilingual.md",{cache:"no-cache"});
+    if(r.ok){ const bl=parseBilingual(await r.text()); if(bl.length){ state.biling=bl; $("#btnBiling").classList.add("ready"); } }
+  }catch(e){/* per-review file; load manually via the bilingual button */}
+}
+
+// boot
+initTheme();
+idb.open().then(async()=>{
+  await autoLoadAssets();
+  const last=await idb.latest();
+  if(last && last.cues && last.cues.length){
+    state.cues=last.cues; state.fileName=last.name||"restored.srt"; state.dbKey=last.key;
+    $("#brandFile").textContent=state.fileName; $("#brandFile").hidden=false;
+    if(state.biling) document.body.classList.add("biling"), $("#btnBiling").classList.add("on");
+    render(); toast(`Restored ${last.cues.length} cues from last session`);
+  } else {
+    if(state.glossIndex.length) renderGlossary();
+  }
+});
+</script>
+</body>
+</html>

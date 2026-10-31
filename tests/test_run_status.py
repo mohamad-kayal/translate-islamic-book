@@ -161,7 +161,7 @@ def test_cli_not_chunked_exits_zero(tmp_path):
         capture_output=True, text=True,
     )
     assert proc.returncode == 0
-    assert "not chunked yet" in proc.stdout
+    assert "not ingested yet" in proc.stdout
 
 
 def test_cli_bad_work_dir_exits_2(tmp_path):

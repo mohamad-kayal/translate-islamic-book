@@ -1,86 +1,28 @@
-"""The master glossary and the per-book diff/merge tooling.
+"""The master glossary CLI, shared by books, lectures and posts.
 
-    python -m scripts.glossary diff  <book-glossary.json> [--master data/glossary.json]
-    python -m scripts.glossary merge <book-glossary.json> [--master data/glossary.json]
-                                     [--only <arabic,arabic,...>]
+    python -m scripts.glossary prime   <work> [--pdf <book.pdf>]   # a book's starting glossary
+    python -m scripts.glossary diff    <book-glossary.json>        # new entries + conflicts
+    python -m scripts.glossary merge   <book-glossary.json> [--only <arabic,arabic,...>]
+    python -m scripts.glossary subset  <run> --block N             # a lecture block's subset
+    python -m scripts.glossary harvest <run>                       # auto-merge new, hold conflicts
+    python -m scripts.glossary resolve <run> --accept <arabic,...> # apply named conflicts
 
-`diff` lists a book glossary's new entries and its conflicts against the master (for the harvest
-step's review.md proposals). `merge` writes approved entries into the master AFTER the user has
-signed off — never run it before sign-off. Stdlib only.
+Master: data/glossary.json (git-tracked); lecture and post growth is appended to
+data/glossary-changelog.md. `merge` writes approved book entries AFTER the user has signed
+off — never run it before sign-off. Stdlib only.
 """
 import argparse
-import copy
 import json
+import os
+import pathlib
+import subprocess
+import unicodedata
 
-SECTIONS = ("terms", "names", "structure")
+from retrieval.glossary import (diff, harvest, load, merge, prime, resolve,  # noqa: F401
+                                subset_for)
 
-
-def load(path):
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
-
-
-def _entry_differs(master_val, book_val):
-    # compare ignoring the book-only 'override' key
-    if isinstance(book_val, dict):
-        book_val = {k: v for k, v in book_val.items() if k != "override"}
-    return master_val != book_val
-
-
-def diff(master, book):
-    out = {"new_terms": {}, "new_names": {}, "new_structure": {}, "conflicts": []}
-    for section in SECTIONS:
-        m = master.get(section, {})
-        for arabic, book_val in (book.get(section, {}) or {}).items():
-            has_override = isinstance(book_val, dict) and "override" in book_val
-            if arabic not in m:
-                if not has_override:
-                    out["new_%s" % section][arabic] = book_val
-            elif _entry_differs(m[arabic], book_val) and not has_override:
-                out["conflicts"].append({
-                    "section": section, "arabic": arabic,
-                    "master": m[arabic], "book": book_val,
-                    "override": None,
-                })
-    return out
-
-
-def _clean(val):
-    if isinstance(val, dict):
-        return {k: v for k, v in val.items() if k != "override"}
-    return val
-
-
-_NEW_KEY_FOR_SECTION = {"terms": "new_terms", "names": "new_names", "structure": "new_structure"}
-
-
-def merge(master, book, only=None):
-    """Write approved entries from `book` into a copy of `master`.
-
-    Reuses `diff` to classify entries so `merge`'s notion of "safe to write" matches
-    what the sign-off proposals actually showed the user:
-      - new_* entries (no override) are applied; `only` further restricts them to the
-        named keys.
-      - `override` entries are book-local deviations and are NEVER applied — `diff`
-        already excludes them from new_*/conflicts, so they're untouched by construction.
-      - conflicts (existing key, differing value, no override) are applied ONLY if their
-        Arabic key is explicitly named in `only` — merging a conflict is an accept, and
-        the user must name what they're accepting.
-    """
-    result = copy.deepcopy(master)
-    d = diff(master, book)
-    for section in SECTIONS:
-        dest = result.setdefault(section, {})
-        for arabic, book_val in d[_NEW_KEY_FOR_SECTION[section]].items():
-            if only is not None and arabic not in only:
-                continue
-            dest[arabic] = _clean(book_val)
-    if only:
-        for c in d["conflicts"]:
-            if c["arabic"] in only:
-                dest = result.setdefault(c["section"], {})
-                dest[c["arabic"]] = _clean(c["book"])
-    return result
+MASTER = "data/glossary.json"
+CHANGELOG = "data/glossary-changelog.md"
 
 
 def _write(path, data):
@@ -89,21 +31,59 @@ def _write(path, data):
         f.write("\n")
 
 
+def _pdf_text(pdf):
+    """The PDF's text layer, presentation-form glyphs folded (some books embed them)."""
+    r = subprocess.run(["pdftotext", "-enc", "UTF-8", pdf, "-"], capture_output=True, text=True)
+    return unicodedata.normalize("NFKC", r.stdout)
+
+
+def _block_text(run_dir, n):
+    data = json.loads((pathlib.Path(run_dir) / "work" / "blocks.json").read_text(encoding="utf-8"))
+    block = data["blocks"][n]
+    return " ".join(seg["text"] for seg in data["segments"][block["s0"]:block["s1"] + 1])
+
+
 def main():
-    ap = argparse.ArgumentParser(description="Master-glossary diff/merge (see module docstring).")
-    ap.add_argument("command", choices=["diff", "merge"])
-    ap.add_argument("book", help="the per-book glossary.json")
-    ap.add_argument("--master", default="data/glossary.json")
+    ap = argparse.ArgumentParser(description="Master glossary (see module docstring).")
+    ap.add_argument("command", choices=["prime", "diff", "merge", "subset", "harvest", "resolve"])
+    ap.add_argument("target", help="book glossary.json, run directory, or work directory")
+    ap.add_argument("--master", default=MASTER)
     ap.add_argument("--only", default=None, help="merge: comma-separated Arabic keys to include")
+    ap.add_argument("--block", type=int, default=None, help="subset: block number")
+    ap.add_argument("--accept", default=None, help="resolve: comma-separated Arabic keys")
+    ap.add_argument("--pdf", default=None, help="prime: the book PDF (its text layer narrows "
+                                                "the glossary to what the book mentions)")
     args = ap.parse_args()
 
-    master, book = load(args.master), load(args.book)
-    if args.command == "diff":
-        print(json.dumps(diff(master, book), ensure_ascii=False, indent=2))
-    else:
+    if args.command == "prime":
+        dest = os.path.join(args.target, "glossary.json")
+        if os.path.exists(dest):
+            raise SystemExit("%s already exists — not overwriting a book's glossary" % dest)
+        g = prime(load(args.master), _pdf_text(args.pdf) if args.pdf else None)
+        _write(dest, g)
+        print("primed %s: %d terms, %d names" % (dest, len(g["terms"]), len(g["names"])))
+    elif args.command == "diff":
+        print(json.dumps(diff(load(args.master), load(args.target)),
+                         ensure_ascii=False, indent=2))
+    elif args.command == "merge":
         only = set(args.only.split(",")) if args.only else None
-        _write(args.master, merge(master, book, only=only))
-        print("merged %s -> %s" % (args.book, args.master))
+        _write(args.master, merge(load(args.master), load(args.target), only=only))
+        print("merged %s -> %s" % (args.target, args.master))
+    elif args.command == "subset":
+        if args.block is None:
+            raise SystemExit("subset needs --block N")
+        print(json.dumps(subset_for(_block_text(args.target, args.block), load(args.master)),
+                         ensure_ascii=False, indent=2))
+    elif args.command == "harvest":
+        result = harvest(args.target, args.master, CHANGELOG)
+        print(json.dumps({"added": sorted(result["added"]),
+                          "conflicts": [c["ar"] for c in result["conflicts"]]},
+                         ensure_ascii=False, indent=2))
+    else:
+        if not args.accept:
+            raise SystemExit("resolve needs --accept ar1,ar2")
+        applied = resolve(args.target, args.master, set(args.accept.split(",")))
+        print("applied: %s" % ", ".join(applied) if applied else "nothing applied")
 
 
 if __name__ == "__main__":
