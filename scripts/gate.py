@@ -55,8 +55,7 @@ def gate_lecture(run, work, quran_index, hadith_index):
     if state["missing"]:
         problems.append("blocks not translated: %s" % state["missing"])
     for n in state["done"]:
-        problems += ["block %d: %s" % (n, p) for p in check_block(str(run), n)
-                     if not p.startswith("sentence ") or "dataset" not in p]
+        problems += ["block %d: %s" % (n, p) for p in check_block(str(run), n, scripture=False)]
     if not (run / "output" / ("%s.en.srt" % run.name)).exists():
         return problems + ["not assembled: run scripts.finish_lecture"], notes
     master = json.loads(pathlib.Path("data/glossary.json").read_text(encoding="utf-8"))

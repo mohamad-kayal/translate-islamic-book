@@ -10,6 +10,7 @@ overlap flattening.
 """
 import argparse
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -23,6 +24,17 @@ def is_url(s):
     return s.startswith(("http://", "https://", "www.", "youtube.com", "youtu.be"))
 
 
+def _ytdlp_env():
+    """python.org builds of Python ship no CA bundle, so point yt-dlp at certifi's."""
+    env = dict(os.environ)
+    try:
+        import certifi
+        env.setdefault("SSL_CERT_FILE", certifi.where())
+    except ImportError:
+        pass
+    return env
+
+
 def fetch_json3(url, work, lang="ar"):
     """yt-dlp auto-captions → path of the downloaded json3 file."""
     template = str(work / "captions")
@@ -32,7 +44,7 @@ def fetch_json3(url, work, lang="ar"):
            "--skip-download", "--write-auto-subs", "--write-subs",
            "--extractor-args", "youtube:player_client=android",
            "--sub-langs", lang, "--sub-format", "json3", "-o", template, url]
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, env=_ytdlp_env())
     hits = sorted(work.glob("captions*.json3"))
     if not hits:
         raise SystemExit("yt-dlp produced no %s json3 captions for %s" % (lang, url))

@@ -5,6 +5,8 @@ Workflow (the agent supplies the ToC read between the two Python steps):
   2. agent reads the ToC page(s) by vision and writes WORK/structure.json:
        [{"title": "...", "start_page": N, "level": 1}, ...]
   3. chunk SOURCE.pdf --work WORK     -> WORK/chunks.json
+  4. assignments --work WORK          -> WORK/assignments.md  (one brief per chunk, so a
+     translator or reviser is told only "you are chunk N")
 """
 import argparse
 import json
@@ -91,6 +93,30 @@ def _chunk(args):
     return 0
 
 
+def _assignments(args):
+    with open(os.path.join(args.work, "structure.json"), encoding="utf-8") as f:
+        levels = {s["title"]: s.get("level", 3) for s in json.load(f)}
+    with open(os.path.join(args.work, "chunks.json"), encoding="utf-8") as f:
+        chunks = json.load(f)
+    out = ["# Chunk assignments", "",
+           "WRITE each chunk to `%s/translated/chunk_NNNN.md`." % args.work, ""]
+    for n, c in enumerate(chunks, 1):
+        context = c.get("context_page")
+        out.append("## CHUNK %04d" % n)
+        out.append("Source pages **%d–%d**%s. appendix: %s."
+                   % (c["start_page"], c["end_page"],
+                      " (context page %d, continuity only)" % context if context else "",
+                      c.get("appendix", False)))
+        out.append("Section headings (place verbatim where each begins, at the given level):")
+        out += ["- `%s %s`" % ("#" * levels.get(s, 3), s) for s in c["sections"]]
+        out.append("")
+    path = os.path.join(args.work, "assignments.md")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(out))
+    print("wrote %s (%d chunks)" % (path, len(chunks)))
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description="Ingest a book PDF into a chunk plan.")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -103,6 +129,9 @@ def main(argv=None):
     c.add_argument("--work", required=True)
     c.add_argument("--target", type=int, default=10)
     c.set_defaults(fn=_chunk)
+    s = sub.add_parser("assignments")
+    s.add_argument("--work", required=True)
+    s.set_defaults(fn=_assignments)
     args = p.parse_args(argv)
     return args.fn(args)
 

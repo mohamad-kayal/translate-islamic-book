@@ -1,0 +1,2 @@
+# The pipeline itself is stdlib-only. These are for YouTube URLs.
+yt-dlp[default]

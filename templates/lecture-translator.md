@@ -16,7 +16,7 @@ cannot resolve from context.
 
 ## Your output
 
-Write JSON to the OUTPUT FILE (Write tool) with exactly this shape:
+Write JSON to the OUTPUT FILE with exactly this shape:
 
 ```json
 {"block": N,
@@ -73,7 +73,9 @@ When the speaker QUOTES (recites a verse, relates a hadith matn):
    `en` = the dataset English **trimmed to the portion actually spoken** (verbatim substring —
    you may cut, never rewrite). Add your own `|` marks. If the established rendering is too
    long for the speech time, keep its exact words for what was recited and flag
-   `"cps"`-tightness rather than paraphrasing.
+   `"cps"`-tightness rather than paraphrasing. If the speaker's lead-in shares a segment with
+   the quote, keep it in `en` and put the verbatim part in an extra `"quote"` field.
+   `block_brief check` compares these words with the dataset and fails the block if they differ.
    For a Qur'an reply with `n_locations > 1`, pick by the speaker's context (they usually name
    the surah); flag if unsure.
 3. Not matched (paraphrased hadith, garbled ASR that won't match) → translate it yourself,

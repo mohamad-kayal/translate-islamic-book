@@ -14,8 +14,10 @@ to get the Arabic proto-segments and glossary subset, then read the block's outp
    attribution in quotes.
 3. **Conventions** — glossary renderings binding (first use `english (translit)`, short form
    after), honorifics present (ﷺ / (AS) / (RA)), digits for numbers, normal punctuation.
-4. **Scripture** — quotes typed quran/hadith with a ref; dataset English not paraphrased;
-   commentary around quotes typed prose. A quote the translator missed entirely is a MAJOR.
+4. **Scripture** — quotes typed quran/hadith with a ref; dataset English not paraphrased (a
+   sentence with `src: "dataset"` must pass `block_brief check`; if the speaker truly paraphrases,
+   it is `src: "fallback"`, not dataset); commentary around quotes typed prose. A quote the
+   translator missed entirely is a MAJOR.
 5. **Subtitle fit** — `|` marks at clause boundaries roughly every ≤40 chars; over-long
    sentences condensed where segment durations are tight.
 6. **Block seams** — if this block's FIRST sentence continues a thought from the previous

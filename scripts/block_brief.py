@@ -103,7 +103,7 @@ def load_indexes():
         return None, None
 
 
-def check(run_dir, n):
+def check(run_dir, n, scripture=True):
     data = _load(run_dir)
     block = data["blocks"][n]
     path = pathlib.Path(run_dir) / "work" / "translated" / ("block_%03d.json" % n)
@@ -122,7 +122,7 @@ def check(run_dir, n):
             problems.append("sentence %d has empty en" % i)
         if s.get("type") not in ("prose", "quran", "hadith"):
             problems.append("sentence %d has bad type %r" % (i, s.get("type")))
-    if any(s.get("src") == "dataset" for s in sentences):
+    if scripture and any(s.get("src") == "dataset" for s in sentences):
         quran_index, hadith_index = load_indexes()
         if quran_index is not None:
             for i, s in enumerate(sentences):

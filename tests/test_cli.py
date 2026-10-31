@@ -116,3 +116,20 @@ def test_hadith_cli_nearest_on_sub_threshold(tmp_path):
     assert r["matched"] is False
     assert r["nearest"]["collection"] == "muslim" and r["nearest"]["number"] == 55
     assert 0 < r["nearest"]["confidence"] < 0.6 and "الدين" in r["nearest"]["arabic"]
+
+
+def test_assignments_lists_pages_and_headings_per_chunk(tmp_path):
+    import json
+    from scripts.ingest_book import main
+    work = tmp_path / "work"
+    work.mkdir()
+    (work / "structure.json").write_text(json.dumps(
+        [{"title": "Chapter One", "start_page": 5, "level": 2},
+         {"title": "A Section", "start_page": 6, "level": 3}]))
+    (work / "chunks.json").write_text(json.dumps(
+        [{"sections": ["Chapter One", "A Section"], "start_page": 5, "end_page": 14,
+          "context_page": 15, "appendix": False}]))
+    assert main(["assignments", "--work", str(work)]) == 0
+    text = (work / "assignments.md").read_text(encoding="utf-8")
+    assert "## CHUNK 0001" in text and "**5–14** (context page 15" in text
+    assert "- `## Chapter One`" in text and "- `### A Section`" in text

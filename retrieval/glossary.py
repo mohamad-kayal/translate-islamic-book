@@ -47,16 +47,23 @@ def subset_for(text, master):
     return out
 
 
+def mentioned(text, master):
+    """subset_for, narrowed to the names the text also mentions. For clean written text;
+    a lecture keeps every name because ASR mangles them."""
+    folded = " %s " % fold(text)
+    out = subset_for(text, master)
+    out["names"] = {k: v for k, v in (master.get("names") or {}).items()
+                    if " %s " % fold(k) in folded}
+    return out
+
+
 def prime(master, text=None):
     """A book's starting glossary: only the entries its text layer mentions, or the whole
     master when there is no usable text layer (image-only PDFs)."""
     if not text or len(normalize_arabic(text).split()) < 200:
         out = copy.deepcopy(master)
     else:
-        folded = " %s " % fold(text)
-        out = subset_for(text, master)
-        out["names"] = {k: v for k, v in (master.get("names") or {}).items()
-                        if " %s " % fold(k) in folded}
+        out = mentioned(text, master)
         out["structure"] = dict(master.get("structure") or {})
     out["book"] = {}
     return out
