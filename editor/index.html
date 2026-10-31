@@ -475,7 +475,7 @@ function badCue(c){
 /* ---------- app state ---------- */
 const state = {
   cues:[], fileName:"", dirty:false, editing:-1, selected:-1,
-  glossary:null, glossIndex:[], biling:null, filterBad:false,
+  glossary:null, glossIndex:new Map(), glossRe:null, biling:null, filterBad:false,
   undo:[], redo:[], matches:[], matchPos:-1, dbKey:"",
 };
 const listEl = $("#list"), emptyEl = $("#empty"), statusEl = $("#statusbar");
@@ -532,15 +532,17 @@ function cueBadges(c){
   return `<span class="badge cps ${cls}">${isFinite(v)?v.toFixed(0):"∞"} cps</span>`+
          `<span class="badge cpl ${cplCls}">${cplTxt}</span>`;
 }
-function esc(s){ return s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m])); }
+function esc(s){ return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+/* One pass over the raw text: a match can never land inside a tip inserted earlier. */
 function highlightGloss(text){
-  let html = esc(text);
-  if(state.glossIndex.length){
-    for(const g of state.glossIndex){
-      html = html.replace(g.re, m=>`<mark title="${esc(g.tip)}">${m}</mark>`);
-    }
+  if(!state.glossRe) return esc(text);
+  let html="", last=0;
+  for(const m of text.matchAll(state.glossRe)){
+    const tip=state.glossIndex.get(m[0].toLowerCase())||"";
+    html+=esc(text.slice(last,m.index))+`<mark title="${esc(tip)}">${esc(m[0])}</mark>`;
+    last=m.index+m[0].length;
   }
-  return html;
+  return html+esc(text.slice(last));
 }
 function makeCue(c, i){
   const el = document.createElement("div");
@@ -707,10 +709,8 @@ function validateTime(){
 
 /* ---------- glossary ---------- */
 function buildGlossIndex(g){
-  const idx=[];
-  const add=(en,tip)=>{ if(!en) return;
-    const esc=en.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-    idx.push({re:new RegExp(`\\b${esc}\\b`,"gi"), tip}); };
+  const idx=new Map();   /* lowercased rendering -> tip */
+  const add=(en,tip)=>{ if(en && !idx.has(en.toLowerCase())) idx.set(en.toLowerCase(),tip); };
   for(const [ar,v] of Object.entries(g.terms||{})){
     const en=v.english, tr=v.translit;
     add(en, `${ar} — ${tr}`); if(tr) add(tr, `${ar} — ${en}`);
@@ -718,8 +718,10 @@ function buildGlossIndex(g){
   for(const [ar,v] of Object.entries(g.names||{})){
     const en=typeof v==="string"?v:v.english; add(en, ar);
   }
-  idx.sort((a,b)=>b.re.source.length-a.re.source.length);
-  state.glossIndex=idx.slice(0,400);
+  const longestFirst=[...idx.keys()].sort((a,b)=>b.length-a.length)
+    .map(en=>en.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  state.glossIndex=idx;
+  state.glossRe=longestFirst.length ? new RegExp(`\\b(?:${longestFirst.join("|")})\\b`,"gi") : null;
 }
 function renderGlossary(){
   const body=$("#panelBody");
@@ -986,7 +988,7 @@ idb.open().then(async()=>{
     if(state.biling) document.body.classList.add("biling"), $("#btnBiling").classList.add("on");
     render(); toast(`Restored ${last.cues.length} cues from last session`);
   } else {
-    if(state.glossIndex.length) renderGlossary();
+    if(state.glossRe) renderGlossary();
   }
 });
 </script>
