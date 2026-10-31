@@ -41,7 +41,17 @@ def words_from_cues(cues):
     return words
 
 
+def has_word_timing(obj):
+    """Auto-caption json3 stamps each word; other tracks put a whole line in one seg."""
+    return any("tOffsetMs" in seg for ev in obj.get("events", []) for seg in ev.get("segs") or [])
+
+
 def words_from_json3(obj):
+    if not has_word_timing(obj):
+        return words_from_cues([{"start": ev.get("tStartMs", 0) / 1000.0,
+                                 "end": (ev.get("tStartMs", 0) + ev.get("dDurationMs", 0)) / 1000.0,
+                                 "text": "".join(seg.get("utf8", "") for seg in ev["segs"])}
+                                for ev in obj.get("events", []) if ev.get("segs")])
     words = []
     for ev in obj.get("events", []):
         segs = ev.get("segs")

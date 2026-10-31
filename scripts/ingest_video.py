@@ -4,9 +4,9 @@
                                    [--pause 0.6] [--block-sec 180] [--lang ar]
 
 Writes ``work/timeline.json`` (word timeline) and ``work/blocks.json`` (proto-segments +
-translation blocks) and prints run stats. A URL is fetched with yt-dlp (json3 auto-captions,
-word-level timing); a ``.srt``/``.vtt`` file goes through the tolerant parser + rolling-caption
-overlap flattening.
+translation blocks) and prints run stats. A URL is fetched with yt-dlp (json3 captions,
+word-level timing when YouTube offers it); a ``.srt``/``.vtt`` file goes through the tolerant
+parser + rolling-caption overlap flattening.
 """
 import argparse
 import json
@@ -17,7 +17,9 @@ import sys
 
 from subs.segment import make_blocks, proto_segments
 from subs.srt_io import parse_srt, parse_vtt
-from subs.timeline import words_from_cues, words_from_json3
+from subs.timeline import has_word_timing, words_from_cues, words_from_json3
+
+CLIENTS = (None, "android")   # None = yt-dlp's default
 
 
 def is_url(s):
@@ -36,19 +38,27 @@ def _ytdlp_env():
 
 
 def fetch_json3(url, work, lang="ar"):
-    """yt-dlp auto-captions → path of the downloaded json3 file."""
-    template = str(work / "captions")
-    # YouTube's default web client now gates auto-caption fetches behind a PO token
-    # ("The page needs to be reloaded"); the android client still serves json3 cleanly.
-    cmd = [sys.executable, "-m", "yt_dlp",
-           "--skip-download", "--write-auto-subs", "--write-subs",
-           "--extractor-args", "youtube:player_client=android",
-           "--sub-langs", lang, "--sub-format", "json3", "-o", template, url]
-    subprocess.run(cmd, check=True, env=_ytdlp_env())
-    hits = sorted(work.glob("captions*.json3"))
-    if not hits:
+    """yt-dlp captions → path of the best json3 file: the first client's track with word
+    timing, else any track. Which client serves what keeps changing (android gave word
+    timing in 2025 and gives whole lines in 2026), so none is assumed."""
+    line_timed = None
+    for client in CLIENTS:
+        cmd = [sys.executable, "-m", "yt_dlp", "--skip-download", "--write-auto-subs",
+               "--write-subs", "--sub-langs", lang, "--sub-format", "json3",
+               "-o", str(work / "captions"), url]
+        if client:
+            cmd[3:3] = ["--extractor-args", "youtube:player_client=%s" % client]
+        subprocess.run(cmd, env=_ytdlp_env())
+        hits = sorted(work.glob("captions*.json3"))
+        if not hits:
+            continue
+        if has_word_timing(json.loads(hits[0].read_text(encoding="utf-8"))):
+            return hits[0]
+        line_timed = work / "line-timed.json3"
+        hits[0].replace(line_timed)
+    if line_timed is None:
         raise SystemExit("yt-dlp produced no %s json3 captions for %s" % (lang, url))
-    return hits[0]
+    return line_timed
 
 
 def ingest(source, run_dir, pause=0.6, block_sec=180.0, lang="ar"):

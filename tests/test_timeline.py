@@ -3,7 +3,7 @@ import pathlib
 import pytest
 
 from subs.srt_io import parse_srt
-from subs.timeline import words_from_cues, words_from_json3
+from subs.timeline import has_word_timing, words_from_cues, words_from_json3
 
 FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "sample_head.srt"
 
@@ -89,3 +89,28 @@ def test_words_from_json3_clamps_rolling_overlap():
     assert words[2]["t0"] == pytest.approx(3.0)
     for a, b in zip(words, words[1:]):
         assert a["t1"] <= b["t0"] + 1e-9
+
+
+LINE_TIMED = {"events": [
+    {"tStartMs": 5000, "dDurationMs": 7000, "segs": [{"utf8": "الحمد لله رب العالمين\nحمدا كثيرا"}]},
+    {"tStartMs": 10000, "dDurationMs": 4000, "segs": [{"utf8": "طيبا مباركا فيه"}]},
+    {"tStartMs": 14000, "dDurationMs": 1000},
+]}
+
+
+def test_a_line_timed_track_still_yields_real_words():
+    words = words_from_json3(LINE_TIMED)
+    assert [w["w"] for w in words] == ["الحمد", "لله", "رب", "العالمين", "حمدا", "كثيرا",
+                                       "طيبا", "مباركا", "فيه"]
+
+
+def test_a_line_timed_track_flattens_its_rolling_overlap():
+    words = words_from_json3(LINE_TIMED)
+    assert all(a["t1"] <= b["t0"] + 1e-6 for a, b in zip(words, words[1:]))
+    assert words[0]["t0"] == 5.0 and words[-1]["t1"] == 14.0
+
+
+def test_has_word_timing_tells_the_two_shapes_apart():
+    assert not has_word_timing(LINE_TIMED)
+    assert has_word_timing({"events": [{"segs": [{"utf8": "a"}, {"utf8": "b", "tOffsetMs": 40}]}]})
+    assert not has_word_timing({})

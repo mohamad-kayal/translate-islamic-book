@@ -80,3 +80,44 @@ def test_glossary_cli_subset(tmp_path):
     assert proc.returncode == 0, proc.stderr
     sub = json.loads(proc.stdout)
     assert "style" in sub and "names" in sub
+
+
+WORD_TIMED = '{"events": [{"tStartMs": 0, "segs": [{"utf8": "a"}, {"utf8": "b", "tOffsetMs": 40}]}]}'
+LINE_TIMED = '{"events": [{"tStartMs": 0, "dDurationMs": 900, "segs": [{"utf8": "a b c"}]}]}'
+
+
+def _fake_ytdlp(monkeypatch, per_client):
+    """Stand in for yt-dlp: each client writes its own track, or nothing."""
+    import scripts.ingest_video as iv
+    calls = []
+
+    def run(cmd, env=None):
+        client = next((a.split("=")[1] for a in cmd if "player_client" in a), None)
+        calls.append(client)
+        if per_client.get(client):
+            pathlib.Path(cmd[cmd.index("-o") + 1] + ".ar.json3").write_text(per_client[client])
+    monkeypatch.setattr(iv.subprocess, "run", run)
+    return iv, calls
+
+
+def test_fetch_stops_at_the_first_client_with_word_timing(tmp_path, monkeypatch):
+    iv, calls = _fake_ytdlp(monkeypatch, {None: WORD_TIMED, "android": LINE_TIMED})
+    assert iv.fetch_json3("u", tmp_path).read_text() == WORD_TIMED
+    assert calls == [None]
+
+
+def test_fetch_tries_the_next_client_for_word_timing(tmp_path, monkeypatch):
+    iv, calls = _fake_ytdlp(monkeypatch, {None: LINE_TIMED, "android": WORD_TIMED})
+    assert iv.fetch_json3("u", tmp_path).read_text() == WORD_TIMED
+    assert calls == [None, "android"]
+
+
+def test_fetch_settles_for_line_timing_when_nothing_better_exists(tmp_path, monkeypatch):
+    iv, _ = _fake_ytdlp(monkeypatch, {None: None, "android": LINE_TIMED})
+    assert iv.fetch_json3("u", tmp_path).read_text() == LINE_TIMED
+
+
+def test_fetch_fails_loudly_when_no_client_has_captions(tmp_path, monkeypatch):
+    iv, _ = _fake_ytdlp(monkeypatch, {})
+    with pytest.raises(SystemExit):
+        iv.fetch_json3("u", tmp_path)
