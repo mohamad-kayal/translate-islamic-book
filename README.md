@@ -32,7 +32,7 @@ cd translate-islamic-book
 ./install.sh
 ```
 
-`install.sh` creates the virtualenv, downloads the pinned datasets (about 210 MB, checked against
+`install.sh` creates the virtualenv, downloads the pinned datasets (about 140 MB, checked against
 `data/MANIFEST.json`), links the skills, and finishes with `scripts.doctor`, which runs real lookups
 and tells you whether the install is ready. Run it again if you move the folder.
 

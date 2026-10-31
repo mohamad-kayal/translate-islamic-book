@@ -15,7 +15,7 @@ if [ ! -x .venv/bin/python ]; then
 fi
 .venv/bin/python -m pip install -q -r requirements.txt -r requirements-dev.txt
 
-echo "Downloading the pinned datasets (about 210 MB, checked against data/MANIFEST.json)"
+echo "Downloading the pinned datasets (about 140 MB, checked against data/MANIFEST.json)"
 .venv/bin/python scripts/setup_data.py | tail -1
 
 # Claude Code reads ~/.claude/skills; Codex, Gemini CLI and others read ~/.agents/skills.

@@ -13,7 +13,7 @@ work/
 output/
 runs/
 
-# Large downloaded datasets (~210MB, re-created by scripts/setup_data.py).
+# Large downloaded datasets (~140MB, re-created by scripts/setup_data.py).
 # data/* (not data/) so the negations below can re-include curated source files.
 data/*
 # ...but the curated master glossary IS source, not a download — keep it tracked.
