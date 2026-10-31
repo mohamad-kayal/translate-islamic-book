@@ -159,3 +159,13 @@ def test_cli_smoke(tmp_path):
     out = subprocess.check_output([sys.executable, "-m", "out.lint", work], env=env)
     r = json.loads(out)
     assert set(r) >= {"problems", "warnings", "checked"}
+
+
+def test_chunk_outside_the_plan_is_a_problem(tmp_path):
+    work = tmp_path / "work"
+    (work / "translated").mkdir(parents=True)
+    (work / "chunks.json").write_text('[{"start_page": 1, "end_page": 2}]')
+    (work / "translated" / "chunk_0001.md").write_text("## One\n\ntext\n")
+    (work / "translated" / "chunk_0002.md").write_text("## One\n\ntext\n")
+    problems = lint(str(work))["problems"]
+    assert any("chunk_0002.md: not in chunks.json" in p for p in problems)

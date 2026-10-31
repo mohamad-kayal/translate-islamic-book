@@ -1,12 +1,13 @@
 """What a translator subagent reads and how its output is checked.
 
     python -m scripts.block_brief show  <run> --block N   # segments + context + glossary subset
-    python -m scripts.block_brief check <run> --block N   # tiling check on the written block file
+    python -m scripts.block_brief check <run> --block N   # tiling + scripture check on the block file
 
 `show` prints everything block-specific a translator subagent needs (the general contract lives
 in templates/lecture-translator.md). `check` exits 1 with the problems when the block file's
-sentence ranges do not tile the block exactly — the subagent runs it as its self-check, the
-orchestrator as the acceptance gate.
+sentence ranges do not tile the block exactly, or a sentence claiming dataset scripture does
+not carry the dataset's words — the subagent runs it as its self-check, the orchestrator as
+the acceptance gate.
 """
 import argparse
 import json
@@ -14,6 +15,7 @@ import pathlib
 import sys
 
 from subs.assemble import validate_tiling
+from subs.scripture import sentence_problem
 from retrieval.glossary import fold, subset_for
 
 MASTER = "data/glossary.json"
@@ -91,6 +93,16 @@ def show(run_dir, n, master_path):
     return "\n".join(out)
 
 
+def load_indexes():
+    """The retrieval indexes, or (None, None) before the datasets are downloaded."""
+    from retrieval.hadith_index import HadithIndex
+    from retrieval.quran_index import QuranIndex
+    try:
+        return QuranIndex.load(), HadithIndex.load()
+    except OSError:
+        return None, None
+
+
 def check(run_dir, n):
     data = _load(run_dir)
     block = data["blocks"][n]
@@ -110,6 +122,13 @@ def check(run_dir, n):
             problems.append("sentence %d has empty en" % i)
         if s.get("type") not in ("prose", "quran", "hadith"):
             problems.append("sentence %d has bad type %r" % (i, s.get("type")))
+    if any(s.get("src") == "dataset" for s in sentences):
+        quran_index, hadith_index = load_indexes()
+        if quran_index is not None:
+            for i, s in enumerate(sentences):
+                problem = sentence_problem(s, quran_index, hadith_index)
+                if problem:
+                    problems.append("sentence %d: %s" % (i, problem))
     return problems
 
 
@@ -129,7 +148,7 @@ def main():
             for p in problems:
                 print("- %s" % p)
             sys.exit(1)
-        print("OK: block %d tiles cleanly" % args.block)
+        print("OK: block %d tiles cleanly, scripture checked" % args.block)
 
 
 if __name__ == "__main__":

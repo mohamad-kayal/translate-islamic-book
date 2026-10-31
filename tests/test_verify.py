@@ -1,4 +1,4 @@
-from out.verify import parse_markers, verify
+from out.verify import english_of, parse_markers, verify
 from retrieval.hadith_index import HadithIndex
 from retrieval.quran_index import QuranIndex
 
@@ -84,7 +84,7 @@ def test_hadith_matn_verbatim_despite_isnad_and_honorific():
     # book pastes matn only, with ﷻ ligature; dataset has isnad + "عز وجل" -> still clean
     md = ('<!--hadith coll=muslim num=6228 conf=1.0 src=dataset-->\n'
           '«كِتَابُ اللَّهِ ﷻ هُوَ حَبْلُ اللَّهِ، مَنِ اتَّبَعَهُ كَانَ عَلَى الْهُدَى»\n'
-          '"..." (Muslim 2408)\n<!--/hadith-->')
+          '"%s" (Muslim 2408)\n<!--/hadith-->' % HIDX_REAL.get("muslim", 6228)["english"])
     r = verify(md, hadith_index=HIDX_REAL)
     assert r["problems"] == [] and r["flagged"] == []
 
@@ -174,3 +174,46 @@ def test_replacement_character_in_quran_body_is_flagged():
 
 def test_clean_bodies_not_flagged_for_ufffd():
     assert not any("U+FFFD" in f for f in verify(GOOD)["flagged"])
+
+
+def test_quran_english_rewrite_is_a_problem():
+    r = verify(_q('بحر نهر [ref]\n"sea stream" [Al-Fatihah: 1]'), quran_index=QIDX)
+    assert any("English deviates" in p for p in r["problems"])
+
+
+def test_quran_english_verbatim_or_trimmed_passes():
+    assert verify(_q('بحر نهر [ref]\n"Sea, river." [Al-Fatihah: 1]'),
+                  quran_index=QIDX)["problems"] == []
+    assert verify(_q('بحر [ref]\n"river" [Al-Fatihah: 1]'),
+                  quran_index=QIDX)["problems"] == []
+
+
+def test_quran_english_is_checked_against_the_markers_translation():
+    r = verify(_q('بحر نهر [ref]\n"sea river"', tr="clear"), quran_index=QIDX)
+    assert any("clear" in p for p in r["problems"])
+
+
+def test_english_of_drops_refs_citations_footnotes_and_the_mark():
+    assert english_of('«ع»\n"The text." (Narrated by al-Bukhari (1/23)) †') == "The text."
+    assert english_of('ع [ر]\n"A text" [Maryam: 41]') == "A text"
+    assert english_of('«ع»\n"Let me^[a [nested] note] not find" (Ahmad)') == "Let me not find"
+
+
+def _h(english, src="dataset", coll="bukhari", num=79):
+    return ('<!--hadith coll=%s num=%s conf=1.0 src=%s-->\n«مثل ما بعثني الله به من الهدى»\n'
+            '"%s" (Narrated by X)\n<!--/hadith-->\n' % (coll, num, src, english))
+
+
+def test_hadith_sources_are_counted_from_the_datasets_not_the_marker():
+    md = (_h("The parable...") + _h("A model's paraphrase of it")
+          + _h("Own words", src="arabic") + _h("Own words", src="fallback", coll="hakim", num=1))
+    r = verify(md, hadith_index=HIDX)
+    assert r["hadith_sources"] == {"verified": 1, "arabic_only": 2, "unverified": 1}
+    assert r["problems"] == []
+    assert sum("own rendering" in f for f in r["flagged"]) == 2
+
+
+def test_src_arabic_still_has_its_arabic_checked():
+    md = ('<!--hadith coll=bukhari num=79 conf=1.0 src=arabic-->\n«كلام مختلف تماما هنا»\n'
+          '"Own words" (X)\n<!--/hadith-->')
+    assert any("deviates" in p for p in verify(md, hadith_index=HIDX)["problems"])

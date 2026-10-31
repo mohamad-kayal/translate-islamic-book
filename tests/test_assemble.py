@@ -2,7 +2,8 @@ import os
 import subprocess
 import sys
 
-from out.assemble import (append_glossary, assemble, assign_hadith_numbers, build_indexes,
+from out.assemble import (_sources_note, append_glossary, assemble, assign_hadith_numbers,
+                          build_indexes, mark_own_renderings,
                           merge, number_quran_ayat, strip_page_notes, front_matter, back_matter,
                           _short_chapter)
 from retrieval.quran_index import QuranIndex
@@ -100,20 +101,35 @@ _GLOSS = {
 
 
 def test_append_glossary_adds_section_with_terms_sorted():
-    out = append_glossary("# body\n\ntext", _GLOSS)
+    out = append_glossary("# body\n\non tazkiyah and Islah", _GLOSS)
     assert "## Glossary" in out
     # sorted by translit casefold: islah before tazkiyah
-    assert out.index("islah") < out.index("tazkiyah")
+    section = out[out.index("## Glossary"):]
+    assert section.index("islah") < section.index("tazkiyah")
     assert "::: {.glossary}" in out
 
 
 def test_append_glossary_entry_format():
-    out = append_glossary("body", _GLOSS)
+    out = append_glossary("the tazkiyah of the soul", _GLOSS)
     assert "*tazkiyah* · [التزكية]{lang=ar dir=rtl} · purification of the soul" in out
 
 
+def test_append_glossary_lists_only_terms_the_book_uses():
+    out = append_glossary("the tazkiyah of the soul", _GLOSS)
+    assert "tazkiyah" in out and "islah" not in out
+    # a whole word, not a fragment of a longer one
+    assert append_glossary("tazkiyahs", _GLOSS) == "tazkiyahs"
+
+
+def test_append_glossary_survives_null_renderings():
+    gloss = {"terms": {"س": {"translit": None, "english": None},
+                       "التزكية": {"translit": "tazkiyah", "english": "purification"}}}
+    assert "tazkiyah · " not in append_glossary("no terms here", gloss)
+    assert "purification" in append_glossary("tazkiyah", gloss)
+
+
 def test_append_glossary_excludes_names_and_structure():
-    out = append_glossary("body", _GLOSS)
+    out = append_glossary("tazkiyah", _GLOSS)
     assert "Musa" not in out and "Part" not in out and "موسى" not in out
 
 
@@ -296,3 +312,62 @@ def test_cli_matter_with_cli_meta_succeeds(tmp_path):
                       "--author", "A", "--author-ar", "ع", "--matter")
     assert r.returncode == 0, r.stderr
     assert "{.cover}" in out.read_text(encoding="utf-8")
+
+
+class _Index:
+    def __init__(self, **entries):
+        self.entries = entries
+
+    def get(self, coll, num):
+        return self.entries.get("%s_%s" % (coll, num))
+
+
+_HADITH = ('<!--hadith coll=%s num=%s conf=1.0 src=%s-->\n'
+           '«مثل»\n"%s" (Narrated by Someone 9)\n<!--/hadith-->')
+
+
+def test_verified_hadith_gets_no_mark():
+    md = _HADITH % ("bukhari", 1, "dataset", "The parable of the guidance")
+    index = _Index(bukhari_1={"english": "Narrated X: The parable of the guidance."})
+    assert mark_own_renderings(md, index) == (md, 0)
+
+
+def test_rewritten_english_is_marked_even_though_the_marker_says_dataset():
+    md = _HADITH % ("bukhari", 1, "dataset", "Something a model wrote instead")
+    index = _Index(bukhari_1={"english": "The parable of the guidance."})
+    out, n = mark_own_renderings(md, index)
+    assert n == 1 and '(Narrated by Someone 9) †\n<!--/hadith-->' in out
+
+
+def test_fallback_and_arabic_only_hadith_are_marked():
+    md = "\n\n".join([_HADITH % ("hakim", 7, "fallback", "Own words"),
+                       _HADITH % ("ahmad", 2, "arabic", "Own words too")])
+    out, n = mark_own_renderings(md, _Index(ahmad_2={"english": ""}))
+    assert n == 2 and out.count("†") == 2
+
+
+def test_copyright_note_states_the_real_count():
+    assert "except the 14 marked †" in _sources_note(14)
+    assert "except the one marked †" in _sources_note(1)
+    clean = _sources_note(0)
+    assert "†" not in clean and "machine-checked" in clean
+    assert not any("never machine" in _sources_note(n) for n in (0, 1, 14))
+
+
+def test_assemble_threads_the_count_into_the_front_matter(tmp_path):
+    chunks = tmp_path / "translated"
+    chunks.mkdir()
+    (chunks / "chunk_0001.md").write_text(
+        _HADITH % ("hakim", 7, "fallback", "Own words"), encoding="utf-8")
+    meta = {"title_en": "T", "title_ar": "ت", "author_en": "A", "author_ar": "أ"}
+    book = assemble(str(chunks), str(tmp_path / "book.md"), hadith_index=_Index(),
+                    matter=True, meta=meta)
+    assert "except the one marked †" in book
+
+
+def test_index_skips_unlocatable_numbers_and_prefers_the_authors_citation():
+    md = ("## One\n\n"
+          '<!--hadith coll=hakim num=0 conf=0 src=fallback-->\nx\n<!--/hadith-->\n'
+          '<!--hadith coll=ahmad num=21500 cite=23482 conf=1.0 src=arabic-->\nx\n<!--/hadith-->\n')
+    idx = build_indexes(md)
+    assert "Hakim 0" not in idx and "Ahmad 23482" in idx and "21500" not in idx

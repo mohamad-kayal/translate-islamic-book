@@ -142,7 +142,8 @@ def test_finish_lecture_italics_flag(tmp_path):
     run = _make_run(tmp_path)
     bf = run / "work" / "translated" / "block_000.json"
     payload = json.loads(bf.read_text(encoding="utf-8"))
-    payload["sentences"][0].update(type="quran", ref="1:2", src="dataset")
+    payload["sentences"][0].update(type="quran", ref="1:2", src="dataset",
+                                   en="[All] praise is [due] to Allah, | Lord of the worlds")
     bf.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     master = tmp_path / "glossary.json"
     master.write_text(json.dumps({"style": "", "terms": {}, "names": {}, "works": {}},

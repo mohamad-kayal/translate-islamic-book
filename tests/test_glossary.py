@@ -2,7 +2,7 @@ import json
 import subprocess
 import sys
 
-from scripts.glossary import load, diff, merge
+from retrieval.glossary import diff, load, merge, prime
 
 
 def _master():
@@ -139,3 +139,46 @@ def test_cli_merge_writes_master(tmp_path):
     assert proc.returncode == 0
     written = json.loads(master_p.read_text(encoding="utf-8"))
     assert "الثغور" in written["terms"]
+
+
+def test_diff_matches_keys_folded_so_spelling_cannot_duplicate_an_entry():
+    book = {"terms": {"تزكية": {"translit": "tazkiyah", "english": "purification of the soul"},
+                      "التَّزْكِيَةُ": {"translit": "tazkiyah", "english": "a new rendering"}},
+            "names": {}, "structure": {}}
+    d = diff(_master(), book)
+    assert d["new_terms"] == {}
+    assert [c["key"] for c in d["conflicts"]] == ["التزكية"]
+
+
+def test_merge_conflict_writes_to_the_existing_key():
+    book = {"terms": {"تزكية": {"translit": "tazkiyah", "english": "a new rendering"}},
+            "names": {}, "structure": {}}
+    merged = merge(_master(), book, only={"تزكية"})
+    assert merged["terms"]["التزكية"]["english"] == "a new rendering"
+    assert "تزكية" not in merged["terms"]
+
+
+def test_a_recorded_sense_is_not_a_conflict():
+    master = _master()
+    master["terms"]["الاعتبار"] = {
+        "translit": "i'tibar", "english": "taking a lesson",
+        "senses": [{"context": "hadith science", "translit": "i'tibar",
+                    "english": "corroboration"}]}
+    book = {"terms": {"الاعتبار": {"translit": "i'tibar", "english": "corroboration"}},
+            "names": {}, "structure": {}}
+    assert diff(master, book)["conflicts"] == []
+
+
+def test_prime_narrows_to_what_the_text_mentions():
+    master = dict(_master(), terms={"التزكية": {"translit": "tazkiyah", "english": "e"},
+                                    "الثغور": {"translit": "thughur", "english": "e"}},
+                  names={"موسى": "Musa", "نوح": "Nuh"})
+    g = prime(master, "كلمة " * 200 + "تزكية النفس عند موسى")
+    assert list(g["terms"]) == ["التزكية"] and list(g["names"]) == ["موسى"]
+    assert g["structure"] == master["structure"] and g["book"] == {}
+
+
+def test_prime_without_a_text_layer_takes_the_whole_master():
+    master = _master()
+    assert prime(master, "")["terms"] == master["terms"]
+    assert prime(master, None)["names"] == master["names"]

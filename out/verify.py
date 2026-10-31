@@ -1,22 +1,34 @@
-"""Verify sacred-content markers in the assembled book.
+"""Verify sacred-content markers in an assembled book or post.
 
 Checks marker attributes (refs valid, collections known, review flags) AND — when
-retrieval indexes are supplied — that the Arabic body of every quran/hadith block
-is verbatim dataset text (the "never LLM-written" guarantee, enforced, not assumed).
+retrieval indexes are supplied — that the Arabic of every quran/hadith block is verbatim
+dataset text and that its English is the dataset's too. A Qur'an block that fails is a
+problem. A hadith block whose English is not the dataset's is not: the author may quote a
+variant the published translation does not cover, so it is counted, flagged and marked †
+at assembly. Each hadith therefore gets one of three statuses, from the check itself:
+
+    verified     Arabic and English are both dataset text
+    arabic_only  Arabic is dataset text; the English is this edition's own rendering
+    unverified   not in the datasets at all; Arabic as printed, English our own
 """
 import re
 
 from retrieval.normalize import normalize_arabic
+from retrieval.verbatim import OWN, english_status
 
 _QURAN = re.compile(r"<!--quran\s+([^>]*?)-->(.*?)<!--/quran-->", re.S)
 _HADITH = re.compile(r"<!--hadith\s+([^>]*?)-->(.*?)<!--/hadith-->", re.S)
 _ANY_MARKER = re.compile(r"<!--(/?)(quran|hadith)[\s>-]")
 _BRACKETED = re.compile(r"\[[^\]]*\]")   # [Maryam: 41] refs — Arabic surah name inside
 _LATIN = re.compile(r"[A-Za-z]")
+_CITATION_TAIL = re.compile(r"\s*\((?:[^()]|\([^()]*\))*\)\s*\.?\s*$")
+_REF_TAIL = re.compile(r"\s*\[[^\]]*\]\s*$")
 _COLLECTIONS = {"bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
                 "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi",
                 "ahmad", "hakim", "bayhaqi", "darimi", "tabarani"}
 MIN_CONF = 0.6
+VERIFIED, ARABIC_ONLY, UNVERIFIED = "verified", "arabic_only", "unverified"
+OWN_RENDERING_MARK = "†"
 # Below this fraction of matn words present in the dataset entry, a hadith body is a
 # hard problem (wrong number / fabrication); above it but not an exact match, it is
 # flagged for review (transmission variant or transcription difference).
@@ -82,6 +94,45 @@ def _arabic_of(body):
     return normalize_arabic(" ".join(arabic))
 
 
+def _strip_footnotes(text):
+    """Remove pandoc ^[…] footnotes, nested brackets included."""
+    out, i = [], 0
+    while True:
+        j = text.find("^[", i)
+        if j < 0:
+            return "".join(out) + text[i:]
+        out.append(text[i:j])
+        depth, k = 1, j + 2
+        while k < len(text) and depth:
+            depth += {"[": 1, "]": -1}.get(text[k], 0)
+            k += 1
+        i = k
+
+
+def english_of(body):
+    """The English a reader sees: the block's Latin lines without the verse reference,
+    the citation tail, footnotes or the † mark."""
+    lines = [ln.strip() for ln in body.split("\n") if ln.strip()]
+    english = [ln for ln in lines if _LATIN.search(_BRACKETED.sub(" ", ln))]
+    text = _strip_footnotes(" ".join(english)).replace(OWN_RENDERING_MARK, "").strip()
+    text = _REF_TAIL.sub("", text)
+    text = _CITATION_TAIL.sub("", text)
+    return text.strip(" \"“”'‘’^")
+
+
+def hadith_status(attrs, body, hadith_index):
+    """VERIFIED, ARABIC_ONLY or UNVERIFIED — from the datasets, not from the marker."""
+    if attrs.get("src") == "fallback":
+        return UNVERIFIED
+    entry = hadith_index.get(attrs.get("coll", ""), attrs.get("num", ""))
+    if entry is None:
+        return UNVERIFIED
+    published = entry.get("english", "")
+    if published and english_status(english_of(body), [published]) != OWN:
+        return VERIFIED
+    return ARABIC_ONLY
+
+
 def _check_quran_body(attrs, body, quran_index, ref, problems):
     try:
         s = int(attrs.get("s", "0"))
@@ -96,10 +147,13 @@ def _check_quran_body(attrs, body, quran_index, ref, problems):
     got = _arabic_of(body)
     if not got:
         problems.append("quran %s: block has no Arabic body" % ref)
-    elif got == expected or got in expected:   # verbatim, whole or a substring of the cited ayah
-        return
-    else:
+    elif not (got == expected or got in expected):   # verbatim, whole or a substring of the ayah
         problems.append("quran %s: Arabic body deviates from dataset text" % ref)
+    published = " ".join(v.get(attrs.get("tr", "saheeh"), "") for v in verses).strip()
+    english = english_of(body)
+    if published and english and english_status(english, [published]) == OWN:
+        problems.append("quran %s: English deviates from the %s text"
+                        % (ref, attrs.get("tr", "saheeh")))
 
 
 def _check_hadith_body(attrs, body, hadith_index, ref, problems, flagged):
@@ -132,6 +186,7 @@ def verify(md, quran_index=None, hadith_index=None):
     _check_balance(md, problems)
     quran_blocks = _QURAN.findall(md)
     hadith_blocks = _HADITH.findall(md)
+    sources = {VERIFIED: 0, ARABIC_ONLY: 0, UNVERIFIED: 0}
 
     for raw, body in quran_blocks:
         q = _attrs(raw)
@@ -177,12 +232,21 @@ def verify(md, quran_index=None, hadith_index=None):
                 flagged.append("hadith %s low confidence %s — review" % (ref, h.get("conf")))
         except ValueError:
             problems.append("malformed hadith conf: %s" % h.get("conf"))
-        if hadith_index is not None and h.get("src") == "dataset":
-            _check_hadith_body(h, body, hadith_index, ref, problems, flagged)
+        if hadith_index is not None:
+            if h.get("src") in ("dataset", "arabic"):
+                _check_hadith_body(h, body, hadith_index, ref, problems, flagged)
+            status = hadith_status(h, body, hadith_index)
+            sources[status] += 1
+            if status == ARABIC_ONLY:
+                flagged.append("hadith %s: English is this edition's own rendering, not the "
+                               "dataset's — marked %s" % (ref, OWN_RENDERING_MARK))
 
-    return {"n_quran": len(quran_blocks), "n_hadith": len(hadith_blocks),
-            "problems": problems, "flagged": flagged,
-            "bodies_checked": quran_index is not None or hadith_index is not None}
+    result = {"n_quran": len(quran_blocks), "n_hadith": len(hadith_blocks),
+              "problems": problems, "flagged": flagged,
+              "bodies_checked": quran_index is not None or hadith_index is not None}
+    if hadith_index is not None:
+        result["hadith_sources"] = sources
+    return result
 
 
 if __name__ == "__main__":

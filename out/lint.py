@@ -75,6 +75,7 @@ def _known_translits(glossary):
     for v in (glossary.get("terms") or {}).values():
         if isinstance(v, dict) and v.get("translit"):
             known.add(v["translit"].casefold())
+            known.update(k["translit"].casefold() for k in v.get("senses") or [])
     for v in (glossary.get("names") or {}).values():
         if isinstance(v, str) and v:
             known.add(v.casefold())
@@ -251,6 +252,15 @@ def lint(work_dir, glossary_path=None):
             manifest = json.load(f)
         result["warnings"] += completeness_warnings(chunk_texts, chunks, manifest)
         checked["ratio"] = True
+
+    if os.path.exists(chunks_path):
+        with open(chunks_path, encoding="utf-8") as f:
+            n_planned = len(json.load(f))
+        for name, _ in chunk_texts:
+            if int(re.search(r"chunk_(\d+)", name).group(1)) > n_planned:
+                result["problems"].append(
+                    "%s: not in chunks.json — a stray file would be assembled into the book"
+                    % name)
 
     result["checked"] = checked
     return result

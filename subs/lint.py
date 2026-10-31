@@ -8,6 +8,7 @@ import re
 
 from retrieval.glossary import fold
 from subs.retime import MAX_CPS, MAX_DUR, MAX_LINE, MAX_LINES, cps
+from subs.scripture import sentence_problem
 from subs.srt_io import mmss, parse_srt
 
 _ARABIC = re.compile("[؀-ۿݐ-ݿ]")
@@ -44,8 +45,9 @@ def lint_cues(cues):
     return {"problems": problems, "warnings": warnings}
 
 
-def lint_run(run_dir, master):
-    """Lint the emitted .srt + segment coverage + glossary drift vs the Arabic."""
+def lint_run(run_dir, master, quran_index=None, hadith_index=None):
+    """Lint the emitted .srt + segment coverage + glossary drift vs the Arabic, and, when
+    the retrieval indexes are supplied, every scripture sentence's claim to be verbatim."""
     run_dir = pathlib.Path(run_dir)
     srt_path = run_dir / "output" / ("%s.en.srt" % run_dir.name)
     cues, parse_warnings = parse_srt(srt_path.read_text(encoding="utf-8"))
@@ -59,6 +61,10 @@ def lint_run(run_dir, master):
     for f in sorted((run_dir / "work" / "translated").glob("block_*.json")):
         for s in json.loads(f.read_text(encoding="utf-8"))["sentences"]:
             covered.update(range(s["segs"][0], s["segs"][1] + 1))
+            problem = (sentence_problem(s, quran_index, hadith_index)
+                       if quran_index is not None else None)
+            if problem:
+                result["problems"].append("%s, segment %d: %s" % (f.name, s["segs"][0], problem))
     dispatched = set()
     for b in data["blocks"]:
         block_file = run_dir / "work" / "translated" / ("block_%03d.json" % b["n"])
@@ -74,8 +80,9 @@ def lint_run(run_dir, master):
     english = " ".join(" ".join(c["lines"]) for c in cues).lower()
     for ar, val in (master.get("terms") or {}).items():
         if " %s " % fold(ar) in arabic_folded:
-            eng, translit = (val.get("english") or "").lower(), (val.get("translit") or "").lower()
-            if (eng and eng not in english) and (translit and translit not in english):
+            renderings = [val] + list(val.get("senses") or [])
+            forms = [(r.get(k) or "").lower() for r in renderings for k in ("english", "translit")]
+            if all(f and f not in english for f in forms):
                 result["warnings"].append(
                     "glossary drift: %s spoken but neither %r nor %r appears in the English"
                     % (ar, val.get("english"), val.get("translit")))

@@ -11,8 +11,9 @@ import pathlib
 import shutil
 import sys
 
-from subs.assemble import assemble
 from retrieval.glossary import harvest
+from scripts.block_brief import load_indexes
+from subs.assemble import assemble
 from subs.lint import lint_run
 from subs.report import write_bilingual, write_review
 
@@ -48,7 +49,7 @@ def main():
 
     stats = assemble(args.run, italics=args.italics)
     master = json.loads(pathlib.Path(args.master).read_text(encoding="utf-8"))
-    lint_result = lint_run(args.run, master)
+    lint_result = lint_run(args.run, master, *load_indexes())
     harvest_result = harvest(args.run, args.master, args.changelog)
     write_review(args.run, stats, harvest_result, lint_result)
     write_bilingual(args.run)

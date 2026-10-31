@@ -4,6 +4,7 @@ import glob
 import os
 import re
 
+from out.verify import OWN_RENDERING_MARK, VERIFIED, hadith_status
 from retrieval.normalize import normalize_arabic
 
 # Chunk-seam working notes ('*[Ornamental divider]*', '*[Blank page]*',
@@ -11,6 +12,7 @@ from retrieval.normalize import normalize_arabic
 _PAGE_NOTE = re.compile(r"^\*\[[^\]]*\]\*\s*$", re.M)
 _EXTRA_BLANKS = re.compile(r"\n{3,}")
 _QURAN_FULL = re.compile(r"(<!--quran\s+([^>]*?)-->\n)(.*?)(\n<!--/quran-->)", re.S)
+_HADITH_FULL = re.compile(r"(<!--hadith\s+([^>]*?)-->\n)(.*?)(\n<!--/hadith-->)", re.S)
 _REF_TAIL = re.compile(r"\s*(\[[^\]]*\])\s*$")
 _RUB_MARK = "۞"   # U+06DE start of rub-el-hizb — a division marker, not verse text
 _TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
@@ -18,13 +20,15 @@ _TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
 # Index patterns
 _H2 = re.compile(r"^##\s+(?!Index of|Glossary)(.+?)\s*$", re.M)
 _QURAN_MARK = re.compile(r"<!--quran\s+s=(\d+)\s+a=(\d+)-(\d+)[^>]*-->")
-_HADITH_MARK = re.compile(r"<!--hadith\s+coll=(\w+)\s+num=(\S+)[^>]*-->")
+_HADITH_MARK = re.compile(r"<!--hadith\s+([^>]*?)-->")
 
 _COLL_NAMES = {
     "bukhari": "al-Bukhari", "muslim": "Muslim", "abudawud": "Abu Dawud",
     "tirmidhi": "al-Tirmidhi", "nasai": "al-Nasa'i", "ibnmajah": "Ibn Majah",
     "malik": "Malik", "ahmad": "Ahmad", "darimi": "al-Darimi",
-    "hakim": "al-Hakim", "bayhaqi": "al-Bayhaqi",
+    "hakim": "al-Hakim", "bayhaqi": "al-Bayhaqi", "tabarani": "al-Tabarani",
+    "ibnhibban": "Ibn Hibban", "bazzar": "al-Bazzar", "tayalisi": "al-Tayalisi",
+    "abdurrazzaq": "'Abd al-Razzaq", "asakir": "Ibn 'Asakir", "nawawi": "al-Nawawi",
 }
 
 
@@ -34,6 +38,23 @@ def _arabic_num(n):
 
 def _ar(s):
     return "[%s]{lang=ar dir=rtl}" % s
+
+
+def _sources_note(own_renderings):
+    """The copyright page's claim about the sacred text. `own_renderings` comes from
+    mark_own_renderings, so the sentence cannot drift from what the book actually holds."""
+    note = ("Qur'anic quotations are the Saheeh International translation. Hadith are given "
+            "in their published translations")
+    if own_renderings == 1:
+        note += (", except the one marked %s, whose English is this edition's own rendering "
+                 "because no published translation could be matched to it"
+                 % OWN_RENDERING_MARK)
+    elif own_renderings:
+        note += (", except the %d marked %s, whose English is this edition's own rendering "
+                 "because no published translation could be matched to them"
+                 % (own_renderings, OWN_RENDERING_MARK))
+    return note + (". All other sacred text is retrieved from reference datasets and "
+                   "machine-checked against them.")
 
 
 def front_matter(meta):
@@ -50,11 +71,7 @@ def front_matter(meta):
         lines.append("%s  " % meta["edition"])
     if meta.get("year"):
         lines.append("%s  " % meta["year"])
-    lines += ["",
-              "Qur'anic quotations are the Saheeh International translation; "
-              "hadith are given in their published translations. All sacred "
-              "text is retrieved verbatim from source datasets and "
-              "machine-verified, never machine-written.", "",
+    lines += ["", _sources_note(meta.get("own_renderings", 0)), "",
               "This edition has not been fully verified against the Arabic "
               "source by a human and may contain errors.", ":::", ""]
     return cover + half + "\n".join(lines) + "\n"
@@ -130,8 +147,9 @@ def build_indexes(book_md):
             continue  # fallback marker, not a locatable citation
         verses.append((s, a0, a1, _chapter_at(book_md, m.start())))
     for m in _HADITH_MARK.finditer(book_md):
-        coll, num = m.group(1), m.group(2)
-        if coll == "0":
+        attrs = dict(re.findall(r"(\w+)=(\S+)", m.group(1)))
+        coll, num = attrs.get("coll", "0"), attrs.get("cite") or attrs.get("num", "0")
+        if coll == "0" or num == "0":
             continue  # fallback marker, not a locatable citation
         hadith.append((coll, num, _chapter_at(book_md, m.start())))
     if not verses and not hadith:
@@ -179,6 +197,22 @@ def number_quran_ayat(md, quran_index):
     return _QURAN_FULL.sub(lambda m: _renumber(m, quran_index), md)
 
 
+def mark_own_renderings(md, hadith_index):
+    """Append † to every hadith whose English is not verified dataset text. Returns
+    (md, count). Computed from the datasets, not taken on the marker's word."""
+    count = {"n": 0}
+
+    def _mark(m):
+        head, attrs_raw, body, tail = m.group(1), m.group(2), m.group(3), m.group(4)
+        attrs = dict(re.findall(r"(\w+)=(\S+)", attrs_raw))
+        if hadith_status(attrs, body, hadith_index) == VERIFIED:
+            return m.group(0)
+        count["n"] += 1
+        return "%s%s %s%s" % (head, body.rstrip(), OWN_RENDERING_MARK, tail)
+
+    return _HADITH_FULL.sub(_mark, md), count["n"]
+
+
 def assign_hadith_numbers(md, number=True):
     """With number=True, replace [[H]] with '**1.**', '**2.**'… (main) and [[HA]]
     with '**1-A.**'… (appendix) — for books that present hadith as a numbered
@@ -211,12 +245,20 @@ def strip_page_notes(md):
     return _EXTRA_BLANKS.sub("\n\n", md)
 
 
+def _used_in(text, translit):
+    return re.search(r"\b%s\b" % re.escape(translit), text, re.I) is not None
+
+
 def append_glossary(book_md, glossary):
-    """Append a '## Glossary' section built from glossary['terms'] only, sorted by translit."""
+    """Append a '## Glossary' section of the glossary['terms'] the book actually uses,
+    sorted by translit. A book's glossary starts from the shared master, so an entry
+    being present says nothing about the book."""
     terms = (glossary or {}).get("terms") or {}
-    if not terms:
+    rows = sorted(((ar, v) for ar, v in terms.items()
+                   if v.get("translit") and v.get("english") and _used_in(book_md, v["translit"])),
+                  key=lambda kv: kv[1]["translit"].casefold())
+    if not rows:
         return book_md
-    rows = sorted(terms.items(), key=lambda kv: kv[1]["translit"].casefold())
     entries = "\n\n".join(
         "*%s* · [%s]{lang=ar dir=rtl} · %s" % (v["translit"], ar, v["english"])
         for ar, v in rows)
@@ -227,7 +269,7 @@ def merge(chunk_texts):
     return "\n\n".join(t.strip("\n") for t in chunk_texts)
 
 
-def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
+def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None, hadith_index=None,
              hadith_numbers=True, glossary=None, indexes=False, matter=False, meta=None):
     files = sorted(glob.glob(os.path.join(chunk_dir, "chunk_*.md")))
     body = merge([open(f, encoding="utf-8").read() for f in files])
@@ -235,6 +277,10 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None,
     if quran_index is not None:
         body = number_quran_ayat(body, quran_index)
     book = assign_hadith_numbers(body, number=hadith_numbers)
+    if hadith_index is not None:
+        book, own_renderings = mark_own_renderings(book, hadith_index)
+        if meta:
+            meta = dict(meta, own_renderings=own_renderings)
     if matter and meta:
         book = "%s%s" % (front_matter(meta), book)
     if title and not (matter and meta):
@@ -301,11 +347,14 @@ if __name__ == "__main__":
             p.error("--matter needs title_en, title_ar, author_en, author_ar — supply a "
                     "--glossary with a book block or pass "
                     "--title/--title-ar/--author/--author-ar; missing: %s" % ", ".join(missing))
-    qi = None
+    qi = hi = None
     if not args.no_numbering:
         from retrieval.quran_index import QuranIndex
         qi = QuranIndex.load()
+    if args.matter:
+        from retrieval.hadith_index import HadithIndex
+        hi = HadithIndex.load()
     assemble(args.chunk_dir, args.out_path, title=args.title, author=args.author,
-             quran_index=qi, hadith_numbers=not args.no_hadith_numbers, glossary=gloss,
-             indexes=args.indexes, matter=args.matter, meta=meta)
+             quran_index=qi, hadith_index=hi, hadith_numbers=not args.no_hadith_numbers,
+             glossary=gloss, indexes=args.indexes, matter=args.matter, meta=meta)
     print("assembled -> %s" % args.out_path)
