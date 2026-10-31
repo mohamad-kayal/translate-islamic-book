@@ -10,7 +10,8 @@ description: Translate Arabic Islamic-lecture YouTube auto-captions into publica
 # Translate Arabic lecture captions → English SRT
 
 Run every command from the repo root (`cd "$(git -C "${CLAUDE_SKILL_DIR}" rev-parse --show-toplevel)"`;
-other agents: the folder holding AGENTS.md), with `python` meaning `.venv/bin/python`. One video is
+other agents: resolve this file's real path, `<repo>/skills/<name>/SKILL.md`, and follow
+`<repo>/AGENTS.md`), with `python` meaning `.venv/bin/python`. One video is
 one run: `runs/<slug>/`. First time here: `./install.sh`.
 
 ## Non-negotiables

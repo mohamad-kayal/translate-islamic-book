@@ -346,6 +346,13 @@ def test_fallback_and_arabic_only_hadith_are_marked():
     assert n == 2 and out.count("†") == 2
 
 
+def test_a_hadith_inside_a_footnote_is_marked_too():
+    md = ('[^n1]: A note.\n\n    <!--hadith coll=hakim num=7 conf=0 src=fallback-->\n    «قول»\n'
+          '    "Own words" (Narrated by al-Hakim)\n    <!--/hadith-->\n')
+    out, n = mark_own_renderings(md, _Index())
+    assert n == 1 and '(Narrated by al-Hakim) †\n    <!--/hadith-->' in out
+
+
 def test_copyright_note_states_the_real_count():
     assert "except the 14 marked †" in _sources_note(14)
     assert "except the one marked †" in _sources_note(1)

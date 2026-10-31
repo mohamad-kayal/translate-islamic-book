@@ -67,6 +67,17 @@ def test_an_unassembled_book_fails_without_crashing(tmp_path):
     assert any("not assembled" in p for p in _gate(run))
 
 
+def test_a_wrong_count_on_the_copyright_page_fails(tmp_path):
+    run = _book(tmp_path)
+    hadith = ('<!--hadith coll=hakim num=7 conf=0 src=fallback-->\n«قول»\n"Own" (X) †\n'
+              '<!--/hadith-->\n')
+    book = "::: {.copyright}\n%s\n:::\n" + BOOK % "sea river" + hadith * 2
+    (run / "work" / "book.md").write_text(book % "except the one marked †", encoding="utf-8")
+    assert any("counts 1 † hadith, the datasets say 2" in p for p in _gate(run))
+    (run / "work" / "book.md").write_text(book % "except the 2 marked †", encoding="utf-8")
+    assert _gate(run) == []
+
+
 def test_kind_is_read_from_the_plan_file(tmp_path):
     assert _kind(tmp_path) is None
     (tmp_path / "post.md").write_text("x")

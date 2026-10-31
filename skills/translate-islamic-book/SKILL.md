@@ -9,7 +9,8 @@ description: Translate an Arabic Islamic book (Quran + hadith + author prose) in
 # Translate an Islamic book
 
 Run every command from the repo root (`cd "$(git -C "${CLAUDE_SKILL_DIR}" rev-parse --show-toplevel)"`;
-other agents: the folder holding AGENTS.md), with `python` meaning `.venv/bin/python`. One book is
+other agents: resolve this file's real path, `<repo>/skills/<name>/SKILL.md`, and follow
+`<repo>/AGENTS.md`), with `python` meaning `.venv/bin/python`. One book is
 one run: `runs/<slug>/`, with `<work>` = `runs/<slug>/work`. First time here: `./install.sh`.
 
 ## Steps

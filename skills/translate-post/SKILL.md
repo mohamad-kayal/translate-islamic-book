@@ -10,7 +10,8 @@ description: Translate an Arabic Islamic social post or short passage into Engli
 # Translate an Arabic post
 
 Run every command from the repo root (`cd "$(git -C "${CLAUDE_SKILL_DIR}" rev-parse --show-toplevel)"`;
-other agents: the folder holding AGENTS.md), with `python` meaning `.venv/bin/python`. One post is
+other agents: resolve this file's real path, `<repo>/skills/<name>/SKILL.md`, and follow
+`<repo>/AGENTS.md`), with `python` meaning `.venv/bin/python`. One post is
 one run: `runs/<slug>/`, for example `runs/post-sabr-01`. First time here: `./install.sh`.
 
 No chunks, no subagents: a post is small enough to do directly.

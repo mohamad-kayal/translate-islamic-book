@@ -12,7 +12,8 @@ from retrieval.normalize import normalize_arabic
 _PAGE_NOTE = re.compile(r"^\*\[[^\]]*\]\*\s*$", re.M)
 _EXTRA_BLANKS = re.compile(r"\n{3,}")
 _QURAN_FULL = re.compile(r"(<!--quran\s+([^>]*?)-->\n)(.*?)(\n<!--/quran-->)", re.S)
-_HADITH_FULL = re.compile(r"(<!--hadith\s+([^>]*?)-->\n)(.*?)(\n<!--/hadith-->)", re.S)
+# Tolerates the indentation of a hadith quoted inside a multi-paragraph footnote.
+_HADITH_FULL = re.compile(r"(<!--hadith\s+([^>]*?)-->\n)(.*?)(\n[ \t]*<!--/hadith-->)", re.S)
 _REF_TAIL = re.compile(r"\s*(\[[^\]]*\])\s*$")
 _RUB_MARK = "۞"   # U+06DE start of rub-el-hizb — a division marker, not verse text
 _TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
