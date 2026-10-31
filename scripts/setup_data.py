@@ -6,6 +6,10 @@ re-download could silently change sacred text under already-verified books. URLs
 therefore pin exact COMMIT SHAs (immutable on the jsDelivr CDN), and
 data/MANIFEST.json (git-tracked) records each file's SHA-256.
 
+Musnad Ahmad and Sunan al-Darimi come from Open Hadith Data (Open Database License),
+Arabic only. Its CSV is the pinned source; setup converts it to the hadith-api edition
+shape so the index needs no special case.
+
 Trust flow: when a manifest exists, setup VERIFIES downloads against it and exits
 nonzero on any mismatch — it never silently rewrites the baseline. A fresh setup
 (no manifest) writes one; bump the pins deliberately with --update-manifest.
@@ -14,7 +18,9 @@ nonzero on any mismatch — it never silently rewrites the baseline. A fresh set
     python scripts/setup_data.py --update-manifest   # re-baseline after a pin bump
 """
 import argparse
+import csv
 import hashlib
+import io
 import json
 import os
 import subprocess
@@ -24,13 +30,20 @@ import time
 QURAN_EDITIONS = ["ara-quranuthmanihaf", "eng-ummmuhammad", "eng-mustafakhattaba"]
 HADITH_COLLECTIONS = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
                       "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi"]
-# Branch "1" HEADs, resolved 2026-07-10. Immutable: jsDelivr serves commit-pinned
-# content forever, and MANIFEST.json double-checks the bytes.
+ARABIC_ONLY = {
+    "ahmad": "Musnad_Ahmad_Ibn-Hanbal/musnad_ahmad_ibn-hanbal_ahadith_mushakkala.utf8.csv",
+    "darimi": "Sunan_Al-Darimi/sunan_al-darimi_ahadith_mushakkala_mufassala.utf8.csv",
+}
+# Branch "1" HEADs resolved 2026-07-10; Open-Hadith-Data master resolved 2026-10-31.
+# Immutable: both hosts serve commit-pinned content forever, and MANIFEST.json
+# double-checks the bytes. (jsDelivr refuses the 29 MB Ahmad CSV, hence raw GitHub.)
 API_REFS = {
     "quran-api": "6be8e17f2a0c13b1f33b1c3057f73cb28d5e848e",
     "hadith-api": "df57907be35291c91ad6a6691180e22ca9920784",
+    "open-hadith-data": "1515f6cba21efed20d8916bf55acef1dffa0d2d5",
 }
 _CDN = "https://cdn.jsdelivr.net/gh/fawazahmed0/{api}@{ref}/editions/{name}.json"
+_OPEN_HADITH = "https://raw.githubusercontent.com/mhashim6/Open-Hadith-Data/{ref}/{path}"
 _CHAPTERS = "https://api.quran.com/api/v4/chapters?language=en"
 
 DATA_DIR = os.environ.get(
@@ -43,6 +56,10 @@ def edition_url(api, name):
     return _CDN.format(api=api, ref=API_REFS[api], name=name)
 
 
+def open_hadith_url(path):
+    return _OPEN_HADITH.format(ref=API_REFS["open-hadith-data"], path=path)
+
+
 def chapters_url():
     return _CHAPTERS
 
@@ -52,6 +69,8 @@ def dataset_files():
     rel = ["quran/%s.json" % n for n in QURAN_EDITIONS]
     rel += ["hadith/%s-%s.json" % (pfx, c)
             for c in HADITH_COLLECTIONS for pfx in ("ara", "eng")]
+    for c in ARABIC_ONLY:
+        rel += ["hadith/src-%s.csv" % c, "hadith/ara-%s.json" % c]
     return rel
 
 
@@ -79,6 +98,16 @@ def download(url, dest, fetch=_http_fetch, skip_existing=True):
     with open(dest, "wb") as f:
         f.write(data)
     return True
+
+
+def edition_from_csv(raw):
+    """Open Hadith Data rows (number, text) as a hadith-api edition; deterministic bytes."""
+    csv.field_size_limit(1 << 30)
+    rows = csv.reader(io.StringIO(raw.decode("utf-8-sig")))
+    return {"hadiths": [{"hadithnumber": int(number),
+                         "text": " ".join(text.replace("\u200f", " ").split()),
+                         "reference": {}}
+                        for number, text in rows]}
 
 
 def file_sha256(path):
@@ -167,6 +196,17 @@ def main(argv=None):
             name = "%s-%s" % (pfx, coll)
             d = download(edition_url("hadith-api", name), os.path.join(data, "hadith", name + ".json"))
             print(("downloaded " if d else "skipped    ") + name)
+
+    for coll, path in ARABIC_ONLY.items():
+        src = os.path.join(data, "hadith", "src-%s.csv" % coll)
+        d = download(open_hadith_url(path), src)
+        print(("downloaded " if d else "skipped    ") + "src-" + coll)
+        dest = os.path.join(data, "hadith", "ara-%s.json" % coll)
+        if d or not os.path.exists(dest):
+            with open(src, "rb") as f:
+                edition = edition_from_csv(f.read())
+            with open(dest, "w", encoding="utf-8") as f:
+                json.dump(edition, f, ensure_ascii=False, sort_keys=True)
 
     # surah_names.json is a small git-tracked snapshot (its source API is unpinnable);
     # only build it when absent.

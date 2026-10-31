@@ -6,14 +6,18 @@ from .cache import load_cached
 from .normalize import normalize_arabic
 
 COLLECTIONS = ["bukhari", "muslim", "abudawud", "tirmidhi", "nasai",
-               "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi"]
+               "ibnmajah", "malik", "nawawi", "qudsi", "dehlawi", "ahmad", "darimi"]
 # Tie-break order for equal-quality matches: the Six Books + Muwatta before the
 # derivative "forty" collections (nawawi/qudsi/dehlawi restate canonical hadith
-# matn-only, which the recall term would otherwise always favor).
+# matn-only, which the recall term would otherwise always favor), and the Arabic-only
+# collections last, so a matn found in a collection with English resolves to that one.
 _CANONICAL_RANK = {c: i for i, c in enumerate(COLLECTIONS)}
 # Candidates within this containment distance of the best are "ties": the query
 # matches them all; only then do prefer/canonicity/recall arbitrate.
 _EPS = 0.02
+# Placeholders the datasets use where a hadith has no translation. Treated as absent so
+# they can never be pasted into a book as if they were the hadith's English.
+_NO_ENGLISH = {"empty", "hadith translation not available"}
 
 
 def _data_dir():
@@ -44,11 +48,17 @@ def _apply_english_fixes(fixes, collection, number, english):
     return english
 
 
+def _real_english(english):
+    return "" if english.strip().rstrip(".").lower() in _NO_ENGLISH else english
+
+
 class HadithIndex:
     def __init__(self, entries):
         self.entries = entries                       # each has a precomputed "words" set
         self.inverted = {}
+        self._by_ref = {}
         for i, e in enumerate(entries):
+            self._by_ref[(e["collection"], str(e["number"]))] = e
             for w in e["words"]:
                 self.inverted.setdefault(w, []).append(i)
 
@@ -87,7 +97,7 @@ class HadithIndex:
                         eng = {h["hadithnumber"]: h for h in json.load(f)["hadiths"]}
                 for num, h in ara.items():
                     english = _apply_english_fixes(
-                        fixes, c, num, eng.get(num, {}).get("text", ""))
+                        fixes, c, num, _real_english(eng.get(num, {}).get("text", "")))
                     records.append({"collection": c, "number": num, "arabic": h["text"],
                                     "english": english,
                                     "reference": h.get("reference", {})})
@@ -100,10 +110,7 @@ class HadithIndex:
 
     def get(self, collection, number):
         """Exact (collection, number) lookup — used by out.verify body checks."""
-        for e in self.entries:
-            if e["collection"] == collection and str(e["number"]) == str(number):
-                return e
-        return None
+        return self._by_ref.get((collection, str(number)))
 
     def match(self, arabic_query, min_conf=0.6, prefer=None, max_candidates=200):
         """Best dataset entry for an Arabic matn, or None below min_conf.

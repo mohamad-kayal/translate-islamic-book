@@ -12,7 +12,7 @@ a broken cache can cost time, never correctness. RETRIEVAL_NO_CACHE=1 disables c
 import os
 import pickle
 
-SCHEMA = 1   # bump when a cached payload's shape changes
+SCHEMA = 2   # bump when a cached payload's shape changes
 
 _MISSING = (None, None)
 

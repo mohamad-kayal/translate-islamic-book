@@ -1,13 +1,21 @@
 {
-  "fetched_at": "2026-07-10",
+  "fetched_at": "2026-10-31",
   "files": {
     "hadith/ara-abudawud.json": {
       "bytes": 7345422,
       "sha256": "216139c5f40a8147e700d62ffa3b5b2fe45d0e034f86941a193c598c10056189"
     },
+    "hadith/ara-ahmad.json": {
+      "bytes": 25734406,
+      "sha256": "6bb4173c4daea3a0b77bec437cf871c50e193808a8fc2fdc22b1f460de85d659"
+    },
     "hadith/ara-bukhari.json": {
       "bytes": 9770083,
       "sha256": "e34a3402889ca378871da3c5984b7875c680920e93f1c8738ac7afe502179562"
+    },
+    "hadith/ara-darimi.json": {
+      "bytes": 2713682,
+      "sha256": "f38b111e3eda5a223fc6f15294434c0b5a71741980b45ff160d711a687ae93b5"
     },
     "hadith/ara-dehlawi.json": {
       "bytes": 9168,
@@ -81,6 +89,14 @@
       "bytes": 3124797,
       "sha256": "f64f1a5e6f2614e164e3b10138412af322d3959011bf84d67f428f79b3858afb"
     },
+    "hadith/src-ahmad.csv": {
+      "bytes": 28688776,
+      "sha256": "41553fee47fe582a8d0b60fbea1f71b867df44d40adac94dcfe742571a8bce24"
+    },
+    "hadith/src-darimi.csv": {
+      "bytes": 3004407,
+      "sha256": "bb995abb07a513cf76743e9580787e80c7ce5bd08dd6108c13e01d936a048327"
+    },
     "quran/ara-quranuthmanihaf.json": {
       "bytes": 1967747,
       "sha256": "66dadae2f7c7bb762aaf77603489951da4fe555fcee9f0106bfddae860e89cb4"
@@ -96,6 +112,7 @@
   },
   "pins": {
     "hadith-api": "df57907be35291c91ad6a6691180e22ca9920784",
+    "open-hadith-data": "1515f6cba21efed20d8916bf55acef1dffa0d2d5",
     "quran-api": "6be8e17f2a0c13b1f33b1c3057f73cb28d5e848e"
   }
 }

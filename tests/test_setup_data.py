@@ -71,3 +71,17 @@ def test_manifest_detects_missing_file(tmp_path):
 
 def test_check_without_manifest_reports(tmp_path):
     assert any("no manifest" in p for p in sd.check_manifest(str(tmp_path)))
+
+
+def test_arabic_only_files_are_in_manifest_scope_and_commit_pinned():
+    files = sd.dataset_files()
+    assert "hadith/src-ahmad.csv" in files and "hadith/ara-ahmad.json" in files
+    assert "/%s/" % sd.API_REFS["open-hadith-data"] in sd.open_hadith_url("x.csv")
+
+
+def test_edition_from_csv_matches_the_hadith_api_shape():
+    raw = '"1","\u200f \u200fحدثنا \u200f \u200fوكيع \u200f\n\u200fقال"\n"2","عن قيس"\n'
+    edition = sd.edition_from_csv(raw.encode("utf-8-sig"))
+    assert edition["hadiths"] == [
+        {"hadithnumber": 1, "text": "حدثنا وكيع قال", "reference": {}},
+        {"hadithnumber": 2, "text": "عن قيس", "reference": {}}]

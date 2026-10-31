@@ -27,7 +27,10 @@ def match(arabic_query, min_conf=0.6, prefer=None):
                             "confidence": r["confidence"],
                             "arabic": r["arabic"][:200]}}
     out = dict(r, matched=True)
-    if "�" in r["english"]:
+    if not r["english"].strip():
+        out["english_missing"] = ("no published English in the dataset for this hadith — "
+                                  "render the matn yourself and mark the block src=arabic")
+    elif "�" in r["english"]:
         out["english_warning"] = ("dataset English contains U+FFFD replacement "
                                   "characters — paste verbatim and flag for review")
     return out
