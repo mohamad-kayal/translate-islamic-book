@@ -9,12 +9,14 @@ from retrieval.verbatim import OWN, english_status, words
 
 _QURAN_REF = re.compile(r"(\d+):(\d+)(?:\s*[-–]\s*(\d+))?")
 _HADITH_REF = re.compile(r"([a-z]+)\s+(\S+)")
+_SEPARATOR = re.compile(r"[,;]")
+_COLLECTION_ALIASES = (("ibn majah", "ibnmajah"), ("abu dawud", "abudawud"), ("abu dawood", "abudawud"))
 
 
 def references(kind, ref, quran_index, hadith_index):
     """Every dataset English a sentence's ref points at ('3:164', 'bukhari 1, muslim 4927')."""
     out = []
-    for part in (ref or "").split(","):
+    for part in _SEPARATOR.split(ref or ""):
         if kind == "quran":
             m = _QURAN_REF.search(part)
             if m:
@@ -24,7 +26,10 @@ def references(kind, ref, quran_index, hadith_index):
                 if all(verses):
                     out += [" ".join(v[k] for v in verses) for k in ("saheeh", "clear")]
         else:
-            m = _HADITH_REF.search(part.strip().lower())
+            text = part.strip().lower()
+            for alias, collection in _COLLECTION_ALIASES:
+                text = text.replace(alias, collection)
+            m = _HADITH_REF.search(text)
             entry = hadith_index.get(m.group(1), m.group(2)) if m else None
             if entry is not None:
                 out.append(entry["english"])

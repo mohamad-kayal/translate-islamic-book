@@ -1,149 +1,163 @@
 # translate-islamic-book
 
-A pipeline for translating Arabic Islamic books into **publication-grade English** — built so that
-the sacred text is never at the mercy of a language model.
+Translate Arabic Islamic books, lectures and social posts into **publication-grade English**, built
+so that the sacred text is never at the mercy of a language model.
 
-> **Core principle:** Qur'anic verses and hadith are **retrieved verbatim** from bundled reference
-> datasets and **machine-verified** against them after assembly. Only the *author's own prose* is
-> translated. The model never writes a verse or a hadith from memory.
+> **Core principle:** Qur'anic verses and hadith are **retrieved** from reference datasets and
+> **machine-checked** against them, in Arabic and in English. Only the author's or speaker's own
+> words are translated. A hadith that cannot be verified is marked in the output, never passed off
+> as verified.
 
-It runs as a [Claude Code](https://claude.com/claude-code) skill (see [`SKILL.md`](SKILL.md)): the
-orchestrating agent walks a fixed pipeline, dispatches parallel translator subagents for the prose,
-and the Python tooling in this repo does the retrieval, verification, assembly, and typesetting.
+It runs as a set of skills for [Claude Code](https://claude.com/claude-code). An orchestrating agent
+walks a fixed pipeline, translators and revisers handle the prose, and the Python here does the
+retrieval, verification, assembly and typesetting. Other coding agents can run it the same way: see
+[`AGENTS.md`](AGENTS.md).
+
+| Give it | You get |
+|---|---|
+| An Arabic book PDF | A typeset book as PDF, DOCX and HTML, plus `review.md` |
+| A YouTube link or `.srt`/`.vtt` | English subtitles (`.en.srt`), a bilingual proof and `review.md` |
+| A post, quote card, link or a few paragraphs | Ready-to-post text, split into a thread if needed |
 
 ---
+
+## Install
+
+Requirements: Python 3.9+ (3.10+ recommended, so `yt-dlp` stays current),
+[`pandoc`](https://pandoc.org), [`poppler`](https://poppler.freedesktop.org) and Chrome/Chromium.
+
+```bash
+git clone https://github.com/mohamad-kayal/translate-islamic-book
+cd translate-islamic-book
+./install.sh
+```
+
+`install.sh` creates the virtualenv, downloads the pinned datasets (about 180 MB, checked against
+`data/MANIFEST.json`), links the skills, and finishes with `scripts.doctor`, which runs real lookups
+and tells you whether the install is ready. Run it again if you move the folder.
+
+Then ask Claude Code for what you want: "translate this book", "translate this lecture", "translate
+this post". The matching skill picks it up. In this folder the skills load by themselves; `install.sh`
+also makes them available everywhere.
+
+For the DOCX, install the fonts where Word can see them: `cp assets/fonts/*.ttf ~/Library/Fonts/`.
 
 ## Why this exists
 
 Machine translation of religious texts has an integrity problem: an LLM asked to "translate this
-verse" will happily produce a fluent paraphrase that is *not* the received wording. For scripture
-that is unacceptable. This project splits every span of the source into three lanes:
+verse" will happily produce a fluent paraphrase that is *not* the received wording. This project
+splits every span of the source into three lanes:
 
 | Lane | Handling |
 |---|---|
-| **Qur'an** | Looked up in a verse dataset; the exact Arabic + an established English translation are pasted in. Never generated. |
-| **Hadith** | Looked up in a hadith dataset by matn (with orthography-folded matching); exact wording pasted in. Never generated. Unmatched narrations become a **flagged fallback**, not an invention. |
-| **Author's prose** | Translated by the model, faithfully and consistently. |
+| **Qur'an** | Looked up in a verse dataset; the exact Arabic and an established English translation are pasted in. Never generated. |
+| **Hadith** | Looked up by matn with orthography-folded matching; exact wording pasted in. |
+| **The author's words** | Translated by the model, faithfully and consistently. |
 
-After the book is assembled, `out.verify` re-reads every quotation and confirms its Arabic body is
-**byte-for-byte** the dataset text (or a transparently flagged near-verbatim variant). Anything that
-doesn't check out is surfaced for human sign-off — it is never silently shipped.
+## What "verified" means here
 
-A companion rule keeps scholarship honest: **citations follow the author, wording follows the
-dataset.** If the author printed a different collection/number (numbering editions differ), the
-*visible* reference is the author's; the retrieval only supplies the verbatim *wording*.
+`out.verify` re-reads every quotation after assembly and compares it with the datasets, word by word:
 
-## What you get
+| Status | Arabic | English | In the output |
+|---|---|---|---|
+| **Qur'an** | dataset | dataset | Anything else stops the book |
+| **Verified hadith** | dataset | dataset | Plain |
+| **Arabic only** | dataset | this edition's own rendering | Marked † |
+| **Unverified** | as the author printed it | this edition's own rendering | Marked † |
 
-Each translated book is produced as a self-contained **HTML** file (print to PDF) and an editable
-**DOCX**, with a book-grade interior:
+The † is computed from that comparison, not taken from the translator's word, and the copyright page
+states how many there are. A hadith lands in the last two rows when a collection has no English in
+the datasets (Musnad Ahmad, Sunan al-Darimi), when the author quotes a variant the published English
+doesn't cover, or when a collection isn't available at all (al-Hakim, al-Bayhaqi and others).
 
-- A typographic **cover** and front matter (half-title, copyright/edition page with a sacred-text
-  sourcing note).
-- Chapter openings set as events (rubricated titles, drop capitals), a proper **Table of Contents**,
-  and page folios in print.
-- Qur'an set centered in a mushaf face; hadith set as distinct quotations — distinguished by
-  *setting*, never by boxes.
-- A back-of-book **Glossary** of transliterated terms and **indexes** of every Qur'anic verse and
-  hadith cited, plus the author's endnotes.
-- A per-book **`review.md`** listing every citation and every item that needs human sign-off
-  (fallbacks, low-confidence matches, author-vs-dataset differences).
+Two companion rules keep this honest. **Citations follow the author, wording follows the dataset:**
+if the author printed a different number, the reader sees the author's. And **a run isn't finished
+until `python -m scripts.gate runs/<slug>` exits 0**, for every format and every agent.
 
-Typesetting is classical (Cardo for English, Amiri / Amiri Quran for Arabic), inline black + a single
-rubric red — the aesthetic of a serious religious publisher's hardcover.
+This verifies fidelity to the datasets. It does not grade hadith, and it does not replace review by a
+qualified person: every book says so on its copyright page.
 
 ## How it works
 
 ```
-PDF ──▶ ingest ──▶ (agent reads ToC) ──▶ chunk ──▶ translate (parallel subagents)
-                                                        │  Qur'an ─▶ retrieval/quran_lookup
-                                                        │  hadith ─▶ retrieval/hadith_lookup
-                                                        ▼
-                                         revise (parallel QA subagents, page-by-page)
-                                                        ▼
-                     assemble ──▶ verify + lint ──▶ convert ──▶ HTML + DOCX  (+ review.md)
+BOOK    PDF ─▶ ingest ─▶ read ToC ─▶ chunk ─▶ translate ─▶ revise ─▶ assemble ─▶ verify + lint
+                                                                         ─▶ PDF + DOCX + HTML
+LECTURE URL/SRT ─▶ word timeline ─▶ blocks ─▶ translate ─▶ revise ─▶ retime ─▶ lint ─▶ .en.srt
+POST    text/image ─▶ translate ─▶ check ─▶ plain text or thread
+
+Every translator  ─▶ retrieval (quran_lookup, hadith_lookup) + the shared glossary
+Every run         ─▶ scripts.gate
 ```
 
-Two independent quality nets sit behind the translators: a **reviser subagent** re-reads every
-chunk against the source pages (completeness, fidelity, conventions) before assembly, and after
-assembly `out.verify` machine-checks every sacred quotation against the datasets while `out.lint`
-sweeps the prose fabric (untranslated remnants, seam defects, transliteration drift, possible
-omissions by word-count outlier).
+The step-by-step workflows live in [`skills/`](skills/):
+[book](skills/translate-islamic-book/SKILL.md),
+[lecture](skills/translate-srt/SKILL.md),
+[post](skills/translate-post/SKILL.md).
 
-The full step-by-step workflow the agent follows lives in [`SKILL.md`](SKILL.md).
+Lecture timing is pure Python: the model never reads or writes a timestamp. Cues are re-segmented
+into sentences and held to ≤42 characters × 2 lines and ≤20 characters per second.
+
+The **master glossary** (`data/glossary.json`) is shared by every format. Lectures and posts add new
+terms as they find them; a changed rendering of an existing term waits for your sign-off. A term whose
+meaning depends on the discipline carries `senses`, so `الاعتبار` can be corroboration in hadith
+science and taking a lesson elsewhere.
+
+## Books
+
+Each book comes out as a self-contained HTML file, an A5 PDF and an editable DOCX: typographic cover
+and copyright page, table of contents, chapter openings with drop capitals, Qur'an set centered in a
+mushaf face and hadith as distinct quotations, a glossary of the terms the book uses, indexes of every
+verse and hadith cited, and the author's endnotes. Cardo for English, Amiri and Amiri Quran for
+Arabic, black ink and one rubric red. The HTML and PDF are the verified deliverables; the DOCX is
+checked structurally.
 
 ## Repository layout
 
 ```
-retrieval/     Qur'an + hadith lookup, orthography normalization, index cache
-ingest/        PDF page classification, structure, and section-aware chunking
-out/           assemble (merge + number), verify (sacred-text check), lint (prose checks), convert
-scripts/       pinned data download + manifest, ingest CLI, glossary diff/merge, run-status gate
-templates/     the translator + reviser subagent briefs, the DOCX reference template
-data/          curated source: master glossary, english-fixes, MANIFEST, surah names
-               (the datasets themselves are downloaded here, never committed)
+skills/        one SKILL.md per format
+templates/     the translator and reviser briefs, the DOCX reference template
+retrieval/     Qur'an + hadith lookup, glossary, verbatim comparison, index cache
+ingest/  out/  book pipeline: chunking, assembly, verification, lint, conversion
+subs/          lecture pipeline: timeline, segmentation, retiming, lint, scripture checks
+scripts/       every CLI: gate, doctor, run_status, post, glossary, finish_*, ingest_*
+data/          curated source (glossary, series notes, MANIFEST); datasets download here
+editor/        local mobile-first SRT proofing app (`cd editor && python3 -m http.server 8777`)
 assets/        embedded OFL fonts
-tests/         pytest suite (retrieval, ingest, lint, assembly, verification, conversion)
-SKILL.md       the pipeline the orchestrating agent runs
+tests/         pytest suite
+AGENTS.md      the rulebook for any agent working here
 ```
-
-## Setup
-
-Requirements: **Python 3.9+**, [`pandoc`](https://pandoc.org),
-[`poppler`](https://poppler.freedesktop.org) (`pdftotext`, `pdfinfo`, `pdffonts`), and
-Chrome/Chromium for PDF rendering (auto-detected; override with `CHROME=/path/to/chrome`).
-Developed and verified on macOS; the pipeline is plain Python + CLI tools and should run
-anywhere they do (install `assets/fonts/*.ttf` per your OS for Word).
 
 ```bash
-python scripts/setup_data.py     # downloads the PINNED datasets + verifies data/MANIFEST.json
-python scripts/setup_data.py --check   # re-verify the corpus anytime (SHA-256)
-pip install -r requirements-dev.txt    # (tests only)
-pytest -m "not integration"
+.venv/bin/python -m pytest -q                      # everything
+.venv/bin/python -m pytest -q -m "not integration" # without the datasets
 ```
 
-To run it as a Claude Code skill: `ln -s "$(pwd)" ~/.claude/skills/translate-islamic-book`.
-Then follow [`SKILL.md`](SKILL.md) to run a book through the pipeline. In outline:
+## Data sources and credits
 
-```bash
-python -m scripts.ingest_book analyze <book.pdf> --work <book>/work
-# (the agent reads the ToC pages and writes structure.json)
-python -m scripts.ingest_book chunk   <book.pdf> --work <book>/work --target 10
-# (translator subagents write <book>/work/translated/chunk_NNNN.md,
-#  then reviser subagents re-check each chunk against the source pages)
-python -m out.assemble <book>/work/translated <book>/work/book.md --glossary <book>/work/glossary.json --indexes --matter
-python -m out.verify   <book>/work/book.md
-python -m out.lint     <book>/work --glossary <book>/work/glossary.json
-python -m out.convert  <book>/work/book.md <book>/output
-python -m scripts.render_pdf <book>/output/book.html <book>/output/book.pdf
-```
+This tool *uses* third-party reference data and fonts. It does not redistribute them: datasets are
+downloaded at setup, never committed.
 
-## Data sources & credits
-
-This tool *uses* third-party reference data and fonts; it does not redistribute them (datasets are
-downloaded at setup, not committed):
-
-- **Qur'an & hadith text/translations** — fetched via the public
+- **Qur'an and hadith text and translations** come from
   [`fawazahmed0/quran-api`](https://github.com/fawazahmed0/quran-api) and
-  [`hadith-api`](https://github.com/fawazahmed0/hadith-api) (API code released under The Unlicense),
-  **pinned to exact upstream commits** and integrity-checked against a committed SHA-256 manifest
-  (`data/MANIFEST.json`) so the corpus a book was verified against can never drift silently.
-  English Qur'an renderings include **Saheeh International** and **The Clear Quran**; hadith are given
-  in their published English translations.
-- **Fonts** — [Cardo](https://scholarsfonts.net/cardofnt.html),
-  [Amiri](https://github.com/alif-type/amiri), and Amiri Quran, all under the SIL Open Font License.
-- **Tooling** — [pandoc](https://pandoc.org) and [poppler](https://poppler.freedesktop.org).
+  [`hadith-api`](https://github.com/fawazahmed0/hadith-api) (API code under The Unlicense), **pinned to
+  exact commits** and checked against a SHA-256 manifest, so the corpus a book was verified against
+  can't drift silently. English Qur'an renderings include **Saheeh International** and **The Clear
+  Quran**; hadith are given in their published English translations.
+- **Musnad Ahmad and Sunan al-Darimi (Arabic)** come from
+  [Open Hadith Data](https://github.com/mhashim6/Open-Hadith-Data), under the Open Database License,
+  pinned the same way.
+- **Fonts:** [Cardo](https://scholarsfonts.net/cardofnt.html),
+  [Amiri](https://github.com/alif-type/amiri) and Amiri Quran, all under the SIL Open Font License.
+- **Tooling:** [pandoc](https://pandoc.org), [poppler](https://poppler.freedesktop.org) and
+  [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 > ⚠️ **Please note:** the Qur'an and hadith **English translations** retrieved by this tool are the
-> copyrighted work of their respective publishers. This repository contains no scripture text or
-> translations — only code that fetches and typesets them. You are responsible for complying with the
-> licensing terms of any translation you use, and for respecting the copyright of any source book you
-> translate. Sacred texts should be reviewed by a qualified person before publication; the machine
-> verification here guards *fidelity to the dataset*, not scholarly or theological correctness.
+> copyrighted work of their publishers. This repository contains no scripture text or translations,
+> only code that fetches and typesets them. You are responsible for complying with the licensing terms
+> of any translation you use, and for respecting the copyright of any book or lecture you translate.
 
 ## License
 
-The code is released under the [MIT License](LICENSE). It applies **only to the code** here — it
-does **not** extend to the datasets, translations, fonts (SIL OFL, see
-[`assets/fonts/`](assets/fonts/)), or any source book processed with this tool, which retain
-their own licenses as noted above.
+The code is under the [MIT License](LICENSE). That covers **only the code**: not the datasets,
+translations, fonts (SIL OFL, see [`assets/fonts/`](assets/fonts/)), or any material processed with
+this tool, which keep their own licenses as noted above.

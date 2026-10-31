@@ -1,3 +1,4 @@
+from scripts.recheck_scripture import recheck_sentence
 from subs.scripture import references, sentence_problem
 
 
@@ -24,6 +25,12 @@ def test_refs_parse_verse_ranges_and_lists():
     assert references("quran", "1:1-2", _Quran(), _Hadith()) == ["sea river mountain sun",
                                                                 "ocean stream peak star"]
     assert len(references("hadith", "muslim 9, bukhari 1", _Quran(), _Hadith())) == 1
+
+
+def test_refs_accept_semicolons_and_spelled_out_collections():
+    assert len(references("hadith", "muslim 9; bukhari 1", _Quran(), _Hadith())) == 1
+    index = type("I", (), {"get": lambda self, c, n: {"english": "e"} if c == "ibnmajah" else None})()
+    assert references("hadith", "Ibn Majah 4164", _Quran(), index) == ["e"]
 
 
 def test_verbatim_quote_passes_even_with_break_marks():
@@ -53,3 +60,34 @@ def test_unknown_ref_fails():
 def test_prose_and_fallbacks_are_not_checked():
     assert _problem(_s("anything", "prose", None, None)) is None
     assert _problem(_s("my own words", src="fallback")) is None
+
+
+class _Long:
+    def get(self, coll, num):
+        return {"english": "one two three four five six seven eight"}
+
+
+def test_recheck_records_the_quote_inside_commentary():
+    s = _s("So he told them: | one two three four five six seven, | and that is the point",
+           "hadith", "bukhari 1")
+    assert recheck_sentence(s, _Quran(), _Long()) == "quote"
+    assert s["quote"] == "one two three four five six seven" and s["src"] == "dataset"
+    assert sentence_problem(s, _Quran(), _Long()) is None
+
+
+def test_recheck_relabels_a_real_paraphrase():
+    s = _s("In short, one two and then something else entirely", "hadith", "bukhari 1")
+    assert recheck_sentence(s, _Quran(), _Long()) == "fallback"
+    assert s["src"] == "fallback" and "not the dataset's wording" in s["flags"]
+    assert sentence_problem(s, _Quran(), _Long()) is None
+
+
+def test_recheck_relabels_an_unresolvable_ref():
+    s = _s("That which is lawful is clear", "hadith", "bukhari & muslim")
+    assert recheck_sentence(s, _Quran(), _Hadith()) == "fallback"
+
+
+def test_recheck_leaves_good_sentences_alone():
+    s = _s("one two three four five six", "hadith", "bukhari 1")
+    before = dict(s)
+    assert recheck_sentence(s, _Quran(), _Long()) is None and s == before
