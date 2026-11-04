@@ -41,6 +41,15 @@ Read the whole SKILL.md and follow its steps in order. Do not skip the pilot, th
 the gate because the job looks easy. The briefs in `templates/` are binding for whoever does the
 translating, you included.
 
+## Author-specific translation standards
+
+When a source is written or delivered by Sheikh Ahmad bin Yusuf Al-Sayyid (أحمد السيد), read
+[`docs/translation-manuals/sheikh-ahmad-al-sayyid.md`](docs/translation-manuals/sheikh-ahmad-al-sayyid.md)
+and include its rules in the run's `DISPATCH.md`. It takes precedence over conflicting generic
+style, series notes, and shared-glossary values for his work. Keep those author-specific choices
+run-local; do not rewrite the shared glossary. The retrieval, marker, timing, and verification
+requirements remain mandatory. If authorship is uncertain, ask or flag it rather than assuming.
+
 ## Where the skills mention a Claude Code feature
 
 | The skill says | On your agent |

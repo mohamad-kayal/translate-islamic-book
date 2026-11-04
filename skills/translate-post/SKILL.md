@@ -18,7 +18,10 @@ No chunks, no subagents: a post is small enough to do directly.
 
 1. **Get the Arabic.** Pasted text: use it as given. A link: fetch the page with your web tools and
    take the post's text only. A screenshot or quote card: read the image and transcribe the Arabic
-   exactly as printed.
+   exactly as printed. Identify the author from the source. If it is Sheikh Ahmad bin Yusuf
+   Al-Sayyid (أحمد السيد), read `docs/translation-manuals/sheikh-ahmad-al-sayyid.md`; its terms
+   and style override conflicting generic rules and shared-glossary values for this post. If
+   authorship is uncertain, ask or flag it rather than assuming.
 2. **Start the run.** `python -m scripts.post init runs/<slug> --text "<arabic>"` (or `--from <file>`).
    It stores `source.txt` and prints the glossary subset to follow.
 3. **Translate.** Follow `templates/post-translator.md` exactly and write `runs/<slug>/work/post.md`.
@@ -27,8 +30,10 @@ No chunks, no subagents: a post is small enough to do directly.
    against the Arabic line by line.
 5. **Finish.** `python -m scripts.post finish runs/<slug> [--platform x|bluesky|threads|mastodon|instagram|linkedin|telegram|facebook] [--arabic]`
    writes `output/<slug>.txt`, or `.thread.txt` when a threading platform needs splitting, plus
-   `output/review.md`. `--arabic` keeps the Arabic of quoted verses and hadith. New terms are merged
-   into the master glossary; commit `data/glossary.json` and `data/glossary-changelog.md`.
+   `output/review.md`. `--arabic` keeps the Arabic of quoted verses and hadith. New general terms
+   are merged into the master glossary; do not promote author-profile-only choices to the shared
+   glossary. Commit `data/glossary.json` and `data/glossary-changelog.md` only for approved general
+   terms.
 6. **Deliver.** Show the user the finished text and anything flagged, especially a † hadith: that
    English is a translation of ours, not a published one, and the post says so.
 

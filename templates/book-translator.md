@@ -7,6 +7,12 @@ when the run has one — the book's DISPATCH.md with book-specific conventions (
 brief; on conflict, DISPATCH.md wins). Read the pages as rendered images, and read the Arabic exactly as
 printed.
 
+If the book is by Sheikh Ahmad bin Yusuf Al-Sayyid (أحمد السيد), also read
+`docs/translation-manuals/sheikh-ahmad-al-sayyid.md`. Its terminology and style override conflicting
+rules in this brief, the shared glossary, and series notes for this author's work. Use its entries
+even when the injected glossary subset differs, and record author-specific choices in DISPATCH.md
+or the run glossary; do not change the shared glossary.
+
 ## The three lanes — route every span to exactly one
 
 1. **Author's prose** → TRANSLATE. Literal, faithful to the author's tone; lightly de-ambiguate only for
@@ -37,8 +43,10 @@ printed.
    double quotes with its ref bracket on the next line.
    If the author quotes only part of an ayah, you may paste only that part — but it must be a
    verbatim substring of the retrieved `arabic`, and the English a verbatim substring of
-   `english_saheeh`. Trim it; never reword it. A Qur'an block whose English deviates fails
-   `out.verify` and stops the book.
+   `english_saheeh`. Trim it; never reword it. **For Sheikh Ahmad Al-Sayyid's work, the profile
+   overrides this partial-quote rule: retrieve and use the complete ayah in Arabic and Saheeh
+   International English, and flag the added surrounding text.** A Qur'an block whose English
+   deviates fails `out.verify` and stops the book.
    **Repeated phrases:** the reply lists EVERY location of the quotation (`n_locations`,
    `locations`). When `n_locations` > 1 the phrase recurs in the Quran (mutashabihat) and the
    first hit is only a default: use the AUTHOR's printed reference to pick the location; if the
@@ -46,7 +54,9 @@ printed.
    Never take the first location on faith.
    **Citation follows the author:** if the author prints a different surah:ayah than your pick,
    use the AUTHOR's reference in the `[REF]` brackets and set the marker `s`/`a` to the author's
-   cited location (the wording is still the retrieved verbatim text).
+   cited location (the wording is still the retrieved verbatim text). For this author's work,
+   replace both visible reference brackets with the same numeric `[sura:verse]` (for example
+   `[2:255]`), using an en dash for a verse range; keep the marker's numeric `s`/`a` fields valid.
    If `matched:false`, the reply's `nearest` lists the closest ayat with their text — you likely
    misread a word on the page; correct your quote against it and retry. If it still won't match,
    emit `<!--quran s=0 a=0-0 tr=fallback-->` and flag it — NEVER write the verse from memory.
@@ -90,6 +100,8 @@ printed.
      from memory.
 
 ## House conventions (parallel chunks must not drift)
+- When the author profile above applies, its honorific, transliteration, title, number, and
+  formatting rules take precedence over the generic conventions below.
 - **Honorifics**: keep ﷺ exactly where the source has it — never drop it, never spell it out.
   For other prophets, render عليه السلام as "(peace be upon him)".
 - **Transliteration**: definite article is always written `al-` (no sun-letter assimilation:

@@ -21,7 +21,8 @@ one run: `runs/<slug>/`. First time here: `./install.sh`.
   become flagged fallbacks in `review.md`.
 - The model never reads or writes timestamps — all timing math is Python (`subs/retime.py`).
 - Glossary conflicts never auto-apply. New terms auto-merge (that's the live glossary); a
-  changed rendering of an existing term waits for the user in `review.md`.
+  changed rendering of an existing term waits for the user in `review.md`. Do not submit fixed or
+  author-profile-only terms for Sheikh Ahmad Al-Sayyid as new master-glossary entries.
 - Subagents WRITE their block file before their final self-check.
 - Never `git push`. The end-of-run glossary commit is local.
 
@@ -35,7 +36,10 @@ one run: `runs/<slug>/`. First time here: `./install.sh`.
    file (e.g. `data/series/sirah.md` for `sirah-NN` runs) and fold it into
    `runs/<slug>/work/DISPATCH.md`. New series → start a notes file (speaker, series title,
    format, coined renderings). The glossary subset is injected automatically per block;
-   series notes carry what the glossary can't.
+   series notes carry what the glossary can't. For Sheikh Ahmad bin Yusuf Al-Sayyid (أحمد السيد),
+   also read `docs/translation-manuals/sheikh-ahmad-al-sayyid.md`; its fixed terms and style
+   override conflicting series notes or shared-glossary values for this run. Record those choices
+   in DISPATCH.md, not the shared glossary. If authorship is uncertain, ask or flag it.
 3. **Pilot** — dispatch ONE translator subagent (Agent tool, `run_in_background: false`) for
    block 0 with a prompt of this shape (adding DISPATCH.md to the reading list when it exists):
 

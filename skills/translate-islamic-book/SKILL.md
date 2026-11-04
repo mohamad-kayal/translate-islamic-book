@@ -31,7 +31,11 @@ one run: `runs/<slug>/`, with `<work>` = `runs/<slug>/work`. First time here: `.
 4. **Prime the glossary.** `python -m scripts.glossary prime <work> --pdf <book.pdf>` writes
    `<work>/glossary.json`: the master's entries this book mentions, or the whole master for an
    image-only PDF. Fill its `book` block (`title_en`, `title_ar`, `author_en`, `author_ar`, and
-   `translator`, `edition`, `year` for the copyright page). Read ~3 spread-out chunks and ADD
+   `translator`, `edition`, `year` for the copyright page). Identify the author from the source.
+   For Sheikh Ahmad bin Yusuf Al-Sayyid, read
+   `docs/translation-manuals/sheikh-ahmad-al-sayyid.md`; its fixed terminology and style override
+   conflicting master-glossary entries for this run. Record those choices in the run glossary or
+   DISPATCH.md; do not alter the shared glossary. Otherwise, read ~3 spread-out chunks and ADD
    book-specific entries under `terms`/`names`/`structure`, keeping the master's transliteration
    style. If this book deliberately renders a master term differently, add
    `"override": "<reason>"` to that entry, otherwise the harvest will flag it as a conflict.
@@ -40,13 +44,13 @@ one run: `runs/<slug>/`, with `<work>` = `runs/<slug>/work`. First time here: `.
    book's names (Arabic + English + author), the source PDF path, the structural heading map
    (`الباب` → `##`, `الفصل` → `###`, …), how the author presents hadith (isnad style, where the
    takhrij lives, and therefore what to pass as `--prefer`), enumeration-label handling, recurring
-   formulae beyond the default honorifics, and the output contract (WRITE
-   `translated/chunk_NNNN.md`, return a short flag-status). Read 2–3 content pages first so the
-   brief reflects the book's actual habits.
+   formulae beyond the default honorifics, the author profile when applicable, and the output
+   contract (WRITE `translated/chunk_NNNN.md`, return a short flag-status). Read 2–3 content pages
+   first so the brief reflects the book's actual habits.
 6. **Translate (parallel subagents).** For each chunk, dispatch a subagent with
-   `templates/book-translator.md` + `DISPATCH.md`, `assignments.md`, the glossary path, and its
-   chunk number. Subagents WRITE their own chunk file (complete file BEFORE their self-check, so a
-   cutoff loses nothing) and return a short flag-status.
+   `templates/book-translator.md`, the author profile when applicable, `DISPATCH.md`,
+   `assignments.md`, the glossary path, and its chunk number. Subagents WRITE their own chunk file
+   (complete file BEFORE their self-check, so a cutoff loses nothing) and return a short flag-status.
    - **Pilot gate:** run chunk 1 alone first, verify + read it, and only then fan out the rest
      (up to ~8 concurrently).
    - **Usage gate:** before the pilot and before EVERY later wave, run
@@ -57,7 +61,8 @@ one run: `runs/<slug>/`, with `<work>` = `runs/<slug>/work`. First time here: `.
      truncated, so re-dispatch that chunk alone. Completed chunks are never discarded because a
      sibling failed. Collect every returned flag for review.md.
 7. **Revise (parallel subagents, the prose QA pass).** For each chunk, dispatch a REVISER with
-   `templates/book-reviser.md` + `DISPATCH.md`, the same chunk info, and the chunk file. Revisers
+   `templates/book-reviser.md` + `DISPATCH.md`, the author profile when applicable, the same chunk
+   info, and the chunk file. Revisers
    re-read the source pages and check completeness page by page, fidelity (negations, numbers,
    names), conventions and marker shape; they fix minors in place and return an edits/majors/flags
    report. Same wave + usage-gate discipline as translation; a smaller model is fine here. Append

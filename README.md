@@ -102,6 +102,10 @@ terms as they find them; a changed rendering of an existing term waits for your 
 meaning depends on the discipline carries `senses`, so `الاعتبار` can be corroboration in hadith
 science and taking a lesson elsewhere.
 
+Work by Sheikh Ahmad bin Yusuf Al-Sayyid follows the higher-priority
+[author translation profile](docs/translation-manuals/sheikh-ahmad-al-sayyid.md); its overrides are
+run-local and do not silently change the shared glossary.
+
 ## Books
 
 Each book comes out as a self-contained HTML file, an A5 PDF and an editable DOCX: typographic cover

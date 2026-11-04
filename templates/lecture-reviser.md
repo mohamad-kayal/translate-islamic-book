@@ -14,6 +14,11 @@ to get the Arabic proto-segments and glossary subset, then read the block's outp
    attribution in quotes.
 3. **Conventions** — glossary renderings binding (first use `english (translit)`, short form
    after), honorifics present (ﷺ / (AS) / (RA)), digits for numbers, normal punctuation.
+   If the speaker is Sheikh Ahmad bin Yusuf Al-Sayyid, check
+   `docs/translation-manuals/sheikh-ahmad-al-sayyid.md`; it overrides those generic style rules and
+   conflicting glossary values. Preserve machine-checked fields. Keep the complete ayah when the
+   speaker recites only a fragment; flag the added words and any subtitle-length concern, but do
+   not trim the dataset wording.
 4. **Scripture** — quotes typed quran/hadith with a ref; dataset English not paraphrased (a
    sentence with `src: "dataset"` must pass `block_brief check`; if the speaker truly paraphrases,
    it is `src: "fallback"`, not dataset); commentary around quotes typed prose. A quote the

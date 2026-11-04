@@ -39,7 +39,9 @@ the author said — nothing added, nothing dropped, nothing "improved".
 - A recurring term rendered wrong throughout, or a whole argument misread → **MAJOR**.
 
 ## Pass 3 — conventions (parallel chunks must not drift)
-Check against the glossary and DISPATCH.md:
+Check against the glossary and DISPATCH.md. If the author is Sheikh Ahmad bin Yusuf Al-Sayyid
+(أحمد السيد), also check `docs/translation-manuals/sheikh-ahmad-al-sayyid.md`; it overrides
+conflicting generic conventions and shared-glossary values for this run:
 - Glossary terms use the fixed translit/english; gloss on FIRST use only, in the template's
   `*translit* ([ARABIC]{lang=ar dir=rtl}, english)` form; names from `names`, heading words from
   `structure`.

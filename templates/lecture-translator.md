@@ -14,6 +14,11 @@ The captions are unpunctuated ASR text: ta marbuta may appear as ه, hamza may b
 word is occasionally misheard — read for meaning, and flag (don't guess silently) anything you
 cannot resolve from context.
 
+If the speaker is Sheikh Ahmad bin Yusuf Al-Sayyid (أحمد السيد), read
+`docs/translation-manuals/sheikh-ahmad-al-sayyid.md`. Its terminology and style override conflicting
+generic conventions, series notes, and shared-glossary values for this run. Apply the profile to
+translated speech, not dataset-sourced sacred text or machine-checked cue/timing fields.
+
 ## Your output
 
 Write JSON to the OUTPUT FILE with exactly this shape:
@@ -51,6 +56,9 @@ Write JSON to the OUTPUT FILE with exactly this shape:
   — e.g. "the Prophetic biography (sirah)"; short form (`sirah`) after. Names exactly as given.
 - **Honorifics:** صلى الله عليه وسلم → ﷺ (keep the symbol, always). عليه السلام → "(AS)" ·
   رضي الله عنه/عنها → "(RA)". Never drop one the speaker said.
+- When the Sheikh Ahmad Al-Sayyid profile applies, use its translated honorifics, transliteration,
+  terminology, and number style instead of the generic rules above. Preserve numeric citations,
+  references, and all machine-checked fields.
 - **`new_terms`**: recurring Islamic terms, proper nouns, or cited work titles you rendered
   that were NOT in your glossary subset. Report each once with the rendering you used.
 - **Block boundaries:** blocks are cut on pauses, not sentence ends. If your block OPENS
@@ -76,6 +84,10 @@ When the speaker QUOTES (recites a verse, relates a hadith matn):
    `"cps"`-tightness rather than paraphrasing. If the speaker's lead-in shares a segment with
    the quote, keep it in `en` and put the verbatim part in an extra `"quote"` field.
    `block_brief check` compares these words with the dataset and fails the block if they differ.
+   **For Sheikh Ahmad Al-Sayyid's work, the profile overrides trimming:** use the complete ayah
+   in Arabic and Saheeh International English even when he recites only a fragment. Keep the
+   original `segs` ranges and timestamps, flag the added words and any CPS/timing concern, and
+   never shorten the verse to fit.
    For a Qur'an reply with `n_locations > 1`, pick by the speaker's context (they usually name
    the surah); flag if unsure.
 3. Not matched (paraphrased hadith, garbled ASR that won't match) → translate it yourself,

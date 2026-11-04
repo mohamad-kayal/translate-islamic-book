@@ -4,8 +4,9 @@ Read at Prime (SKILL.md step 2) and fold into `DISPATCH.md`; update at Finish wi
 the new episode established. These are conventions the glossary can't carry — renderings we
 coined, series facts, and how the room behaves.
 
-- **Speaker:** Ahmad al-Sayyid (أحمد السيد) — same author as the translate-islamic-book
-  master glossary and the `sirah` series, so his terminology is already well covered there.
+- **Speaker:** Ahmad bin Yusuf Al-Sayyid (أحمد السيد). Apply
+  [`docs/translation-manuals/sheikh-ahmad-al-sayyid.md`](../../docs/translation-manuals/sheikh-ahmad-al-sayyid.md)
+  over any conflicting series note or shared-glossary value.
 - **Series title:** أنوار السنة المحمدية — a running commentary on Imam al-Nawawi's hadith
   anthology *Riyad al-Salihin*. Render the series title as "The Lights of the Muhammadan
   Sunnah (Anwar al-Sunnah al-Muhammadiyyah)" (ours; no published English title known).
@@ -18,7 +19,7 @@ coined, series facts, and how the room behaves.
   "رواه البخاري", etc.), then explains. **Scripture is dense here — retrieval is the whole
   game**; verses and hadith matns must come from the datasets, never memory.
 - **Chapters (باب):** render as "the chapter on X (Bab …)" — e.g. باب الإخلاص والنية →
-  "the chapter on Sincerity and Intention (Bab al-Ikhlas wa'l-Niyyah)"; باب التوبة →
+  "the chapter on Sincerity and Intention (Bab al-Ikhlas wa al-Niyyah)"; باب التوبة →
   "the chapter on Repentance (Bab al-Tawbah)"; باب الصبر → "the chapter on Patience
   (Bab al-Sabr)". Short form "the chapter on Patience" after first use.
 - **Session openings:** each lecture opens with the khutbat al-hajah (praise of Allah +
@@ -26,7 +27,8 @@ coined, series facts, and how the room behaves.
   actual recited verse inside it gets retrieved.
 - **al-Nawawi's numbering:** he numbers hadith in his own sequence. Cite each hadith by its
   ORIGINAL collection via `hadith_lookup` (bukhari/muslim/…), not by a Riyad al-Salihin number.
-- **Numbers:** digits, not words.
+- **Numbers:** follow the author profile: spell out numbers below one hundred in prose; retain
+  numerals for dates, scripture references, collection numbers, and machine-checked fields.
 
 ## Episodes
 
