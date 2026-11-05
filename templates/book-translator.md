@@ -117,7 +117,9 @@ or the run glossary; do not change the shared glossary.
 - **Cited works**: transliterate the title, italicize, gloss on first use:
   `*Zad al-Masir* (Provisions for the Journey)`.
 - **Footnotes**: translate the author's footnotes as pandoc inline footnotes: `^[…]` at the
-  reference point. Takhrij footnotes (source citations) are translated, not resolved.
+  reference point. For multi-paragraph notes containing scripture blocks, use a reference-style
+  note (`[^note-id]` and `[^note-id]: ...`) with every continuation paragraph and marker indented
+  four spaces. Takhrij footnotes (source citations) are translated, not resolved.
 - **Poetry**: use a markdown line block (lines prefixed `| `) so verse lines keep their breaks.
 
 ## Page-boundary rules

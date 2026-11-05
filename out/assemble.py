@@ -11,12 +11,13 @@ from retrieval.normalize import normalize_arabic
 # '*[Ornamental page: Basmala]*') are for the orchestrator, not the reader.
 _PAGE_NOTE = re.compile(r"^\*\[[^\]]*\]\*\s*$", re.M)
 _EXTRA_BLANKS = re.compile(r"\n{3,}")
-_QURAN_FULL = re.compile(r"(<!--quran\s+([^>]*?)-->\n)(.*?)(\n<!--/quran-->)", re.S)
+_QURAN_FULL = re.compile(r"(<!--quran\s+([^>]*?)-->\n)(.*?)(\n[ \t]*<!--/quran-->)", re.S)
 # Tolerates the indentation of a hadith quoted inside a multi-paragraph footnote.
 _HADITH_FULL = re.compile(r"(<!--hadith\s+([^>]*?)-->\n)(.*?)(\n[ \t]*<!--/hadith-->)", re.S)
 _REF_TAIL = re.compile(r"\s*(\[[^\]]*\])\s*$")
 _RUB_MARK = "۞"   # U+06DE start of rub-el-hizb — a division marker, not verse text
 _TO_ARABIC = str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩")
+_DEFAULT_QURAN_ADJECTIVE = "Qur'anic"
 
 # Index patterns
 _H2 = re.compile(r"^##\s+(?!Index of|Glossary)(.+?)\s*$", re.M)
@@ -41,11 +42,11 @@ def _ar(s):
     return "[%s]{lang=ar dir=rtl}" % s
 
 
-def _sources_note(own_renderings):
+def _sources_note(own_renderings, quran_adjective=_DEFAULT_QURAN_ADJECTIVE):
     """The copyright page's claim about the sacred text. `own_renderings` comes from
     mark_own_renderings, so the sentence cannot drift from what the book actually holds."""
-    note = ("Qur'anic quotations are the Saheeh International translation. Hadith are given "
-            "in their published translations")
+    note = ("%s quotations are the Saheeh International translation. Hadith are given "
+            "in their published translations" % quran_adjective)
     if own_renderings == 1:
         note += (", except the one marked %s, whose English is this edition's own rendering "
                  "because no published translation could be matched to it"
@@ -56,6 +57,13 @@ def _sources_note(own_renderings):
                  % (own_renderings, OWN_RENDERING_MARK))
     return note + (". All other sacred text is retrieved from reference datasets and "
                    "machine-checked against them.")
+
+
+def _quran_adjective(meta):
+    value = (meta or {}).get("quran_adjective", _DEFAULT_QURAN_ADJECTIVE)
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("book.quran_adjective must be a nonempty string")
+    return value
 
 
 def front_matter(meta):
@@ -72,7 +80,8 @@ def front_matter(meta):
         lines.append("%s  " % meta["edition"])
     if meta.get("year"):
         lines.append("%s  " % meta["year"])
-    lines += ["", _sources_note(meta.get("own_renderings", 0)), "",
+    lines += ["", _sources_note(meta.get("own_renderings", 0),
+                               _quran_adjective(meta)), "",
               "This edition has not been fully verified against the Arabic "
               "source by a human and may contain errors.", ":::", ""]
     return cover + half + "\n".join(lines) + "\n"
@@ -99,6 +108,7 @@ def _renumber(m, quran_index):
     if idx is None:
         return m.group(0)
     ar_line = lines[idx]
+    indent = re.match(r"[ \t]*", ar_line).group()
     ref_m = _REF_TAIL.search(ar_line)
     ref = ref_m.group(1) if ref_m else ""
     arabic = (ar_line[:ref_m.start()] if ref_m else ar_line).replace(_RUB_MARK, "")
@@ -113,7 +123,7 @@ def _renumber(m, quran_index):
                           for a, v in zip(range(a0, a1 + 1), verses))
     # strip rub-el-hizb marks last — they occur in the dataset text itself (e.g. 28:12)
     arabic = re.sub(r"\s+", " ", arabic.replace(_RUB_MARK, "")).strip()
-    lines[idx] = arabic + ((" " + ref) if ref else "")
+    lines[idx] = indent + arabic + ((" " + ref) if ref else "")
     return head + "\n".join(lines) + tail
 
 
@@ -140,7 +150,7 @@ def _chapter_at(md, pos):
     return _short_chapter(best)
 
 
-def build_indexes(book_md):
+def build_indexes(book_md, quran_adjective=_DEFAULT_QURAN_ADJECTIVE):
     verses, hadith = [], []
     for m in _QURAN_MARK.finditer(book_md):
         s, a0, a1 = int(m.group(1)), int(m.group(2)), int(m.group(3))
@@ -171,7 +181,7 @@ def build_indexes(book_md):
                 continue
             seen.add(key)
             entries.append("%s — *%s*" % (ref, chap))
-        sections.append(_section("Index of Qur'anic Verses", entries))
+        sections.append(_section("Index of %s Verses" % quran_adjective, entries))
     if hadith:
         seen, entries = set(), []
 
@@ -222,8 +232,8 @@ def assign_hadith_numbers(md, number=True):
     that cite hadith inline as evidence, which is the common case."""
     if not number:
         md = re.sub(r"\[\[HA?\]\][ \t]*", "", md)   # marker + following inline space
-        md = re.sub(r"[ \t]{2,}", " ", md)
-        md = re.sub(r"[ \t]+([:.,;])", r"\1", md)    # tidy '…hadith :' -> '…hadith:'
+        md = re.sub(r"(?<=\S)[ \t]{2,}", " ", md)
+        md = re.sub(r"(?<=\S)[ \t]+([:.,;])", r"\1", md)  # tidy inline punctuation, not indentation
         return md
     main = {"n": 0}
     app = {"n": 0}
@@ -296,7 +306,7 @@ def assemble(chunk_dir, out_path, title=None, author=None, quran_index=None, had
     if glossary:
         book = append_glossary(book, glossary)
     if indexes:
-        idx_text = build_indexes(book)
+        idx_text = build_indexes(book, _quran_adjective(meta))
         if idx_text:
             book = "%s\n\n%s" % (book, idx_text)
     if matter and meta:
@@ -332,10 +342,9 @@ if __name__ == "__main__":
     if args.glossary:
         from retrieval.glossary import load as _load_gloss
         gloss = _load_gloss(args.glossary)
-    meta = None
+    meta = dict(gloss.get("book") or {}) if gloss else {}
     if args.matter:
         # start from the glossary 'book' block (if any), then overlay CLI args (CLI wins)
-        meta = dict(gloss.get("book", {})) if gloss else {}
         for key, val in (("title_en", args.title), ("title_ar", args.title_ar),
                          ("author_en", args.author), ("author_ar", args.author_ar),
                          ("translator", args.translator), ("edition", args.edition),

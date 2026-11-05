@@ -1,7 +1,9 @@
 import os
+import textwrap
 import zipfile
 
 from out import convert
+from out.assemble import assign_hadith_numbers
 
 _QURAN_MD = (
     "# Chapter\n\n"
@@ -90,6 +92,56 @@ def test_to_docx_applies_quran_paragraph_styles(tmp_path):
         doc = z.read("word/document.xml").decode("utf-8")
     assert 'w:pStyle w:val="QuranArabic"' in doc
     assert 'w:pStyle w:val="QuranEnglish"' in doc
+
+
+_SCRIPTURAL_FOOTNOTE = (
+    "# Chapter\n\nBody[^n].\n\n[^n]: Introduction to the note.\n\n"
+    + textwrap.indent(_QURAN_MD.split("\n\n", 1)[1], "    ")
+    + "\n    [[H]] A report:\n\n"
+    "    <!--hadith coll=bukhari num=1 conf=1 src=dataset-->\n"
+    "    «متن»\n"
+    '    "A report" (Narrated by al-Bukhari 1)\n'
+    "    <!--/hadith-->\n\n"
+    "    Closing explanation.\n\nBack in the main text.\n"
+)
+
+
+def test_transform_markers_preserves_footnote_indentation():
+    rendered = convert._transform_markers(_SCRIPTURAL_FOOTNOTE)
+    assert "<!--quran" not in rendered and "<!--hadith" not in rendered
+    for style in ("QuranArabic", "QuranEnglish", "HadithArabic", "HadithEnglish"):
+        assert '\n    ::: {custom-style="%s"' % style in rendered
+    assert "\n    Closing explanation.\n" in rendered
+
+
+def test_unnumbered_scriptural_footnote_stays_inside_html_note(tmp_path):
+    md = tmp_path / "book.md"
+    md.write_text(assign_hadith_numbers(_SCRIPTURAL_FOOTNOTE, number=False), encoding="utf-8")
+    out = tmp_path / "book.html"
+    convert.to_html(str(md), str(out))
+    html = out.read_text(encoding="utf-8")
+    note = html[html.index('<li id="fn1"'):].split("</li>", 1)[0]
+    body = html[html.index("<body"):]
+    for style in ("QuranArabic", "QuranEnglish", "HadithArabic", "HadithEnglish"):
+        assert 'data-custom-style="%s"' % style in note
+        assert body.count('data-custom-style="%s"' % style) == 1
+    assert "Closing explanation." in note
+    assert "Back in the main text." not in note
+
+
+def test_unnumbered_scriptural_footnote_keeps_docx_styles(tmp_path):
+    md = tmp_path / "book.md"
+    md.write_text(assign_hadith_numbers(_SCRIPTURAL_FOOTNOTE, number=False), encoding="utf-8")
+    out = tmp_path / "book.docx"
+    convert.to_docx(str(md), str(out))
+    with zipfile.ZipFile(out) as z:
+        doc = z.read("word/document.xml").decode("utf-8")
+        notes = z.read("word/footnotes.xml").decode("utf-8")
+    for style in ("QuranArabic", "QuranEnglish", "HadithArabic", "HadithEnglish"):
+        assert 'w:pStyle w:val="%s"' % style in notes
+        assert 'w:pStyle w:val="%s"' % style not in doc
+    assert "Closing explanation." in notes
+    assert "Back in the main text." not in notes
 
 
 # ---------------------------------------------------------------------------

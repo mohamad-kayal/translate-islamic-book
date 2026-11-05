@@ -114,6 +114,9 @@ in a title example in the source manual (for example, write *al-Wahhaj*, not *al
   established form consistently thereafter.
 - Cite Qur’anic verses numerically as `[sura:verse]` (for example, `[2:255]`), using an en dash
   for a verse range.
+- For book runs, set `"quran_adjective": "Qurʾanic"` in the run glossary's `book` metadata.
+  This applies the word-list spelling to the generated scripture-source note and verse-index
+  heading without changing protected quotations or the default style of other authors' runs.
 
 ## Honorifics
 

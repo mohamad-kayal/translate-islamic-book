@@ -11,14 +11,19 @@ import json
 import os
 import re
 import subprocess
+import textwrap
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO_ROOT = os.path.dirname(_HERE)
 _FONTS_DIR = os.path.join(_REPO_ROOT, "assets", "fonts")
 _REFERENCE_DOCX = os.path.join(_REPO_ROOT, "templates", "reference.docx")
 
-_QURAN_BLOCK = re.compile(r"<!--quran\s+[^>]*?-->\n(.*?)\n<!--/quran-->", re.S)
-_HADITH_BLOCK = re.compile(r"<!--hadith\s+[^>]*?-->\n(.*?)\n<!--/hadith-->", re.S)
+_QURAN_BLOCK = re.compile(
+    r"(?P<indent>^[ \t]*)?<!--quran\s+[^>]*?-->\n(?P<body>.*?)\n[ \t]*<!--/quran-->",
+    re.S | re.M)
+_HADITH_BLOCK = re.compile(
+    r"(?P<indent>^[ \t]*)?<!--hadith\s+[^>]*?-->\n(?P<body>.*?)\n[ \t]*<!--/hadith-->",
+    re.S | re.M)
 _LATIN = re.compile(r"[A-Za-z]")
 _TITLE = re.compile(r"^%\s+(.+?)\s*$", re.M)
 _H1 = re.compile(r"^#\s+(.+?)\s*$", re.M)
@@ -43,9 +48,15 @@ def _wrap_verse(inner, ar_style, en_style):
     return out + '::::\n\n'
 
 
+def _wrap_marker(match, ar_style, en_style):
+    # Keep the generated divs inside their original footnote or list container.
+    inner = textwrap.dedent(match.group("body"))
+    return textwrap.indent(_wrap_verse(inner, ar_style, en_style), match.group("indent") or "")
+
+
 def _transform_markers(md):
-    md = _QURAN_BLOCK.sub(lambda m: _wrap_verse(m.group(1), "QuranArabic", "QuranEnglish"), md)
-    md = _HADITH_BLOCK.sub(lambda m: _wrap_verse(m.group(1), "HadithArabic", "HadithEnglish"), md)
+    md = _QURAN_BLOCK.sub(lambda m: _wrap_marker(m, "QuranArabic", "QuranEnglish"), md)
+    md = _HADITH_BLOCK.sub(lambda m: _wrap_marker(m, "HadithArabic", "HadithEnglish"), md)
     return md
 
 

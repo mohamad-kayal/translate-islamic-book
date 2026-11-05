@@ -1,6 +1,9 @@
+import json
 import os
 import subprocess
 import sys
+
+import pytest
 
 from out.assemble import (_sources_note, append_glossary, assemble, assign_hadith_numbers,
                           build_indexes, mark_own_renderings,
@@ -31,6 +34,15 @@ def test_single_ayah_block_is_not_numbered():
     md = _block('جبل شمس [X: 2]\n"b" [X: 2]', a="2-2")
     out = number_quran_ayat(md, QIDX)
     assert "جبل شمس [X: 2]" in out and "(٢)" not in out
+
+
+def test_multiayah_footnote_keeps_indentation_when_numbered():
+    block = _block('بحر نهر جبل شمس ليل نهار [X: 1-3]\n"trans" [X: 1-3]')
+    md = "Text[^n].\n\n[^n]: A note.\n\n" + "\n".join(
+        "    " + line for line in block.splitlines())
+    out = number_quran_ayat(md, QIDX)
+    assert "\n    بحر نهر (١) جبل شمس (٢) ليل نهار (٣) [X: 1-3]\n" in out
+    assert '\n    "trans" [X: 1-3]\n    <!--/quran-->' in out
 
 
 def test_partial_quote_left_intact_but_marks_stripped():
@@ -68,6 +80,14 @@ def test_hadith_markers_stripped_when_numbering_off():
         == "On the authority of X"
     assert assign_hadith_numbers("said in the authentic hadith [[H]]:", number=False) \
         == "said in the authentic hadith:"
+
+
+def test_unnumbered_hadith_preserves_block_indentation():
+    md = ("Text[^n].\n\n[^n]: A note.\n\n    [[H]] A report:\n\n"
+          "    More of the note.\n\none  two  [[H]] :")
+    assert assign_hadith_numbers(md, number=False) == (
+        "Text[^n].\n\n[^n]: A note.\n\n    A report:\n\n"
+        "    More of the note.\n\none two:")
 
 
 def test_merge_joins_with_blank_line_and_orders():
@@ -378,3 +398,37 @@ def test_index_skips_unlocatable_numbers_and_prefers_the_authors_citation():
           '<!--hadith coll=ahmad num=21500 cite=23482 conf=1.0 src=arabic-->\nx\n<!--/hadith-->\n')
     idx = build_indexes(md)
     assert "Hakim 0" not in idx and "Ahmad 23482" in idx and "21500" not in idx
+
+
+def test_editorial_quran_spelling_is_run_local_and_does_not_rewrite_quotations(tmp_path):
+    quoted = _IDX_MD.replace('"t" [X]', '"Qur\'anic quoted wording" [X]')
+    (tmp_path / "chunk_0001.md").write_text(quoted, encoding="utf-8")
+    meta = dict(_META, quran_adjective="Qurʾanic")
+    book = assemble(str(tmp_path), str(tmp_path / "book.md"),
+                    matter=True, indexes=True, meta=meta)
+    assert "Qurʾanic quotations are" in book
+    assert "## Index of Qurʾanic Verses" in book
+    assert '"Qur\'anic quoted wording" [X]' in book
+    assert "Qur'anic quotations are" in _sources_note(0)
+    assert "## Index of Qur'anic Verses" in build_indexes(quoted)
+
+
+@pytest.mark.parametrize("value", ["", "   ", None, 3])
+def test_invalid_editorial_quran_spelling_is_rejected(value):
+    with pytest.raises(ValueError, match="book.quran_adjective"):
+        front_matter(dict(_META, quran_adjective=value))
+
+
+def test_cli_uses_editorial_spelling_for_index_without_front_matter(tmp_path):
+    (tmp_path / "chunk_0001.md").write_text(_IDX_MD, encoding="utf-8")
+    glossary = tmp_path / "glossary.json"
+    glossary.write_text(json.dumps({"book": {"quran_adjective": "Qurʾanic"}}), encoding="utf-8")
+    out = tmp_path / "book.md"
+    result = subprocess.run(
+        [sys.executable, "-m", "out.assemble", str(tmp_path), str(out),
+         "--no-numbering", "--glossary", str(glossary), "--indexes"],
+        cwd=_REPO_ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    book = out.read_text(encoding="utf-8")
+    assert "## Index of Qurʾanic Verses" in book
+    assert "{.cover}" not in book

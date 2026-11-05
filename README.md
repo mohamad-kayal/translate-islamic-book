@@ -113,7 +113,8 @@ and copyright page, table of contents, chapter openings with drop capitals, Qur'
 mushaf face and hadith as distinct quotations, a glossary of the terms the book uses, indexes of every
 verse and hadith cited, and the author's endnotes. Cardo for English, Amiri and Amiri Quran for
 Arabic, black ink and one rubric red. The HTML and PDF are the verified deliverables; the DOCX is
-checked structurally.
+checked structurally. Multi-paragraph source notes retain their scripture blocks inside the note,
+including Arabic/English styles, ayah numbering, and any unverified-English marks.
 
 ## Repository layout
 
